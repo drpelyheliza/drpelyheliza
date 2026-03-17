@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Triglav csúcsra érkezés: személyes történetek, kalandok, fotók és élmények.">
+  <meta name="keywords" content="Triglav, Szlovénia, csúcsmászás, utazás">
+  <meta name="author" content="Pelyhe Liza">
+  <meta property="og:title" content="Triglav • Kalandok • Dr. Pelyhe Liza">
+  <meta property="og:description" content="Triglav csúcsra érkezés: személyes történetek, kalandok, fotók és élmények.">
+  <meta property="og:image" content="https://drive.google.com/uc?id=1ulc51m_qWUVN-MAcW2xNkT1WNmY--Lc1">
+  <meta property="og:type" content="website">
+  <title>Triglav • Kalandok • Dr. Pelyhe Liza</title>
+
+<link rel="up" href="kalandok.html">
+<link rel="prev" href="kalandok.html">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --primary: #0f4c75;
+  --accent: #3282b8;
+  --dark: #0a2540;
+  --light: #f8f9fa;
+  --gray: #6b7280;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  line-height: 1.7;
+  color: var(--dark);
+  background: var(--light);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 75vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c75 0%, #0a2540 100%);
+}
+
+.hero-bg-iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(1.1);
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+
+.hero-bg-iframe iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 900px;
+  padding: 0 30px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 15px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.hero-date {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  z-index: 10;
+  padding: 25px 30px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+
+/* CONTENT */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 30px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.story-text {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  max-width: 800px;
+  text-align:justify;
+
+}
+
+/* IMAGE GRID */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 50px 0;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.image-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.image-caption {
+  padding: 15px;
+  background: white;
+  font-size: 1rem;
+  color: var(--gray);
+  font-style: italic;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  nav a {
+    font-size: 0.95rem;
+  }
+  
+  .hero-content {
+    padding-top: 80px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZN25955BY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7ZN25955BY');
+</script>
+
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <nav>
+    <a href="index.html">Főoldal</a>
+    <a href="kalandok.html">Kalandok</a>
+    <a href="szakmai.html">Szakmai oldal</a>
+  </nav>
+  
+  <div class="hero-bg-iframe">
+    <iframe src="https://drive.google.com/file/d/1ulc51m_qWUVN-MAcW2xNkT1WNmY--Lc1/preview" allow="autoplay"></iframe>
+  </div>
+  
+  <div class="hero-content">
+    <h1>Triglav</h1>
+    <p class="hero-date">Utazás dátuma: 2026</p>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="container">
+  
+  <!-- BAKU SECTION -->
+  <h2 class="section-title">Téli Triglav (2864m)</h2>
+  <p class="story-text">
+Minap néztük egymást a sosem használt hágóvasammal, amit a Mount Kosciuszko mászásomhoz vettem, hogy el kéne menni valahova együtt (      <a href="https://drpelyheliza.github.io/drpelyheliza/Mount_Kosciuszko.html" 
+   target="_blank" 
+   rel="Mount Kosciuszko mászásom leírása">
+   👉 Mount Kosciuszko mászásomhoz kattints ide
+</a>.) A 15 éve vett sisakom nem tartott velünk, öregedésében, anyagfáradásában már nem bíztam.<br>Első napunkon felgyalogoltunk a Kredarica-ig (2515m) 1700m szintet, majd alvás után másnap summit a Triglavra (2864m) és onnan a Kredarica-n át vissza egészen a kocsiig.<br>Én a summit napon minimálisat fotóztam, nem akartam elveszíteni menet közben a telefonomat, így itt is megköszönöm mászótársaimnak a mászás során készített képeket.
+</p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1RVb24dKHruN4lWpiIyN0opKwXZj26BRQ/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Frissne, üdén a Krma-völgyben</div>
+    </div>
+  
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/19WRa_kkB3Zp3GHatZNke_71wNNqIH-2K/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">A tábla nem derékig ér normál esetben csak kicsit vastag volt a hóréteg (beszakadva "tökig" ért)</div>
+    </div>
+  
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1_cNJoKESIiBbDSmDtMYMRp_OtIRc7r8G/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Leültem pihenni a hóba szemlélni a tájat</div>
+    </div>
+  
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1Oqv4L-W8WJRo5VYr4fyqlF9gdomTVDjz/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Itt már közeledtünk a Kredarica (2515m) magasságához</div>
+    </div>
+  
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1teY14jsYGKCXdtJP2IUEa-d0vjF4ILp9/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Majdnem a Kredarica (2515m) szintjén</div>
+    </div>
+  
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/11q0Lbou4aqu0yCgAwBmjGQXF93WqodNl/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Triglavski Dom</div>
+    </div>
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1OWGIvGe6DmsmVT3QO6ooXQiXl-r1fuuN/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">A havas-jeges útviszonyok miatt lentebbről indultunk, mint 1015m</div>
+    </div>
+  
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1NOxvTkxUVkK8j9srwmQwT9wOLGOqu4rF/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Summit nap 350m szint felfele</div>
+    </div>
+  
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1-gOT4WUvNji6RgB28rgiqdXK0dEBxsXL/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">A ház specialitása: túrós "palacsinta" levelestésztából</div>
+    </div>
+
+
+</div>
+  
+  <!-- GOBUSZTÁN SECTION -->
+  <h2 class="section-title">Triglav (2864m) summit</h2>
+  <p class="story-text">
+    A mászáshoz nem szükséges ruházatunk és felszerelésünk hátra hagyva egy nagyon szép napfelkete után indultunk neki a 350m szintnek a Triglav csúcsára.  
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1ikFCpxqofzDNL4EE8-LPC231wDDGStgx/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Napfelkelte a szobám ablakából</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1Iqc0CjAV8rkcdCNtszA3AaO5_Xl1nSpN/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Jobb oldalamon meg a hold is látszott</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1bQXP_k8TW6tMrvJUT0XgUSKLRMiEQODO/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Napfelkelte a Kredarica-ról</div>
+    </div>
+    
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1wXaKyu1a2sNU7-Ywig9DTxFUGqLyc17s/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Indulás felfelé a Kredarica-tól (2515)</div>
+    </div>
+    
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1c8tKw62s6syF176ADFCSWlRbVrRC8nvH/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Stabil pozícióban</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1lLhCguddKtVOnnvdEyIMN3Z_JzduwJrZ/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Triglav 2864m</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1M9KllG5JyqmuQGX0SfPgiWxghzvd-PCw/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Valahol 2800m-en</div>
+    </div>
+
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1oQvN0GM5J9ym9q22Gx-yVRuhY0M9Lu2n/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Indulás lefelé</div>
+    </div>
+    
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1F00jA5sbaZMFilRJ9NtHPLVgUD67dfLJ/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Süt a nap</div>
+    </div>
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1wDLpvrSQQZeYf606bNzFa5AWJJuOHMTA/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">"Nézzetek fel!"</div>
+    </div>
+
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1coDEVVpijyF38rPa3W-o8cTJo1I8__gP/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Lefele menet</div>
+    </div>
+    
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/15JE0OyYBmRojoGk_DGxIEHJItmlCutyD/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Lassan lefele</div>
+    </div>
+
+ </div>
+  
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2026 Dr. Pelyhe Liza • <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
+</footer>
+
+</body>
+</html>
