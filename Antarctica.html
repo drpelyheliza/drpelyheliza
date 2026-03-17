@@ -1,75 +1,279 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8">
- 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="description" content="Utazásom Antarktisz - Antarctica területén: személyes történetek, kalandok, fotók és élmények. Fedezd fel Antarktisz - Antarctica-t az én szemszögemből.">
-	<meta name="keywords" content="Antarktisz, Antarctica, utazás">
-	<meta name="author" content="Pelyhe Liza">
-	<meta property="og:title" content="Antarktisz - Antarctica • Kalandok • Dr. Pelyhe Liza">
-	<meta property="og:description" content="Utazásom Antarktisz - Antarctica területén: személyes történetek, kalandok, fotók és élmények. Fedezd fel Antarktisz - Antarctica-t az én szemszögemből.">
-	<meta property="og:image" content="https://drive.google.com/uc?id=1M7w7ozmhRyXToDKxX6W_unAY5xINWUek">
-	<meta property="og:type" content="website">        
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Utazásom Antarktisz - Antarctica területén: személyes történetek, kalandok, fotók és élmények.">
+  <meta name="keywords" content="Antarktisz, Antarctica, Neco-harbour, utazás">
+  <meta name="author" content="Pelyhe Liza">
+  <meta property="og:title" content=Antarktisz - Antarctica • Kalandok • Dr. Pelyhe Liza">
+  <meta property="og:description" content="Utazásom Antarktisz - Antarctica területén: személyes történetek, kalandok, fotók és élmények.">
+  <meta property="og:image" content="https://drive.google.com/uc?id=1_UhLBZp1IS8UypOtwJJr0L4I5UOD0NUF">
+  <meta property="og:type" content="website">
+  <title>Antarktisz - Antarctica • Kalandok • Dr. Pelyhe Liza</title>
 
 	<link rel="up" href="kalandok.html">
 <link rel="prev" href="kalandok.html">
-	
-  <title>Antarktisz - Antarctica • Kalandok • Dr. Pelyhe Liza</title>
-  <link rel="stylesheet" href="orszag.css">
+
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --primary: #0f4c75;
+  --accent: #3282b8;
+  --dark: #0a2540;
+  --light: #f8f9fa;
+  --gray: #6b7280;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  line-height: 1.7;
+  color: var(--dark);
+  background: var(--light);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 75vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c75 0%, #0a2540 100%);
+}
+
+.hero-bg-iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(1.1);
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+
+.hero-bg-iframe iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 900px;
+  padding: 0 30px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 15px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.hero-date {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  z-index: 10;
+  padding: 25px 30px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+
+/* CONTENT */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 30px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.story-text {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  max-width: 800px;
+}
+
+/* IMAGE GRID */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 50px 0;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.image-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.image-caption {
+  padding: 15px;
+  background: white;
+  font-size: 1rem;
+  color: var(--gray);
+  font-style: italic;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  nav a {
+    font-size: 0.95rem;
+  }
+  
+  .hero-content {
+    padding-top: 80px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
-	<!-- Google tag (gtag.js) -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZN25955BY"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-7ZN25955BY');
 </script>
 
 <body>
 
-<div class="header">
-  <div class="video-background">
-    <iframe 
-      src="https://drive.google.com/file/d/1M7w7ozmhRyXToDKxX6W_unAY5xINWUek/preview" 
-      allow="autoplay"
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
+<!-- HERO -->
+<section class="hero">
+  <nav>
+    <a href="index.html">Főoldal</a>
+    <a href="kalandok.html">Kalandok</a>
+    <a href="szakmai.html">Szakmai oldal</a>
+  </nav>
+  
+  <div class="hero-bg-iframe">
+    <iframe src="https://drive.google.com/file/d/1_UhLBZp1IS8UypOtwJJr0L4I5UOD0NUF/preview" allow="autoplay"></iframe>
   </div>
-  <div class="header-content">
-    <h1>Kalandok</h1>
-    <h2>Antarktisz - Antarctica</h2>
-    <nav>
-      <a href="index.html">Főoldal</a>
-      <a href="kalandok.html">Kalandok</a>
-      <a href="szakmai.html">Szakmai oldal</a>
-    </nav>
+  
+  <div class="hero-content">
+    <h1>Antarktisz - Antarctica</h1>
+    <p class="hero-date">Utazás dátuma: 2024. 03. 13 - 2024. 03. 22</p>
   </div>
+</section>
+
+<!-- CONTENT -->
+<div class="container">
+  
+  <!-- BAKU SECTION -->
+  <h2 class="section-title">Antarktisz - Antarctica - Túl a világ végén</h2>
+  <p class="story-text">
+    Folyamatban..
+  </p>
+ 
+  
 </div>
 
+<!-- FOOTER -->
+<footer>
+  © 2025 Dr. Pelyhe Liza • <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
+</footer>
 
-    <h1 style="background-color: #f5f5f5;">Antarktisz - Antarctica - Túl a világ végén</h1>
-    <div class="date">Utazás dátuma: 2024. 03. 13 - 2024. 03. 22</div>
- 
-  <p> Hamarosan készen lesz. :) 
-    </p>
-
-  <footer>
-	<div class="footer-p">
-    © 2025 Dr. Pelyhe Liza <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
-	</div>
-  </footer>
-    
 </body>
 </html>
-    
-    
-
-    
- 
-
-
-
