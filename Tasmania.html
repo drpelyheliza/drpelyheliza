@@ -1,130 +1,293 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="description" content="Utazásom Tasmánia területén: személyes történetek, kalandok, fotók és élmények. Fedezd fel Tasmániát az én szemszögemből.">
-	<meta name="keywords" content="Tasmánia, Ausztrália, utazás">
-	<meta name="author" content="Pelyhe Liza">
-	<meta property="og:title" content="Tasmánia • Kalandok • Dr. Pelyhe Liza">
-	<meta property="og:description" content="Utazásom Tasmánia területén: személyes történetek, kalandok, fotók és élmények. Fedezd fel Tasmániát az én szemszögemből.">
-	<meta property="og:image" content="https://drive.google.com/uc?id=1M7w7ozmhRyXToDKxX6W_unAY5xINWUek">
-	<meta property="og:type" content="website">        
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Utazásom Tasmánia területén: személyes történetek, kalandok, fotók és élmények.">
+  <meta name="keywords" content="Tasmánia, Hobart,Port Arthur, Cape Raoul">
+  <meta name="author" content="Pelyhe Liza">
+  <meta property="og:title" content="Tasmánia • Kalandok • Dr. Pelyhe Liza">
+  <meta property="og:description" content="Utazásom Tasmánia területén: személyes történetek, kalandok, fotók és élmények.">
+  <meta property="og:image" content="https://drive.google.com/uc?id=186m59ll98nb7VjrJXrGckXMVVEX8KCMG">
+  <meta property="og:type" content="website">
+  <title>Tasmánia • Kalandok • Dr. Pelyhe Liza</title>
 
 <link rel="up" href="kalandok.html">
 <link rel="prev" href="kalandok.html">
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
-  <title>Tasmánia • Kalandok • Dr. Pelyhe Liza</title>
-  <link rel="stylesheet" href="orszag.css">
+:root {
+  --primary: #0f4c75;
+  --accent: #3282b8;
+  --dark: #0a2540;
+  --light: #f8f9fa;
+  --gray: #6b7280;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  line-height: 1.7;
+  color: var(--dark);
+  background: var(--light);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 75vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c75 0%, #0a2540 100%);
+}
+
+.hero-bg-iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(1.1);
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+
+.hero-bg-iframe iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 900px;
+  padding: 0 30px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 15px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.hero-date {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  z-index: 10;
+  padding: 25px 30px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+
+/* CONTENT */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 30px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.story-text {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  max-width: 800px;
+  text-align:justify;
+
+}
+
+/* IMAGE GRID */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 50px 0;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.image-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.image-caption {
+  padding: 15px;
+  background: white;
+  font-size: 1rem;
+  color: var(--gray);
+  font-style: italic;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  nav a {
+    font-size: 0.95rem;
+  }
+  
+  .hero-content {
+    padding-top: 80px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
-	<!-- Google tag (gtag.js) -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZN25955BY"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-7ZN25955BY');
 </script>
 
-
 <body>
 
-<div class="header">
-  <div class="video-background">
-    <iframe 
-      src="https://drive.google.com/file/d/1M7w7ozmhRyXToDKxX6W_unAY5xINWUek/preview" 
-      allow="autoplay"
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
+<!-- HERO -->
+<section class="hero">
+  <nav>
+    <a href="index.html">Főoldal</a>
+    <a href="kalandok.html">Kalandok</a>
+    <a href="szakmai.html">Szakmai oldal</a>
+  </nav>
+  
+  <div class="hero-bg-iframe">
+    <iframe src="https://drive.google.com/file/d/186m59ll98nb7VjrJXrGckXMVVEX8KCMG/preview" allow="autoplay"></iframe>
   </div>
-  <div class="header-content">
-    <h1>Kalandok</h1>
-    <h2>Tasmánia</h2>
-    <nav>
-      <a href="index.html">Főoldal</a>
-      <a href="kalandok.html">Kalandok</a>
-      <a href="szakmai.html">Szakmai oldal</a>
-    </nav>
+  
+  <div class="hero-content">
+    <h1>Tasmánia</h1>
+    <p class="hero-date">Utazás dátuma: 2025</p> <!-- 2025. 10. 15 - 2025. 10. 19 -->
   </div>
-</div>
+</section>
 
-    <h1 style="background-color: #f5f5f5;">Tasmánia három és fél napba belesűrítve</h1>
-    <div class="date">Utazás dátuma: 2025</div> <!-- 2025. 10. 15 - 2025. 10. 19 -->
-
-
-<h2 style="background-color: #f5f5f5;">Mennyi idő eljutni Budapestről Hobartba, Tasmánia fővárosába?</h2>
-
-  <div class="about-container">
-    <div class="column">      
-      <p>Röviden: sok. <br>
-Hosszabban: Nagyon sok.<br> <ul><li>5óra 30perc Budapest -> Dubai</li> <li>13óra 25perc Dubai -> Melbourne</li> <li>1óra 25perc Melbourne -> Hobart</li></ul> 
+<!-- CONTENT -->
+<div class="container">
+  
+  <!-- BAKU SECTION -->
+  <h2 class="section-title">Tasmánia három és fél napba belesűrítve</h2>
+  <p class="story-text">
+	<b>Mennyi idő eljutni Budapestről Hobartba, Tasmánia fővárosába?</b><br>Sok... Nagyon sok.<br>- 5óra 30perc Budapest -> Dubai<br>- 13óra 25perc Dubai -> Melbourne<br>- 1óra 25perc Melbourne -> Hobart<br>
 Az így kapott tiszta repülési idő 20óra 20perc. 
 4óra átszállási idő telt el Dubaiban, 6óra pedig Melbourne-ben.<br>Megjegyzés: Budapesten Melbourne-ig sikerült becsekkolni, viszont a csomagcímke 
 Hobartig szolt - az odáig is megy... mondták. 
 Melbourne-ben az első 10 csomag között ottfigyelt az enyém is.<br> Nem volt gyanús sehol sem, pedig még elektroterápiás készülék is volt benne. 
 Egy finom kávé után a reptér nyugodt zugában a legkevésbé kényelmetlen pózban végre vízszintesbe helyeztem 
-magam.
-</p>
-<h3>Mennyi cuccal indultam neki a 25 napos nagykörútnak?</h3>
-<p>Amennyi a hátamra elfért.</p>
-    </div>
-
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1BmebspK2LnMqFNUOz8INV3oPqyNay6XY/preview" allow="autoplay"></iframe>
-    <div class="image-caption">25 napnyi ruházat és minden más egy kis hátizsákban</div>
-  </div>
-</div>
-</div>
-
-  </div>
-
-
-
-  <h2 style="background-color: #f5f5f5;">20ezer lépés Hobartban</h2>
-
-  <p>
-A hőmérő 13fokot mutatott, sütött a nap, és fújt a hideg szél. A helyiek néhányan rövid napdrágot viseltek, én a fáradságtól fázósabban a naplemente felé a pufi dzsekire még az esőkabátom is rávettem és a fejemre húztam a sapkámat.
+magam.<br>
+<b>Mennyi cuccal indultam neki a 25 napos nagykörútnak?</b><br>Amennyi a hátamra elfért.
   </p>
-
-  <div class="about-container">
-    
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1OgYom-L3E7RTlbKLVr4QLKNkmULckOQI/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Welcome to Hobart</div>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1BmebspK2LnMqFNUOz8INV3oPqyNay6XY/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">25 napnyi ruházat és minden más egy kis hátizsákban</div>
+    </div>
   </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1NSuSmpn3K0CsUNIpfmF_0HPcgizHFsXJ/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Tasmán ördögös installáció - egyik oldal</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1D9cnM8B77vGDNwg0PJ9zhVqu69onTvma/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Tasmán ördögös installáció - másik oldal</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-<p>
+  
+  <!-- GOBUSZTÁN SECTION -->
+  <h2 class="section-title">20ezer lépés Hobartban</h2>
+  <p class="story-text">
+    A hőmérő 13fokot mutatott, sütött a nap, és fújt a hideg szél. A helyiek néhányan rövid napdrágot viseltek, én a fáradságtól fázósabban a naplemente felé a pufi dzsekire még az esőkabátom is rávettem és a fejemre húztam a sapkámat.<br>
 Érdekesség_1: Louis Charles Bernacchi (1876-1942) egy jelentős tudós és antarktiszi felfedező.<br> 
 * Southern Cross expedíció (1898- 1900): Fizikusként és csillagászként vett részt a Carsten Borchgrevink által vezetett brit Antarktiszi expedícióban. Ő az első 
 ausztráliai, aki a csapat tagjaként áttelelt az antarktiszi kontinensen (Cape Adare- nál).<br> 
@@ -132,265 +295,247 @@ ausztráliai, aki a csapat tagjaként áttelelt az antarktiszi kontinensen (Cape
 Érdekesség_2: A Tasmán-híd legismertebb és legtragikusabb eseménye, hogy 1975-ben az egyik pillérnek nekiment egy teherszállító-hajó és a híd 127méteren beomlott, és Hobart két részre szakadt. A hajó a teljes rakománnyal elsüllyedt és a roncs még mindig a víz alatt található.<br><br>
 Meglepődés: Mit keres szabadon egy rozellapapagáj??? Csak nem megszökött?? (Volt nekünk is egy kicsi ideig.) <br> Hamar leesett, hogy ő itt őshonos. <br><br> 
 <b>Promgramajánló:</b> Mawson's Huts Replica Museum<br>Egy teljes méretű másolata az 1911–1914-es Douglas Mawson vezette ausztrál antarktiszi expedíció során épült eredeti kunyhónak. Belül a lakrész és a használati tárgyak ismertetésénél egy nagyon kedves és lelkes pasi magyarázott. Ő járt az eredeti helyszínen és ha tényleg érdeklődő az ember mindent is megtudhat. Az más kérdés, hogy mennyit ért meg az ausztrál angolból.
-</p>
-
-  <div class="about-container">
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1OgYom-L3E7RTlbKLVr4QLKNkmULckOQI/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Welcome to Hobart</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1De3kgFtyQgo-R013c_esu2EyzSJT5h7w/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Louis Bernacchi szobra Joe-val, a kutyájával</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1q_jAUt9pc9s2kgbLJ6AnRIsWZskYNjww/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Tasmán-híd (Tasman Bridge)</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1DEFukJs03gNX8ectNDOwWjsLcfkkr2Fh/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Rozellapapagáj Hobartban</div>
-  </div>
-</div>
-</div>
-
-</div>
-
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1NSuSmpn3K0CsUNIpfmF_0HPcgizHFsXJ/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tasmán ördögös installáció - egyik oldal</div>
+    </div>
     
-<h2 style="background-color: #f5f5f5;">Port Arthur + Cape Raoul</h2>
-       
-    <p><b>Port Arthur</b> a Brit Bridodalom legszigorúbb büntetőkolóniája volt. A visszaeső bűnözők kerületek ide. Itt elöször pszihológiai elszigeteléssel és reformációval probálkoztak nevelni.<br>Szabadon végig járhatóak a romok, és a belépő egy 20 perces hajóutat is tartalmazott. Ezen felül lehetett egy másfél órás hajóútra is jegyet venni a Raoul-fokhoz.
-<br><b>Cape Raoul</b>sziklái oszlopos dolerit sziklák (kb. 170 millió éves bazaltképződmények). Ausztrália déli féltekéjének egyik legmagasabb (400m) tengeri sziklái. A hajóút hozzájuk időjárási viszonyoktól függ. Én is megkaptam előző nap az e-mailt, hogy nem fogunk tudni kihajózni. Aztán a helyszínen áttetettem a délelőtti jegyemet a délutáni időpontra (nem volt túrista szezon, tudtam helyezkedni), hátha csendesedi a tenger picit. Így esett, hogy ha nem is tudtuk a part mentén megkerülni a Raoul-fokot, de egy-két fotó erejéig a közelébe tudtunk merészkedni.<br>Megjegyzés: Tengeribetegek készüljenek fel a hajó "ringására".</p>
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1D9cnM8B77vGDNwg0PJ9zhVqu69onTvma/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tasmán ördögös installáció - másik oldal</div>
+    </div>
+    
 
-  <div class="about-container">
- 
-              <div class="column2">   
-  <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/18Ic2_ZTSNRTP-onAoTq2zYuaoXgaSOZk/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Büntetés-végrehajtási intézet - Penitentiary - Port Arthur</div>
-  </div>
-</div>
-</div>    
-
-<div class="column2"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1yLnwiCbQmM6f4EWXNeSj_Hu8BnBt6rDy/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Korház rom - Hospital ruin in Port Arthur</div>
-  </div>
-</div> 
- </div>
-
-<div class="column2">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1o0Bocij5EEkY-TTTXWm3jqtcBAz91jAW/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Templom rom - Church ruin in Port Arthur</div>
-  </div>
-</div>    
-</div> 
-</div> 
-
-  <div class="about-container">
- 
-              <div class="column2">   
-  <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1UNIdwKhQe7_Xm5sf3HpzI3hTg13tpDCq/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Úton Cape Raoul felé part menti üregek</div>
-  </div>
-</div>
-</div>    
-
-<div class="column2"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1E4vEgIo8bfjpCkn7n1GbTUMrYpZYOTG6/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Úton Cape Raoul felé bazaltképződmények</div>
-  </div>
-</div> 
- </div>
-
-<div class="column2">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1dOfIJVZbZwnffiQryD5NMh-WYt8ZvIMH/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Raoul-fok - Cape Raoul</div>
-  </div>
-</div>    
-</div> 
-</div> 
-
-
-<h2 style="background-color: #f5f5f5;">Tasmánia növény és állatvilága</h2>
-
-  <div class="about-container">
-    <div class="column">
-      <p><b>Mount Field Nemzeti Park</b>: Gyerekként rengeteget lapozgattam a trópusi esőerdős könyveket (nagy becsben tartom őket a mai napig), szóval itt "haza érkeztem". 
-Le is tértem ám az útról és kiugrasztottam egy Tasmán Pademelon-t (Filanderkenguru) a bokorból véletlenül. Mindketten frászt kaptunk.<br>
-A Bonorog Vadasparkban (Bonorong Wildlife Sanctuary) láthattam Tasmán ördögöt és Tasmánia jellemző állatvilágát, csak sajnos bezárva. Azt nem tudom, hogy pont Vombatot miért nem fotoztam, pedig olyan aranyos.
-</p>
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1De3kgFtyQgo-R013c_esu2EyzSJT5h7w/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Louis Bernacchi szobra Joe-val, a kutyájával</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1q_jAUt9pc9s2kgbLJ6AnRIsWZskYNjww/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tasmán-híd (Tasman Bridge)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1DEFukJs03gNX8ectNDOwWjsLcfkkr2Fh/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Rozellapapagáj Hobartban</div>
     </div>
 
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1fCNYvKr9uvVAfMxv-aAeYHe9uxn-obMK/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Tasmanian pademelon (forrás: wikipedia)</div>
-  </div>
-</div>
-</div>
-
-  </div>
-
-  <div class="about-container">
- 
-              <div class="column2">   
-  <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1sEkl2CUSZ_pX80hA0yL1lg4IndZd39V9/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Tall Trees ösvény - Mount Field Nemzeti Park</div>
-  </div>
-</div>
-</div>    
-
-<div class="column2"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1_njoNww8GmKqsxquf1wtBZ9seBElWn8T/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Itt ugraszttottam ki a pamelone-t (Mount Field Nemzeti Park)</div>
-  </div>
-</div> 
  </div>
-
-<div class="column2">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1l00sAsKka7TlnL1-6AWuai02LzmsUrkt/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Russell- vízesés (Mount Field Nemzeti Park)</div>
-  </div>
-</div>    
-</div> 
-</div> 
-
-  <div class="about-container">
+  
+  <!-- ABSHERON SECTION -->
+  <h2 class="section-title">Port Arthur + Cape Raoul</h2>
+  <p class="story-text">
+Port Arthur</b> a Brit Bridodalom legszigorúbb büntetőkolóniája volt. A visszaeső bűnözők kerületek ide. Itt elöször pszihológiai elszigeteléssel és reformációval probálkoztak nevelni.<br>Szabadon végig járhatóak a romok, és a belépő egy 20 perces hajóutat is tartalmazott. Ezen felül lehetett egy másfél órás hajóútra is jegyet venni a Raoul-fokhoz.
+<br><b>Cape Raoul</b>sziklái oszlopos dolerit sziklák (kb. 170 millió éves bazaltképződmények). Ausztrália déli féltekéjének egyik legmagasabb (400m) tengeri sziklái. A hajóút hozzájuk időjárási viszonyoktól függ. Én is megkaptam előző nap az e-mailt, hogy nem fogunk tudni kihajózni. Aztán a helyszínen áttetettem a délelőtti jegyemet a délutáni időpontra (nem volt túrista szezon, tudtam helyezkedni), hátha csendesedi a tenger picit. Így esett, hogy ha nem is tudtuk a part mentén megkerülni a Raoul-fokot, de egy-két fotó erejéig a közelébe tudtunk merészkedni.<br>Megjegyzés: Tengeribetegek készüljenek fel a hajó "ringására".
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/18Ic2_ZTSNRTP-onAoTq2zYuaoXgaSOZk/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Büntetés-végrehajtási intézet - Penitentiary - Port Arthur</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1yLnwiCbQmM6f4EWXNeSj_Hu8BnBt6rDy/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Korház rom - Hospital ruin in Port Arthur</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1o0Bocij5EEkY-TTTXWm3jqtcBAz91jAW/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Templom rom - Church ruin in Port Arthur</div>
+    </div>
  
-              <div class="column2">   
-  <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/186m59ll98nb7VjrJXrGckXMVVEX8KCMG/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Tasmán ördög oldalró (Bonorong Wildlife Sanctuary)</div>
-  </div>
-</div>
-</div>    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1UNIdwKhQe7_Xm5sf3HpzI3hTg13tpDCq/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Úton Cape Raoul felé part menti üregek</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1E4vEgIo8bfjpCkn7n1GbTUMrYpZYOTG6/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Úton Cape Raoul felé bazaltképződmények</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1dOfIJVZbZwnffiQryD5NMh-WYt8ZvIMH/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Raoul-fok - Cape Raoul</div>
+    </div>
 
-<div class="column2"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1fGrK36ZcW1Q8wh8IDJuJ-iOAqqujIXX9/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Tasmán ördög szemből (Bonorong Wildlife Sanctuary)</div>
-  </div>
-</div> 
  </div>
+  
 
-<div class="column2">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1ocAg_2orMkBtGFzsyxpck3NnK1DyG1V4/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Rövidcsőrű hangyászsün (Bonorong Wildlife Sanctuary)</div>
-  </div>
-</div>    
-</div> 
+  <!-- ABSHERON SECTION -->
+  <h2 class="section-title">Tasmánia növény és állatvilága</h2>
+  <p class="story-text">
+    <b>Mount Field Nemzeti Park</b>: Gyerekként rengeteget lapozgattam a trópusi esőerdős könyveket (nagy becsben tartom őket a mai napig), szóval itt "haza érkeztem". 
+Le is tértem ám az útról és kiugrasztottam egy Tasmán Pademelon-t (Filanderkenguru) a bokorból véletlenül. Mindketten frászt kaptunk.<br>
+A Bonorog Vadasparkban (<b>Bonorong Wildlife Sanctuary</b>) láthattam Tasmán ördögöt és Tasmánia jellemző állatvilágát, csak sajnos bezárva. Azt nem tudom, hogy pont Vombatot miért nem fotoztam, pedig olyan aranyos.
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1fCNYvKr9uvVAfMxv-aAeYHe9uxn-obMK/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tasmanian pademelon (forrás: wikipedia)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1sEkl2CUSZ_pX80hA0yL1lg4IndZd39V9/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tall Trees ösvény - Mount Field Nemzeti Park</div>
+    </div>
+ </div>   
+
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1_njoNww8GmKqsxquf1wtBZ9seBElWn8T/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Itt ugraszttottam ki a pamelone-t (Mount Field Nemzeti Park)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1l00sAsKka7TlnL1-6AWuai02LzmsUrkt/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Russell- vízesés (Mount Field Nemzeti Park)</div>
+    </div>
+ </div> 
+
+
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/186m59ll98nb7VjrJXrGckXMVVEX8KCMG/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tasmán ördög oldalró (Bonorong Wildlife Sanctuary)</div>
+    </div>
+  
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1fGrK36ZcW1Q8wh8IDJuJ-iOAqqujIXX9/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tasmán ördög szemből (Bonorong Wildlife Sanctuary)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1ocAg_2orMkBtGFzsyxpck3NnK1DyG1V4/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Rövidcsőrű hangyászsün (Bonorong Wildlife Sanctuary)</div>
+    </div>
+
 </div>
   
-    <h2 style="background-color: #f5f5f5;">Mount Wellington</h2>
-    <p>1271méter magas hegye Tasmániának (a 49dik legmagasabb). Van a tetején parkoló, meg WC kilátással. Igen erőteljes szél fújt, amikor fent voltunk. Simán rá 
+
+ <!-- ABSHERON SECTION -->
+  <h2 class="section-title">Mount Wellington</h2>
+  <p class="story-text">
+    1271m magas hegye Tasmániának (a 49dik legmagasabb). Van a tetején parkoló, meg WC kilátással. Igen erőteljes szél fújt, amikor fent voltunk. Simán rá 
 lehetett dölni és megtartott.<br>Ide autóval mentem fel, viszont az Ausztrál kontinens legmagasabb pontjára (Mount Kosciuszko - 2228m) már egy kalandos túra keretében jutottam fel. <a href="https://drpelyheliza.github.io/drpelyheliza/Mount_Kosciuszko.html" 
    target="_blank" 
    rel="Mount Kosciuszko túra">
    👉 Mount Kosciuszko túrámhoz kattints ide
 </a>   
-    </p>
-
-  <div class="about-container"> 
-
-<div class="column"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/110TbVUOZUqiqfbFLLU3nHMjkqTqTrGsN/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Mount Wellington kilátása - egyik oldal </div>
-  </div>
-</div> 
- </div>
-
-<div class="column">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1M_CkD7YNWChnrA6oMGsDetNS1P-kV-R8/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Mount Wellington kilátása - másik oldal</div>
-  </div>
-</div>    
-</div> 
-</div> 
+  </p>
   
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/110TbVUOZUqiqfbFLLU3nHMjkqTqTrGsN/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Mount Wellington kilátása - egyik oldal</div>
+    </div>
     
-    <h2 style="background-color: #f5f5f5;">Hobart újdonsága</h2>
-    
-   <p> Amikor kint voltam, akkor nyitott a LEGO bolt, és feltétlenül meg kellett néznem. Előtte viszont futottam egy maratoni távot hajnai 3tól (hogy ne zavarjon bele a nap menetébe), mert ha az edzés tervbe maratoni táv van írva futásnak, akkor azt lefutom, bárhol is vagyok Így esett, hogy egy kb 4km-es szakaszon kőröztem az Antarktisz felöl jövő jeges szélben és néha esőben.<br>Hobartból inultam tovább Sydney-be, hogy ott kezdjem meg Ausztrália felfedezését.   
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1M_CkD7YNWChnrA6oMGsDetNS1P-kV-R8/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Mount Wellington kilátása - másik oldal</div>
+    </div>
+</div>
+
+ <!-- ABSHERON SECTION -->
+  <h2 class="section-title">Hobart újdonsága</h2>
+  <p class="story-text">
+    Amikor kint voltam, akkor nyitott a LEGO bolt, és feltétlenül meg kellett néznem. Előtte viszont futottam egy maratoni távot hajnai 3tól (hogy ne zavarjon bele a nap menetébe), mert ha az edzés tervbe maratoni táv van írva futásnak, akkor azt lefutom, bárhol is vagyok Így esett, hogy egy kb 4km-es szakaszon kőröztem az Antarktisz felöl jövő jeges szélben és néha esőben.<br>Hobartból inultam tovább Sydney-be, hogy ott kezdjem meg Ausztrália felfedezését.   
        
        <a href="https://drpelyheliza.github.io/drpelyheliza/Sydney_AyersRock_BlueMountains_Canberra_Melbourne.html" 
    target="_blank" 
    rel="Ausztráliai utazásom leírása">
    👉 Ausztráliai utazásomhoz kattints ide
 </a>
-       </p>
+  </p>
   
-  <div class="about-container">
- 
-              <div class="column2">   
-  <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1X0-TQoGilHtr00f-k7U3_Hjr-k4fTo4M/preview" allow="autoplay"></iframe>
-    <div class="image-caption">LEGO bolt Hobartban</div>
-  </div>
-</div>
-</div>    
-
-<div class="column2"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1k_7WU7Tmyw_vGJiPmKbPj7NXcYNbywfx/preview" allow="autoplay"></iframe>
-    <div class="image-caption">LEGO Tasmán öröd Hobartban</div>
-  </div>
-</div> 
- </div>
-
-<div class="column2">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1W3o_T_9OMCVvLJhTbj-hdxJazFDqHK0m/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Liza maratoni távja Hobart kikötőjében</div>
-  </div>
-</div>    
-</div> 
-</div>
-
-  <footer>
-    © 2025 Dr. Pelyhe Liza <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
-  </footer>
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1X0-TQoGilHtr00f-k7U3_Hjr-k4fTo4M/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">LEGO bolt Hobartban</div>
+    </div>
     
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1k_7WU7Tmyw_vGJiPmKbPj7NXcYNbywfx/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">LEGO Tasmán öröd Hobartban</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1W3o_T_9OMCVvLJhTbj-hdxJazFDqHK0m/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Liza maratoni távja Hobart kikötőjében</div>
+    </div>
+  
+
+</div>
+
+
+
+
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 Dr. Pelyhe Liza • <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
+</footer>
+
 </body>
 </html>
-
-
