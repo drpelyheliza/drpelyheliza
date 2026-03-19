@@ -1,297 +1,458 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8">
- 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="description" content="Utazásom Ausztrália területén: személyes történetek, kalandok, fotók és élmények. Fedezd fel Ausztráliát az én szemszögemből.">
-	<meta name="keywords" content="Ausztrália, Sydney, Ayers Rock, Uluru, Blue Mountains, Canberra, Melbourne, utazás">
-	<meta name="author" content="Pelyhe Liza">
-	<meta property="og:title" content="Ausztrália • Kalandok • Dr. Pelyhe Liza">
-	<meta property="og:description" content="Utazásom Ausztrália területén: személyes történetek, kalandok, fotók és élmények. Fedezd fel Ausztráliát az én szemszögemből.">
-	<meta property="og:image" content="https://drive.google.com/uc?id=1M7w7ozmhRyXToDKxX6W_unAY5xINWUek">
-	<meta property="og:type" content="website">        
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Utazásom Ausztrália területén: személyes történetek, kalandok, fotók és élmények.">
+  <meta name="keywords" content="Ausztrália, Sydney, Ayers Rock, Uluru, Blue Mountains, Canberra, Melbourne">
+  <meta name="author" content="Pelyhe Liza">
+  <meta property="og:title" content="Ausztrália • Kalandok • Dr. Pelyhe Liza">
+  <meta property="og:description" content="Utazásom Ausztrália területén: személyes történetek, kalandok, fotók és élmények.">
+  <meta property="og:image" content="https://drive.google.com/uc?id=1wvkFL7e4QUCKDDn5oGYw9oq5Za4nD-gI">
+  <meta property="og:type" content="website">
+  <title>Ausztrália • Kalandok • Dr. Pelyhe Liza</title>
 
 <link rel="up" href="kalandok.html">
 <link rel="prev" href="kalandok.html">
 
-  <title>Ausztrália • Kalandok • Dr. Pelyhe Liza</title>
-  <link rel="stylesheet" href="orszag.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --primary: #0f4c75;
+  --accent: #3282b8;
+  --dark: #0a2540;
+  --light: #f8f9fa;
+  --gray: #6b7280;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  line-height: 1.7;
+  color: var(--dark);
+  background: var(--light);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 75vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c75 0%, #0a2540 100%);
+}
+
+.hero-bg-iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(1.1);
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+
+.hero-bg-iframe iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 900px;
+  padding: 0 30px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 15px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.hero-date {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  z-index: 10;
+  padding: 25px 30px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+
+/* CONTENT */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 30px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.story-text {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  max-width: 800px;
+  text-align:justify;
+
+}
+
+/* IMAGE GRID */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 50px 0;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.image-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.image-caption {
+  padding: 15px;
+  background: white;
+  font-size: 1rem;
+  color: var(--gray);
+  font-style: italic;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  nav a {
+    font-size: 0.95rem;
+  }
+  
+  .hero-content {
+    padding-top: 80px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
-	<!-- Google tag (gtag.js) -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZN25955BY"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-7ZN25955BY');
 </script>
 
-
 <body>
 
-<div class="header">
-  <div class="video-background">
-    <iframe 
-      src="https://drive.google.com/file/d/1M7w7ozmhRyXToDKxX6W_unAY5xINWUek/preview" 
-      allow="autoplay"
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
-  </div>
-  <div class="header-content">
-    <h1>Kalandok</h1>
-    <h2>Ausztrália</h2>
-    <nav>
-      <a href="index.html">Főoldal</a>
-      <a href="kalandok.html">Kalandok</a>
-      <a href="szakmai.html">Szakmai oldal</a>
-    </nav>
-  </div>
-</div>
-
-
-    <h1 style="background-color: #f5f5f5;">Ausztrália - Sydney, Ayers Rock, Blue Mountains, Canberra, Melbourne</h1>
-    <div class="date">Utazás dátuma: 2025</div>
+<!-- HERO -->
+<section class="hero">
+  <nav>
+    <a href="index.html">Főoldal</a>
+    <a href="kalandok.html">Kalandok</a>
+    <a href="szakmai.html">Szakmai oldal</a>
+  </nav>
   
-<h2 style="background-color: #f5f5f5;">Sydney a Harbour Bridge tetejéről</h2>
+  <div class="hero-bg-iframe">
+    <iframe src="https://drive.google.com/file/d/1wvkFL7e4QUCKDDn5oGYw9oq5Za4nD-gI/preview" allow="autoplay"></iframe>
+  </div>
+  
+  <div class="hero-content">
+    <h1>Ausztrália</h1>
+    <p class="hero-date">Utazás dátuma: 2025</p>
+  </div>
+</section>
 
-  <div class="about-container">
-    <div class="column">      
-      <p>Rendhagyó módját választottam Sydney egynapos megismerésének és a séta és a motorcsónakos városnézés mellé beütemeztem a Harbour Bridge tetejére való felmászást.<br>
+<!-- CONTENT -->
+<div class="container">
+  
+  <!-- BAKU SECTION -->
+  <h2 class="section-title">Sydney a Harbour Bridge tetejéről</h2>
+  <p class="story-text">
+    Rendhagyó módját választottam Sydney egynapos megismerésének és a séta és a motorcsónakos városnézés mellé beütemeztem a Harbour Bridge tetejére való felmászást.<br>
 A programot előre lefoglaltam 3 héttel érkezés előtt, hogy biztosan legyen hely az adott napra, mert csak egy teljes napom állt Sydney felfedezésére. 
 3.5 órás programra mentem. A beöltözés 30 perc. Minden kelléket, ruházatot adtak. Semmi személyes dolgot nem lehetett felvinni a hídra, kivéve a szemüveget, viszont azt is rárögzítették a tulajdonosra. Telefont sem lehetett felvinni, ők készítették a képeket. 
 Beöltözés után a szabályok ismertetése és egy próbamászás következett, majd megkaptuk a rádiókat és indultunk a híd alsó szervíz folyosójához. Egy darabig vízszintesen mentünk, majd egy függőleges létrasoron kiléptünk a híd "Fémívének" kezdetéhez. Onnan sétáltunk szintén egy szervízlépcsőn felfele közben egy-egy fotószünetet, kilátásban 
 gyönyörködős szünetet tartva. A "Fémív" keleti oldalán mentünk fel és a nyugati oldalán sétáltunk vissza.
-</p>
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1u0hf-XAFaf50HX4lBB_FpETATGnIFCu-/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Sydney motorcsónakos városnézés</div>
     </div>
 
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1u0hf-XAFaf50HX4lBB_FpETATGnIFCu-/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Sydney motorcsónakos városnézés</div>
-  </div>
-</div>
-</div>
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1wvkFL7e4QUCKDDn5oGYw9oq5Za4nD-gI/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Sydney Harbour Bridge mászás az Operaházzal a háttérben</div>
+    </div>
 
   </div>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1zlHNUi8YdfNe59LmL-vnAFc2yS_NCd4W/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Sydney Harbour Bridge mászás a várossal a háttérben</div>
+    </div>
 
-  <div class="about-container">
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1wvkFL7e4QUCKDDn5oGYw9oq5Za4nD-gI/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Sydney Harbour Bridge mászás az Operaházzal a háttérben</div>
-  </div>
-</div>
-</div>
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1u-enJ_PKnsnUEKdifbLuGK7FPxYrTw87/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Sydney Harbour Bridge mászás a híd legfelső pontja felé</div>
+    </div>
 
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1zlHNUi8YdfNe59LmL-vnAFc2yS_NCd4W/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Sydney Harbour Bridge mászás a várossal a háttérben</div>
-  </div>
-</div>
-</div>
-
-  </div>
-
-
-  <div class="about-container">
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1u-enJ_PKnsnUEKdifbLuGK7FPxYrTw87/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Sydney Harbour Bridge mászás a híd legfelső pontja felé</div>
-  </div>
-</div>
-</div>
-
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1NrfvLXLSyCr1-bwhR6jfw6ZCbvZUOBuz/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Sydney Harbour Bridge legfelső pontján</div>
-  </div>
-</div>
-</div>
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1NrfvLXLSyCr1-bwhR6jfw6ZCbvZUOBuz/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Sydney Harbour Bridge legfelső pontján</div>
+    </div>
 
   </div>
 
-<h2 style="background-color: #f5f5f5;">Sydney Zoo + Blue Mountains</h2>
-
-<p>
-Az állatkert számomra legfontosabb lakója a koala. Ha csak így láthatom, akkor így látom. Kacsacsőrű emlős sajnos nincs az állatkertben.<br> 
+  <!-- GOBUSZTÁN SECTION -->
+  <h2 class="section-title">Sydney Zoo + Blue Mountains</h2>
+  <p class="story-text">
+    Az állatkert számomra legfontosabb lakója a koala. Ha csak így láthatom, akkor így látom. Kacsacsőrű emlős sajnos nincs az állatkertben.<br> 
 A Blue Mountains (Kék-hegység) eukaliptusz-erdőiről kapta nevét. Az illóolajok a napfény hatására elpárologva kékes párát hoznak létre, ami misztikus, kék színbe vonja a völgyeket. A régió jelképe a Három Nővér (Three Sisters) sziklaformáció. A Scenic World-ben a világ legmeredekebb utasszállító vasútja található (Scenic Railway), ami pont nem működött. A Scenic Skyway libegő viszont elment a Jamison völgy felett, ahonnan a Három Nővért és a Katoomba vízesést is láttam. 
-</p>
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1lXUDZNnZAWWoJPC1o_hz4yjd8aUmXaZJ/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Ebédelő koala - Sydney Zoo</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1x9qWSV7kEVWO_u_EFHAYVtTyF7JuTRcB/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Koala - Sydney Zoo</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1WzyKyG0DLX7P_ufXvugnLMn-Bmaw5m77/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Alvó koala - Sydney Zoo</div>
+    </div>
+    
 
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1gxrf-KO48U-T0j2Zdq4nikoDQ6SelCfB/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Blue Mountains kilátás Lizával</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1Ky8gkaGFZDsCGhzq5GnDJpk4JMoyBxOX/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Blue Mountains láblógatva</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1bhcCwlJVl3sy5llGRxXDt-pE9e8DqNWw/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Ausztrália nemzeti virága - Waratah</div>
+    </div>
  
-  <div class="about-container">
+   </div>
+  
+  <!-- ABSHERON SECTION -->
+  <h2 class="section-title">Ayers Rock - Uluru</h2>
+  <p class="story-text">
+    Délben érkeztem Ayers Rockba és fedeztem fel a központot illetve a közeli kilátót, hogy tudjam, hogy honnan fogok napfelkeltét nézni. Utána részt vettem egy Uluru-Kata Tjuta Nemzeti Park látogatáson, ahol gyalogosan is megközelíthettem Uluru-t, a vörös homokkő sziklát. Majd egy kilátóponton néztem színének változását a naplementében. Covid előtti időszakban fel lehetett rá mászni, de most már nem nem engedélyezik (nagy bánatomra). Este 9 felé dörgésre lettem figyelmes és a sivatagban dörgés-villámlással el kezdett ömleni az eső. Ennek hajnalra sok nyoma nem maradt így egy felhős, de legalább nem esős napfelkeltét láthattam. Még a repülőgép indulása előtt elsétáltunk egy közeli tevefarmra (30 perc) hátunk mögött a viharfelhőkkel, amik elég erős motivációt adtak a gyors léptekhez. Nem ért minket el a vihar sem oda, sem visszafele. A tevéken kívül akadt még kenguru és kecske is a tevefarmon. Amelyik állat épp barátkozós kedvében van, azt keritésen keresztül meg lehetett simogatni. A kenguru nem érezte át ezt a barátkozósdit.
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1U2p0eXy3BmsRBv5ZE0BNIl_nsy5cLRIM/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Mászás helyett, már csak ráfeküdni lehetett az Uluru-ra (Ayers Rock)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1af4yRslB4YxnAh9JV4YJnab5QutEwvVE/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Urulu naplementében (Ayers Rock)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1C1FLpGKjjA3xmmxCJ4oS5I1O3OAt4mIl/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Uluru napfelkeltében (Ayers Rock)</div>
+    </div>
  
-              <div class="column2">   
-  <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1lXUDZNnZAWWoJPC1o_hz4yjd8aUmXaZJ/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Ebédelő koala - Sydney Zoo</div>
-  </div>
-</div>
-</div>    
-
-<div class="column2"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1x9qWSV7kEVWO_u_EFHAYVtTyF7JuTRcB/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Koala - Sydney Zoo</div>
-  </div>
-</div> 
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1-qej-YRAN3j-ndERifNoGWU9-V46TNff/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Uluru napfelkelte után nem sokkal (Ayers Rock)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1RvLToov0v8-nbNBndnS3s57S3oh20qAA/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tevefarm néhány tevéje (Ayers Rock)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1T6-DcSsqqqTRQCCVm5LctSwaKNXabGqC/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tevefarm nem annyira barátságos kenguruja (Ayers Rock)</div>
+    </div>
  </div>
+  
 
-<div class="column2">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1WzyKyG0DLX7P_ufXvugnLMn-Bmaw5m77/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Alvó koala - Sydney Zoo</div>
-  </div>
-</div>    
-</div> 
-</div> 
-
-  <div class="about-container">
- 
-              <div class="column2">   
-  <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1gxrf-KO48U-T0j2Zdq4nikoDQ6SelCfB/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Blue Mountains kilátás Lizával</div>
-  </div>
-</div>
-</div>    
-
-<div class="column2"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1Ky8gkaGFZDsCGhzq5GnDJpk4JMoyBxOX/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Blue Mountains láblógatva</div>
-  </div>
-</div> 
- </div>
-
-<div class="column2">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1bhcCwlJVl3sy5llGRxXDt-pE9e8DqNWw/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Ausztrália nemzeti virága - Waratah </div>
-  </div>
-</div>    
-</div> 
-</div> 
-
-
-<h2 style="background-color: #f5f5f5;">Ayers Rock - Uluru</h2>
-<p>
-Délben érkeztem Ayers Rockba és fedeztem fel a központot illetve a közeli kilátót, hogy tudjam, hogy honnan fogok napfelkeltét nézni. Utána részt vettem egy Uluru-Kata Tjuta Nemzeti Park látogatáson, ahol gyalogosan is megközelíthettem Uluru-t, a vörös homokkő sziklát. Majd egy kilátóponton néztem színének változását a naplementében. Covid előtti időszakban fel lehetett rá mászni, de most már nem nem engedélyezik (nagy bánatomra). Este 9 felé dörgésre lettem figyelmes és a sivatagban dörgés-villámlással el kezdett ömleni az eső. Ennek hajnalra sok nyoma nem maradt így egy felhős, de legalább nem esős napfelkeltét láthattam. Még a repülőgép indulása előtt elsétáltunk egy közeli tevefarmra (30 perc) hátunk mögött a viharfelhőkkel, amik elég erős motivációt adtak a gyors léptekhez. Nem ért minket el a vihar sem oda, sem visszafele. A tevéken kívül akadt még kenguru és kecske is a tevefarmon. Amelyik állat épp barátkozós kedvében van, azt keritésen keresztül meg lehetett simogatni. A kenguru nem érezte át ezt a barátkozósdit.  
-</p>
-
-  <div class="about-container">
- 
-              <div class="column2">   
-  <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1U2p0eXy3BmsRBv5ZE0BNIl_nsy5cLRIM/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Mászás helyett, már csak ráfeküdni lehetett az Uluru-ra (Ayers Rock)</div>
-  </div>
-</div>
-</div>    
-
-<div class="column2"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1af4yRslB4YxnAh9JV4YJnab5QutEwvVE/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Urulu naplementében (Ayers Rock)</div>
-  </div>
-</div> 
- </div>
-
-<div class="column2">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1C1FLpGKjjA3xmmxCJ4oS5I1O3OAt4mIl/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Uluru napfelkeltében (Ayers Rock)</div>
-  </div>
-</div>    
-</div> 
-</div> 
-
-  <div class="about-container">
- 
-              <div class="column2">   
-  <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1-qej-YRAN3j-ndERifNoGWU9-V46TNff/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Uluru napfelkelte után nem sokkal (Ayers Rock)</div>
-  </div>
-</div>
-</div>    
-
-<div class="column2"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1RvLToov0v8-nbNBndnS3s57S3oh20qAA/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Tevefarm néhány tevéje (Ayers Rock)</div>
-  </div>
-</div> 
- </div>
-
-<div class="column2">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1T6-DcSsqqqTRQCCVm5LctSwaKNXabGqC/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Tevefarm nem annyira barátságos kenguruja (Ayers Rock)</div>
-  </div>
-</div>    
-</div> 
-</div> 
-
-<h2 style="background-color: #f5f5f5;">Canberra és Melbourne</h2>
-<p>Engem a nagyvárosok nem nagyon szoktak meghatni, szóval a szakadó esőben körbejárt Canberrából egy fura szobron kívül nem fotóztam semmit. A szobor egyébként 2001-ben készült és szatírikus tisztelgés Canberra egyik korai pásztora, James Ainslie előtt, aki 1825-ben érkezett a régióba.<br>Melbourne nevezetességeit az ingyenes túrista villamossal, továbbá gyalog és városnéző kishajóval is felfedeztem képek készítése nélkül. Ugyanazt láttam mint az útikönyvekben.<br>
+  <!-- ABSHERON SECTION -->
+  <h2 class="section-title">Canberra és Melbourne</h2>
+  <p class="story-text">
+    Engem a nagyvárosok nem nagyon szoktak meghatni, szóval a szakadó esőben körbejárt Canberrából egy fura szobron kívül nem fotóztam semmit. A szobor egyébként 2001-ben készült és szatírikus tisztelgés Canberra egyik korai pásztora, James Ainslie előtt, aki 1825-ben érkezett a régióba.<br>Melbourne nevezetességeit az ingyenes túrista villamossal, továbbá gyalog és városnéző kishajóval is felfedeztem képek készítése nélkül. Ugyanazt láttam mint az útikönyvekben.<br>
 Canberra egy köztes stáció volt, igazából csak transzfer szállásnak indult, ugyanis innen szerveztem a transzferemet Thredbo-ba, hogy eljussak Ausztrália legmagasabb pontjának, a Mount Kosciuszko lábához. 
        <a href="https://drpelyheliza.github.io/drpelyheliza/Mount_Kosciuszko.html" 
    target="_blank" 
    rel="Mount Kosciuszko túra">
    👉 Mount Kosciuszko túrámhoz kattints ide
 </a>
- 
-</p>
-
-  <div class="about-container"> 
-
-<div class="column"> 
-     <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1kVYLzRV1PSX5YT63AM4jPY970xOxewb0/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Ainslie's Sheep by Les Kossatz</div>
-  </div>
-</div> 
- </div>
-
-<div class="column">   
-   <div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1ykMUmN9smJnYk1D0cgsP6K1ElCb8BCQk/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Ainslie's Sheep by Les Kossatz másik szemszögből</div>
-  </div>
-</div>    
-</div> 
-</div> 
-
-
-  <footer>
-    © 2025 Dr. Pelyhe Liza <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
-  </footer>
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1kVYLzRV1PSX5YT63AM4jPY970xOxewb0/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Ainslie's Sheep by Les Kossatz</div>
+    </div>
     
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1ykMUmN9smJnYk1D0cgsP6K1ElCb8BCQk/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Ainslie's Sheep by Les Kossatz másik szemszögből</div>
+    </div>
+</div>
+  
+
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 Dr. Pelyhe Liza • <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
+</footer>
+
 </body>
 </html>
-    
