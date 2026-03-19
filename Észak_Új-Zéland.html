@@ -1,239 +1,402 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8">
- 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="description" content="Új-Zéland északi szigete: személyes történetek, kalandok, fotók és élmények. Fedezd fel Új-Zéland északi szigetét az én szemszögemből.">
-	<meta name="keywords" content="Új-Zéland északi szigete, Új-Zéland, utazás, Auckland, Rotorua, Wai-O-Tapu">
-	<meta name="author" content="Pelyhe Liza">
-	<meta property="og:title" content="Új-Zéland északi szigete • Kalandok • Dr. Pelyhe Liza">
-	<meta property="og:description" content="Új-Zéland északi szigete: személyes történetek, kalandok, fotók és élmények. Fedezd fel Új-Zéland északi szigetét az én szemszögemből.">
-	<meta property="og:image" content="https://drive.google.com/uc?id=1M7w7ozmhRyXToDKxX6W_unAY5xINWUek">
-	<meta property="og:type" content="website">        
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Új-Zéland északi szigete: személyes történetek, kalandok, fotók és élmények.">
+  <meta name="keywords" content="Új-Zéland északi szigete, Új-Zéland, utazás, Auckland, Rotorua, Wai-O-Tapu">
+  <meta name="author" content="Pelyhe Liza">
+  <meta property="og:title" content="Új-Zéland északi szigete • Kalandok • Dr. Pelyhe Liza">
+  <meta property="og:description" content="Új-Zéland északi szigete: személyes történetek, kalandok, fotók és élmények.">
+  <meta property="og:image" content="https://drive.google.com/uc?id=16XGeScEO8sKkdgFV17C1hugFplPsnOCe">
+  <meta property="og:type" content="website">
+  <title>Új-Zéland északi szigete • Kalandok • Dr. Pelyhe Liza</title>
 
 <link rel="up" href="kalandok.html">
 <link rel="prev" href="kalandok.html">
 
-  <title>Új-Zéland északi szigete • Kalandok • Dr. Pelyhe Liza</title>
-  <link rel="stylesheet" href="orszag.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --primary: #0f4c75;
+  --accent: #3282b8;
+  --dark: #0a2540;
+  --light: #f8f9fa;
+  --gray: #6b7280;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  line-height: 1.7;
+  color: var(--dark);
+  background: var(--light);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 75vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c75 0%, #0a2540 100%);
+}
+
+.hero-bg-iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(1.1);
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+
+.hero-bg-iframe iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 900px;
+  padding: 0 30px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 15px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.hero-date {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  z-index: 10;
+  padding: 25px 30px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+
+/* CONTENT */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 30px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.story-text {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  max-width: 800px;
+  text-align:justify;
+
+}
+
+/* IMAGE GRID */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 50px 0;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.image-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.image-caption {
+  padding: 15px;
+  background: white;
+  font-size: 1rem;
+  color: var(--gray);
+  font-style: italic;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  nav a {
+    font-size: 0.95rem;
+  }
+  
+  .hero-content {
+    padding-top: 80px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
-	<!-- Google tag (gtag.js) -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZN25955BY"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-7ZN25955BY');
 </script>
 
-
 <body>
 
-<div class="header">
-  <div class="video-background">
-    <iframe 
-      src="https://drive.google.com/file/d/1M7w7ozmhRyXToDKxX6W_unAY5xINWUek/preview" 
-      allow="autoplay"
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
+<!-- HERO -->
+<section class="hero">
+  <nav>
+    <a href="index.html">Főoldal</a>
+    <a href="kalandok.html">Kalandok</a>
+    <a href="szakmai.html">Szakmai oldal</a>
+  </nav>
+  
+  <div class="hero-bg-iframe">
+    <iframe src="https://drive.google.com/file/d/16XGeScEO8sKkdgFV17C1hugFplPsnOCe/preview" allow="autoplay"></iframe>
   </div>
-  <div class="header-content">
-    <h1>Kalandok</h1>
-    <h2>Új-Zéland északi szigete</h2>
-    <nav>
-      <a href="index.html">Főoldal</a>
-      <a href="kalandok.html">Kalandok</a>
-      <a href="szakmai.html">Szakmai oldal</a>
-    </nav>
+  
+  <div class="hero-content">
+    <h1>Új-Zéland északi szigete</h1>
+    <p class="hero-date">Utazás dátuma: 2025</p> <!-- 2025. 10. 25 - 2025. 10. 27 -->
   </div>
-</div>
+</section>
+
+<!-- CONTENT -->
+<div class="container">
 
 
-    <h1 style="background-color: #f5f5f5;">Új-Zéland északi szigete</h1>
-    <div class="date">Utazás dátuma: 2025</div> <!-- 2025. 10. 25 - 2025. 10. 27 -->
- 
-  <h2 style="background-color: #f5f5f5;">Rotorua</h2>
-  <p>Új-Zéland déli szigetén Te Anau-ból indult a nap egy 2 és fél órás buszozással Queenstown-ig, majd egy majdnem 2 órás repülőút következett Aucklandig, és onnan még egy 3 és fél órás buszút Rotoruába.
+	  <!-- GOBUSZTÁN SECTION -->
+  <h2 class="section-title">Rotorua</h2>
+  <p class="story-text">
+    Új-Zéland déli szigetén Te Anau-ból indult a nap egy 2 és fél órás buszozással Queenstown-ig, majd egy majdnem 2 órás repülőút következett Aucklandig, és onnan még egy 3 és fél órás buszút Rotoruába.
       <a href="https://drpelyheliza.github.io/drpelyheliza/Dél_Új-Zéland_NyugatiPart.html" 
    target="_blank" 
    rel="Új-Zéland déli szigete – Nyugati part utazásom leírása">
    👉 Új-Zéland déli szigete – Nyugati part utazásomhoz kattints ide
 </a><br>
-Én kellőképpen megzuhantam az utazás végére és alig vártam, hogy a városban sétálgassak kicsikét. Másnap hajnalban még egy félmaratoni távot is futottam, csakhogy helyreálljon a világ rendje. Rotorua egy kedves kisváros geotermikus területekkel és a hozzájuk kapcsolódó kénes illattal. A Wai-O-Tape geotermikus parkban láttam a Lady-Knox gejzír szappannal történő beindítását (aki látott már "igazi" gejzírt, azt annyire ez a színház nem hatja meg), illetve az egyik séta útja mentén a pezsgő medencét, az ördög fürdőkádját és egyéb iszap és geotermikus medencéket A területet átlengte a rothadó tojásokhoz hasonló jellegzetes kénszag.<br>A vörösfenyő ősi erdőről és a lombkoronasétányról (Redwoods Treewalk) nincsen érdemi fotóm, de ott tényleg van értelme a lombkorona sétánynak (20 méter magasan). Voltam autentikus maori faluban is tipikus turistás show-n - színvonalas volt, finom vacsorával (a célnak megfelelt).   
- </p>
-
-  <div class="about-container">
+Én kellőképpen megzuhantam az utazás végére és alig vártam, hogy a városban sétálgassak kicsikét. Másnap hajnalban még egy félmaratoni távot is futottam, csakhogy helyreálljon a világ rendje. Rotorua egy kedves kisváros geotermikus területekkel és a hozzájuk kapcsolódó kénes illattal. A Wai-O-Tape geotermikus parkban láttam a Lady-Knox gejzír szappannal történő beindítását (aki látott már "igazi" gejzírt, azt annyire ez a színház nem hatja meg), illetve az egyik séta útja mentén a pezsgő medencét, az ördög fürdőkádját és egyéb iszap és geotermikus medencéket A területet átlengte a rothadó tojásokhoz hasonló jellegzetes kénszag.<br>A vörösfenyő ősi erdőről és a lombkoronasétányról (Redwoods Treewalk) nincsen érdemi fotóm, de ott tényleg van értelme a lombkorona sétánynak (20 méter magasan). Voltam autentikus maori faluban is tipikus turistás show-n - színvonalas volt, finom vacsorával (a célnak megfelelt).      
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1NaPoGSquSHLGjDacCu0KCkclX9xpPjQd/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Rotorua - kormányzati kert egyik szobra</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1NaPoGSquSHLGjDacCu0KCkclX9xpPjQd/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Rotorua - kormányzati kert egyik szobra</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1cx0pPoFwaBAy23Bs64WGMBLBeQdVwf_s/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Wai-O-Tapu geotermikus park - "pezsgő medencéje" (The Champagne Pool)</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1sugchEmKbOMC3wqLNgqXUg5tYW8KDBbb/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Wai-O-Tapu geotermikus park - "Az ördög fürdőkádja" (The Devil’s Bathtub)</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <h2 style="background-color: #f5f5f5;">Hobbiton</h2>
-
-
-  <div class="about-container">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1cx0pPoFwaBAy23Bs64WGMBLBeQdVwf_s/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Wai-O-Tapu geotermikus park - "pezsgő medencéje" (The Champagne Pool)</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1lLH3s74stlHmY-sZyrWVB0cfuQJal8a-/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Hobbiton környéke</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1gHKmKqSFeVQr8E7aeonTEgeNccAQSQnZ/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Hobbiton egyik háza</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1kvaHBZHrtKvXYNOqrjIlctY3Zofmwqtt/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Hobbiton egyik széle</div>
-  </div>
-</div>
-</div>
-
-</div>
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1sugchEmKbOMC3wqLNgqXUg5tYW8KDBbb/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Wai-O-Tapu geotermikus park - "Az ördög fürdőkádja" (The Devil’s Bathtub)</div>
+    </div>
+ </div>
 
 
-  <div class="about-container">
+
+
+  <!-- GOBUSZTÁN SECTION -->
+  <h2 class="section-title">Hobbiton</h2>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1lLH3s74stlHmY-sZyrWVB0cfuQJal8a-/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hobbiton környéke</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1-0DX1mFPbilPKbqzdjKv2sq3Wk6ByUYd/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Hobbit házas fotótéma</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1ol8GsSvec8vPlG4iDr5Y2_9w_gmugblg/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Hobbiton másik perspektívából</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/19amIxftCROhwtqVoTe9DTW0muhOooK5H/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Zsáklak, Hobbitfalva: Bilbó, majd később Zsákos Frodó lakhelye</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <div class="about-container">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1gHKmKqSFeVQr8E7aeonTEgeNccAQSQnZ/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hobbiton egyik háza</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1wI7cTSsqaNmKsa6O-qDZ-7-wRtr4x6Ow/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Hobbitonban ide lehetett bemenni</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1AlTkHzeKEgEgeDW7fh2K_bgrNt7cUrTI/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Hobbitonban ide is be lehetett menni (egyet lehetett csak választani)</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1syKQ91BT_FS85fXnPMrFIyWhQaKf-SdG/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Belépve egy hobbit lakba</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-  <div class="about-container">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1kvaHBZHrtKvXYNOqrjIlctY3Zofmwqtt/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hobbiton egyik széle</div>
+    </div>
     
-              <div class="column2">
 
-<div class="image-double">
-  <div class="image-frame">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1-0DX1mFPbilPKbqzdjKv2sq3Wk6ByUYd/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hobbit házas fotótéma</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1ol8GsSvec8vPlG4iDr5Y2_9w_gmugblg/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hobbiton másik perspektívából</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/19amIxftCROhwtqVoTe9DTW0muhOooK5H/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Zsáklak, Hobbitfalva: Bilbó, majd később Zsákos Frodó lakhelye</div>
+    </div>
 
-      <iframe src="https://drive.google.com/file/d/1wVxHtqV98DpQHMweznMn821NrydnUU2y/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Lehuppantam kicsikét egy hobbit lakban</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1WZ38ChFWjv5KcXUFjUzDx6JUCnMNO8ve/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Hobbitonban  - Old Mill</div>
-  </div>
-</div>
-</div>
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1wI7cTSsqaNmKsa6O-qDZ-7-wRtr4x6Ow/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hobbitonban ide lehetett bemenni</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1AlTkHzeKEgEgeDW7fh2K_bgrNt7cUrTI/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hobbitonban ide is be lehetett menni (egyet lehetett csak választani)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1syKQ91BT_FS85fXnPMrFIyWhQaKf-SdG/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Belépve egy hobbit lakba</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1wVxHtqV98DpQHMweznMn821NrydnUU2y/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Lehuppantam kicsikét egy hobbit lakban</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1WZ38ChFWjv5KcXUFjUzDx6JUCnMNO8ve/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hobbitonban  - Old Mill</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/12z6ZGeePKjLXBFaB9eiJMZYZYgTnK4Vv/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Próbáltam úgy fotózni hogy a munkagép ne lógjon bele a képbe</div>
+    </div>
 
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/12z6ZGeePKjLXBFaB9eiJMZYZYgTnK4Vv/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Próbáltam úgy fotózni hogy a munkagép ne lógjon bele a képbe</div>
-  </div>
-</div>
-</div>
 
-</div>
-
-
-  <h2 style="background-color: #f5f5f5;">Auckland és a Harbour Bridge</h2>
-  <p>Lelövöm a "poént": Sydney-ben van Harbour Bridge és felmentem rá.<a href="https://drpelyheliza.github.io/drpelyheliza/Sydney_AyersRock_BlueMountains_Canberra_Melbourne.html" 
+ </div>
+  
+  <!-- ABSHERON SECTION -->
+  <h2 class="section-title">Auckland és a Harbour Bridge</h2>
+  <p class="story-text">
+    Lelövöm a "poént": Sydney-ben van Harbour Bridge és felmentem rá.<a href="https://drpelyheliza.github.io/drpelyheliza/Sydney_AyersRock_BlueMountains_Canberra_Melbourne.html" 
    target="_blank" 
    rel="Ausztráliai utazásom leírása">
    👉 Sydney Harbour Bridge mászás képeiért kattints ide
@@ -249,116 +412,82 @@ Ha lemaradtál volna, hogy honnan indult az egész majdnem egy hónapos utazás:
    rel="Tasmánia-i utazásom leírása">
    👉 Tasmánia-i utazásomhoz kattints ide
 </a>   
- </p>
-
-  <div class="about-container">
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/19f-g8DQ10T9tnldSDIESjS10hEohUVU7/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Auckland - Harbour Bridge teteje felé</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/19f-g8DQ10T9tnldSDIESjS10hEohUVU7/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Auckland - Harbour Bridge teteje felé</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/16XGeScEO8sKkdgFV17C1hugFplPsnOCe/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Auckland - Harbour Bridge - tetején</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1aYi9UoqoFVYvhlbFkNivCnjPlXJqsvKe/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Auckland - Harbour Bridge teteje városi kilátással</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <div class="about-container">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/16XGeScEO8sKkdgFV17C1hugFplPsnOCe/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Auckland - Harbour Bridge - tetején</div>
+    </div>
+ 
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1aYi9UoqoFVYvhlbFkNivCnjPlXJqsvKe/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Auckland - Harbour Bridge teteje városi kilátással</div>
+    </div>
+ 
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1Xf6D0ascpMO6-XFVSrfayw_AfNOnnbR7/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Auckland hajnalban</div>
+    </div>
     
-              <div class="column2">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1covgkgRfL_2hI6kXaKN81D7L6Nqb6EhF/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Auckland-i napfelkelte</div>
+    </div>
+ 
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1ayi-bxZXeXnKKERXdVD0uPIwdSmTeZck/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Auckland 220m magasból</div>
+    </div>
 
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1Xf6D0ascpMO6-XFVSrfayw_AfNOnnbR7/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Auckland hajnalban</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1covgkgRfL_2hI6kXaKN81D7L6Nqb6EhF/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Auckland-i napfelkelte</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1ayi-bxZXeXnKKERXdVD0uPIwdSmTeZck/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Auckland 220m magasból</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <div class="about-container">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1CjzMxa67mQ8JY65fZpMFpK7LmDitcoOo/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Észak Új-Zéland nyugati part - Muriwai Beach szula telepe (részlet)</div>
+    </div>
     
-              <div class="column2">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/18rpDX8XTnYKJKYcMcOEyh-ROgdga4Xj-/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Észak Új-Zéland nyugati part - Muriwai Beach szula telepe (másik részlet)</div>
+    </div>
+ 
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1_MaGuRkVz3AvTQsuW7OVs9zZn1kelXA9/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Észak Új-Zéland nyugati part - "derékszögü" fa</div>
+    </div>
 
-<div class="image-double">
-  <div class="image-frame">
+ </div>
+ 
 
-      <iframe src="https://drive.google.com/file/d/1CjzMxa67mQ8JY65fZpMFpK7LmDitcoOo/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Észak Új-Zéland nyugati part - Muriwai Beach szula telepe (részlet)</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/18rpDX8XTnYKJKYcMcOEyh-ROgdga4Xj-/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Észak Új-Zéland nyugati part - Muriwai Beach szula telepe (másik részlet)</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1_MaGuRkVz3AvTQsuW7OVs9zZn1kelXA9/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Észak Új-Zéland nyugati part - "derékszögü" fa</div>
-  </div>
-</div>
-</div>
 
 </div>
 
+<!-- FOOTER -->
+<footer>
+  © 2025 Dr. Pelyhe Liza • <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
+</footer>
 
-
-
-
-  <footer>
-	<div class="footer-p">
-    © 2025 Dr. Pelyhe Liza <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
-	</div>
-  </footer>
-    
 </body>
 </html>
-    
