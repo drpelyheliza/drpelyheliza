@@ -1,424 +1,524 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8">
- 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="description" content="Új-Zéland déli szigete – Nyugati part: személyes történetek, kalandok, fotók és élmények. Fedezd fel Új-Zéland déli szigetének nyugati partját az én szemszögemből.">
-	<meta name="keywords" content="Új-Zéland déli szigete, Új-Zéland, utazás, Fox gleccser, Mount Aspiring Nemzeti Park, Lake Matheson, Queenstown, Milford Sound, Te Anau">
-	<meta name="author" content="Pelyhe Liza">
-	<meta property="og:title" content="Új-Zéland déli szigete – Nyugati part • Kalandok • Dr. Pelyhe Liza">
-	<meta property="og:description" content="Új-Zéland déli szigete – Nyugati part: személyes történetek, kalandok, fotók és élmények. Fedezd fel Új-Zéland déli szigetének nyugati partját az én szemszögemből.">
-	<meta property="og:image" content="https://drive.google.com/uc?id=1M7w7ozmhRyXToDKxX6W_unAY5xINWUek">
-	<meta property="og:type" content="website">        
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Új-Zéland déli szigete – Nyugati part: személyes történetek, kalandok, fotók és élmények.">
+  <meta name="keywords" content="Új-Zéland déli szigete, Új-Zéland, utazás, Fox gleccser, Mount Aspiring Nemzeti Park, Lake Matheson, Queenstown, Milford Sound, Te Anau">
+  <meta name="author" content="Pelyhe Liza">
+  <meta property="og:title" content="Új-Zéland déli szigete – Nyugati part • Kalandok • Dr. Pelyhe Liza">
+  <meta property="og:description" content="Új-Zéland déli szigete – Nyugati part: személyes történetek, kalandok, fotók és élmények.">
+  <meta property="og:image" content="https://drive.google.com/uc?id=1tyA0sOikYpCda-1Ee2CxGSgFOp8oraGX">
+  <meta property="og:type" content="website">
+  <title>Új-Zéland déli szigete – Nyugati part • Kalandok • Dr. Pelyhe Liza</title>
 
 <link rel="up" href="kalandok.html">
 <link rel="prev" href="kalandok.html">
 
-  <title>Új-Zéland déli szigete – Nyugati part • Kalandok • Dr. Pelyhe Liza</title>
-  <link rel="stylesheet" href="orszag.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --primary: #0f4c75;
+  --accent: #3282b8;
+  --dark: #0a2540;
+  --light: #f8f9fa;
+  --gray: #6b7280;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  line-height: 1.7;
+  color: var(--dark);
+  background: var(--light);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 75vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c75 0%, #0a2540 100%);
+}
+
+.hero-bg-iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(1.1);
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+
+.hero-bg-iframe iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 900px;
+  padding: 0 30px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 15px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.hero-date {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  z-index: 10;
+  padding: 25px 30px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+
+/* CONTENT */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 30px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.story-text {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  max-width: 800px;
+  text-align:justify;
+
+}
+
+/* IMAGE GRID */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 50px 0;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.image-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.image-caption {
+  padding: 15px;
+  background: white;
+  font-size: 1rem;
+  color: var(--gray);
+  font-style: italic;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  nav a {
+    font-size: 0.95rem;
+  }
+  
+  .hero-content {
+    padding-top: 80px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
-	<!-- Google tag (gtag.js) -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZN25955BY"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-7ZN25955BY');
 </script>
 
-
 <body>
 
-<div class="header">
-  <div class="video-background">
-    <iframe 
-      src="https://drive.google.com/file/d/1M7w7ozmhRyXToDKxX6W_unAY5xINWUek/preview" 
-      allow="autoplay"
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
+<!-- HERO -->
+<section class="hero">
+  <nav>
+    <a href="index.html">Főoldal</a>
+    <a href="kalandok.html">Kalandok</a>
+    <a href="szakmai.html">Szakmai oldal</a>
+  </nav>
+  
+  <div class="hero-bg-iframe">
+    <iframe src="https://drive.google.com/file/d/1tyA0sOikYpCda-1Ee2CxGSgFOp8oraGX/preview" allow="autoplay"></iframe>
   </div>
-  <div class="header-content">
-    <h1>Kalandok</h1>
-    <h2>Új-Zéland déli szigete – Nyugati part</h2>
-    <nav>
-      <a href="index.html">Főoldal</a>
-      <a href="kalandok.html">Kalandok</a>
-      <a href="szakmai.html">Szakmai oldal</a>
-    </nav>
+  
+  <div class="hero-content">
+    <h1>Új-Zéland déli szigete – Nyugati part</h1>
+    <p class="hero-date">Utazás dátuma: 2025</p> <!-- 2025. 10. 25 - 2025. 10. 27 -->
   </div>
-</div>
+</section>
 
-
-    <h1 style="background-color: #f5f5f5;">Új-Zéland déli szigete – Nyugati part jó sok buszozással</h1>
-    <div class="date">Utazás dátuma: 2025</div> <!-- 2025. 10. 25 - 2025. 10. 27 -->
- 
-<h2 style="background-color: #f5f5f5;">Előzmények: 7 nap Új-Zéland déli szigetén</h2>
-
-  <div class="about-container">
-    <div class="column">      
-      <p>Melbourne-ből érkeztünk meg Christchurchbe és onnan azonnal indultunk is Kaikoura-ba.
+<!-- CONTENT -->
+<div class="container">
+  
+  <!-- BAKU SECTION -->
+  <h2 class="section-title">Előzmények: 7 nap Új-Zéland déli szigetén</h2>
+  <p class="story-text">
+Melbourne-ből érkeztünk meg Christchurchbe és onnan azonnal indultunk is Kaikoura-ba.
       (<a href="https://drpelyheliza.github.io/drpelyheliza/Sydney_AyersRock_BlueMountains_Canberra_Melbourne.html" 
    target="_blank" 
    rel="Ausztráliai utazásom leírása">
    👉 Ausztráliai utazásomhoz kattints ide
 </a>)
 <br>
-7 nap leforgása alatt eljutottam
-      <ul style="list-style:none; padding:0; margin:0;">
-        <li>- Blenheim-be,</li>
-        <li>- onnnan Westport-ba keresztül a szigeten a nyugati partra,
-
-      <a href="https://drpelyheliza.github.io/drpelyheliza/Dél_Új-Zéland_KeletiPart.html" 
-   target="_blank" 
-   rel="Dél Új-Zéland Keleti parti utazásom leírása">
-   👉 Dél Új-Zéland Keleti parti utazásomhoz kattints ide
-</a>
-
-</li> 
-        <li>- onnan a Fox gleccserhez,</li>
-        <li>- majd Queenstown-ba,</li>
-        <li>- ahonnan a Milford Sound fjord-ot éritve érkeztem meg Te Anau-ba,</li>
-        <li>hogy onnan visszaérve Queenstown-ba repülhessek át Új-Zéland északi szigetére. </li>
-      </ul><br>
+7 nap leforgása alatt eljutottam <b>Blenheim</b>-be, onnnan <b>Westport</b>-ba keresztül a szigeten a nyugati partra, onnan a <b>Fox gleccser</b>hez, majd <b>Queenstown</b>-ba, ahonnan a <b>Milford Sound</b> fjord-ot éritve érkeztem meg <b>Te Anau</b>-ba, hogy onnan visszaérve <b>Queenstown</b>-ba repülhessek át Új-Zéland északi szigetére.
 
       <a href="https://drpelyheliza.github.io/drpelyheliza/Észak_Új-Zéland.html" 
    target="_blank" 
    rel="Észak Új-Zélandi utazásom leírása">
    👉 Észak Új-Zélandi utazásomhoz kattints ide
 </a>
-</p>
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1YLIigmUcvgL3WuAkrUmOeELnJQhMXu-B/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Új Zéland déli szigete 7 napban</div>
+    </div>
+  </div>
+  
+  <!-- GOBUSZTÁN SECTION -->
+  <h2 class="section-title">Matheson-tó (Te Wāhipounamu Southwest UNESCO World Heritage Area)</h2>
+  <p class="story-text">
+    A nyugati parti Westportból Hokikitikán keresztül egy 8 órás buszúttal sikerült eljutni Fox faluba. Nekem egy 8 órás bezárt, ülős utazás után mozogni kell, bárhol is vagyok és bármilyen az időjárás, szóval a szállás elfoglalása után 16:45kor már a térképet bújtam, hogy mi legyen a cél. Rá is böktem a Matheson-tó-ra és a tó körüli sétaútra. Beszállás 4km-re van, tó körüli út meg majd kiderül mennyi - csoki, víz, esőkabát, fejlámpa és 17:00kor neki is indultam.<br>A beszállásnál a tábla egy másik tavat és egy másik útvonalat is jelölt 3km-rel odébbra, de sötétedésig nem értem volna vissza, ha mindkettő útvonalat legyalogolom, szóval maradtam az eredeti tervnél és élveztem, hogy egyedül sétálgatok az esőerdőben és lehuppanva egy-egy stégre élvezem a táj szépségét. A Tükör-szigeten (Reflection Island) egész sokáig elidőztem. A tóban tükröződött az Aorakinak (Cook-hegy) és a Tasmán-hegy és a tó körüli esőerdő. Itt csípet meg először a sandfly (homoki légy - nálam helyi kötsög muslica). Ők nem szúrnak mint nálunk a szúnyog, hanem kés alakú szájukkal felvágják a bőrt, majd felnyalják a keletkező vértócsát. Közben kapunk egy kis véralvadásgátlót tőlük (hisztamint meg agglutinint). A vágás helye baromira viszket és ha megvakarja az ember, akkor vakarhatja hetekig, szóval ha már megcsípett, akkor a következő 30-60 percet vakarás nélkül kell kibírni és utána megszabadulunk a "kíntól". A séta hátralevő részében erősen a tájra koncentráltam és nem a kézfejemre.   
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1fD7s806Y0Tj8clZNycSgQpFeN-xBkX0z/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Úton a Matheson-tó felé</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1_nbm7HOOOSK8YCzXgeOuQcZa-RpoOgQU/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Clearwater folyó függőhídja (Matheson-tó felé vezető út)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/14D9YsCrbkz4AqpXiw3JFSUUxBqjSXWZi/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Az ösvény a Matheson-tó felé néhol magas rimu- és kahikatea-fákkal övezve</div>
+    </div>
+    
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1GfR0Bbs9-8JxAK_ofo3yO6BpTpWWeBFc/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Az ösvényen a Matheson-tó felé néhol magas rimu- és kahikatea-fák között</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1gzih7xUig5ztclIrXXq9BTtii-9XOWyh/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">A Matheson-tó szélcsendben</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1_QuyiNmrzLyaRw2ZcsRRtuPCKVMoFGc2/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">A Matheson-tó vize szélcsendes napon ideális fényvisszaverő felület</div>
     </div>
 
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1YLIigmUcvgL3WuAkrUmOeELnJQhMXu-B/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Új Zéland déli szigete 7 napban</div>
-  </div>
-</div>
-</div>
-
-  </div>
-
-  <h2 style="background-color: #f5f5f5;">Matheson-tó (Te Wāhipounamu Southwest UNESCO World Heritage Area)</h2>
-  <p>A nyugati parti Westportból Hokikitikán keresztül egy 8 órás buszúttal sikerült eljutni Fox faluba. Nekem egy 8 órás bezárt, ülős utazás után mozogni kell, bárhol is vagyok és bármilyen az időjárás, szóval a szállás elfoglalása után 16:45kor már a térképet bújtam, hogy mi legyen a cél. Rá is böktem a Matheson-tó-ra és a tó körüli sétaútra. Beszállás 4km-re van, tó körüli út meg majd kiderül mennyi - csoki, víz, esőkabát, fejlámpa és 17:00kor neki is indultam.<br>A beszállásnál a tábla egy másik tavat és egy másik útvonalat is jelölt 3km-rel odébbra, de sötétedésig nem értem volna vissza, ha mindkettő útvonalat legyalogolom, szóval maradtam az eredeti tervnél és élveztem, hogy egyedül sétálgatok az esőerdőben és lehuppanva egy-egy stégre élvezem a táj szépségét. A Tükör-szigeten (Reflection Island) egész sokáig elidőztem. A tóban tükröződött az Aorakinak (Cook-hegy) és a Tasmán-hegy és a tó körüli esőerdő. Itt csípet meg először a sandfly (homoki légy - nálam helyi kötsög muslica). Ők nem szúrnak mint nálunk a szúnyog, hanem kés alakú szájukkal felvágják a bőrt, majd felnyalják a keletkező vértócsát. Közben kapunk egy kis véralvadásgátlót tőlük (hisztamint meg agglutinint). A vágás helye baromira viszket és ha megvakarja az ember, akkor vakarhatja hetekig, szóval ha már megcsípett, akkor a következő 30-60 percet vakarás nélkül kell kibírni és utána megszabadulunk a "kíntól". A séta hátralevő részében erősen a tájra koncentráltam és nem a kézfejemre.   
-  </p>
-
-  <div class="about-container">
-    
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1fD7s806Y0Tj8clZNycSgQpFeN-xBkX0z/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Úton a Matheson-tó felé</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1_nbm7HOOOSK8YCzXgeOuQcZa-RpoOgQU/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Clearwater folyó függőhídja (Matheson-tó felé vezető út)</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/14D9YsCrbkz4AqpXiw3JFSUUxBqjSXWZi/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Az ösvény a Matheson-tó felé néhol magas rimu- és kahikatea-fákkal övezve</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <div class="about-container">
-    
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1GfR0Bbs9-8JxAK_ofo3yO6BpTpWWeBFc/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Az ösvényen a Matheson-tó felé néhol magas rimu- és kahikatea-fák között</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1gzih7xUig5ztclIrXXq9BTtii-9XOWyh/preview" allow="autoplay"></iframe>
-    <div class="image-caption">A Matheson-tó szélcsendben</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1_QuyiNmrzLyaRw2ZcsRRtuPCKVMoFGc2/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">A Matheson-tó vize szélcsendes napon ideális fényvisszaverő felület</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <h2 style="background-color: #f5f5f5;">Fox gleccser</h2>
-  <p>Időszűke miatt (nem férhet bele minden is a majdnem 1 hónapos utazásba) helikopterezős gleccser nézés volt a program Előtte azért hajnalban elindultam egy fejlámpás esőerdő sétára. Oposszummal nem találkoztam és szerencsére semmilyen állattal sem kereszteztük egymás útját. Néha lekapcsoltam a lámpát és mozdulatlanul figyeltem a hangokat, neszeket - gyalogolni nem akartam, mert bokatörő mutatvény lett volna a sötétben. Utólag mondta a helyi guide, hogy ezzel a fejlámpás sétámmal kinyírtam egy halom bogarat, akik nem tudnak fényben létezni, legközelebb vörös fénnyel járkáljak. (Bocsánat!) A Fox gleccser helikopteres út az időjárás miatt kérdésessé vált. Az időjárás végül egy rövidített utazást engedett meg a Fox gleccseren való leszállással.<br>Ha ide nem is túra keretén belül, de az Ausztrál kontinens legmagasabb pontjára (Mount Kosciuszko - 2228m) kalandosan, gyalog jutottam fel.
+ </div>
+  
+  <!-- ABSHERON SECTION -->
+  <h2 class="section-title">Fox gleccser</h2>
+  <p class="story-text">
+    Időszűke miatt (nem férhet bele minden is a majdnem 1 hónapos utazásba) helikopterezős gleccser nézés volt a program Előtte azért hajnalban elindultam egy fejlámpás esőerdő sétára. Oposszummal nem találkoztam és szerencsére semmilyen állattal sem kereszteztük egymás útját. Néha lekapcsoltam a lámpát és mozdulatlanul figyeltem a hangokat, neszeket - gyalogolni nem akartam, mert bokatörő mutatvény lett volna a sötétben. Utólag mondta a helyi guide, hogy ezzel a fejlámpás sétámmal kinyírtam egy halom bogarat, akik nem tudnak fényben létezni, legközelebb vörös fénnyel járkáljak. (Bocsánat!) A Fox gleccser helikopteres út az időjárás miatt kérdésessé vált. Az időjárás végül egy rövidített utazást engedett meg a Fox gleccseren való leszállással.<br>Ha ide nem is túra keretén belül, de az Ausztrál kontinens legmagasabb pontjára (Mount Kosciuszko - 2228m) kalandosan, gyalog jutottam fel.
 	  <a href="https://drpelyheliza.github.io/drpelyheliza/Mount_Kosciuszko.html" 
    target="_blank" 
    rel="Mount Kosciuszko túra">
    👉 Mount Kosciuszko túrámhoz kattints ide
 </a>
- </p>
-
-  <div class="about-container">
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1J2Q3T3qXt63GqwCGkl0OVCe7IBNS6080/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Fox gleccser madár távlatból</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1J2Q3T3qXt63GqwCGkl0OVCe7IBNS6080/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Fox gleccser madár távlatból</div>
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1Y3o8T3RnmJQgq_krrI2nKxxUQUqFxODk/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Fox gleccseren állva</div>
+    </div>
+ 
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1cs1IqM8vnqPa-A5AWwjyWo-lSLTRlYjs/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Liza a Fox gleccseren</div>
+    </div>
   </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1Y3o8T3RnmJQgq_krrI2nKxxUQUqFxODk/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Fox gleccseren állva</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1cs1IqM8vnqPa-A5AWwjyWo-lSLTRlYjs/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Liza a Fox gleccseren</div>
-  </div>
-</div>
-</div>
-
-</div>
+ 
 
 
-  <h2 style="background-color: #f5f5f5;">Queenstown</h2>
-  <p>5-8 órás buszút vezetett Fox faluból Qeenstown-ba rövidebb-hosszabb megállókkal tarkítva. Naplemente előtt el is indultam felfedezni a környéket a Kawarau folyó mentén. Aznap nem jutottam el a 4km-re levő Shotover folyó Delta-hoz, mert nem akartam naplemente után is egyedül sétálni, úgyhogy hajnalban indultam neki újra felfedezni a Kawaru és a Shotover folyó összefolyásának vidékét.<br>Elmentem jet boat-olni, ha már egy Új-Zélandi mérnök fejlesztette ki ezeknek a modern változatát, meg áthajóztam egy 110 éves gőzhajóval egy farmra (bementem a gépházba is) és mint a képekről is látszik, leugrottam a 43m magas Kawaru hídról. Ez annyira nem volt betervezett program, hogy az ugrás előtt másfél órával még én sem tudtam, hogy fogok ugrani. Érdekesség: 1988. november 12-én nyílt meg a világ első kereskedelmi célú bungee jumping helyszíne Queenstown közelében, Új-Zélandon (a tökéletes helyszín – a történelmi Kawarau függőhíd). És ha már ott voltam, akkor életem első bungee jumping ugrását ennek a helynek szenteltem. Az ugrás után kaptam egy pólót és onnantól kezdve, amikor rajtam volt random helyeken szólítottak le emberek 1-2 mondat erejéig. 
- </p>
-
-  <div class="about-container">
+  <!-- GOBUSZTÁN SECTION -->
+  <h2 class="section-title">Queenstown</h2>
+  <p class="story-text">
+    5-8 órás buszút vezetett Fox faluból Qeenstown-ba rövidebb-hosszabb megállókkal tarkítva. Naplemente előtt el is indultam felfedezni a környéket a Kawarau folyó mentén. Aznap nem jutottam el a 4km-re levő Shotover folyó Delta-hoz, mert nem akartam naplemente után is egyedül sétálni, úgyhogy hajnalban indultam neki újra felfedezni a Kawaru és a Shotover folyó összefolyásának vidékét.<br>Elmentem jet boat-olni, ha már egy Új-Zélandi mérnök fejlesztette ki ezeknek a modern változatát, meg áthajóztam egy 110 éves gőzhajóval egy farmra (bementem a gépházba is) és mint a képekről is látszik, leugrottam a 43m magas Kawaru hídról. Ez annyira nem volt betervezett program, hogy az ugrás előtt másfél órával még én sem tudtam, hogy fogok ugrani. Érdekesség: 1988. november 12-én nyílt meg a világ első kereskedelmi célú bungee jumping helyszíne Queenstown közelében, Új-Zélandon (a tökéletes helyszín – a történelmi Kawarau függőhíd). És ha már ott voltam, akkor életem első bungee jumping ugrását ennek a helynek szenteltem. Az ugrás után kaptam egy pólót és onnantól kezdve, amikor rajtam volt random helyeken szólítottak le emberek 1-2 mondat erejéig.  
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1o1w-Q0Fc5IQkV40b0kehwiWLu6WuGg_j/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Kawarau folyó látképe a Shotover folyó Delta irányába</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1o1w-Q0Fc5IQkV40b0kehwiWLu6WuGg_j/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Kawarau folyó látképe a Shotover folyó Delta irányába</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1AeoxZdfBTZYp7M52xtQKaGgyjizoNljl/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Kawarau folyó látképe naplemente előtt</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1s80RdIOe-9IfTwcl5vf6iOqPEW07Eet4/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Shotover folyó Delta</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <div class="about-container">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1AeoxZdfBTZYp7M52xtQKaGgyjizoNljl/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Kawarau folyó látképe naplemente előtt</div>
+    </div>
     
-              <div class="column2">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1s80RdIOe-9IfTwcl5vf6iOqPEW07Eet4/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Shotover folyó Delta</div>
+    </div>
+    
 
-<div class="image-double">
-  <div class="image-frame">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1azhypf532FgLy5zk1Uo8HXCxBXogU77Z/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Kawaru Bridge Bungy 43m</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1Z51CEGRDfgItWgxtfiKonkuCpRR0p_Od/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Esés közben - Kawaru Bridge Bungy 43m</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1wUneXrckQC5U9zNfpPzOigfJWUWUTdrE/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">A felszín az ugró szemszögéből - Kawaru Bridge Bungy 43m</div>
+    </div>
 
-      <iframe src="https://drive.google.com/file/d/1azhypf532FgLy5zk1Uo8HXCxBXogU77Z/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Kawaru Bridge Bungy 43m</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1Z51CEGRDfgItWgxtfiKonkuCpRR0p_Od/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Esés közben - Kawaru Bridge Bungy 43m</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1wUneXrckQC5U9zNfpPzOigfJWUWUTdrE/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">A felszín az ugró szemszögéből - Kawaru Bridge Bungy 43m</div>
-  </div>
-</div>
-</div>
-
-</div>
+ </div>
 
 
-  <h2 style="background-color: #f5f5f5;">Milford Road - Milford Sound</h2>
-  <p>9 órát töltöttem a buszon miközben gyönyörű tájakon haladtunk át és áltunk meg sétálgatni a Világörökség részét képező Fiorland Nemzeti Parkban a Milford Road mentén, hogy végül elérjük Milford Sound fjordját. Hajókáztam egyet a hatalmas sziklafalak, vízesések között. A táj ködbe burkolózott és bármikor megjelenhetett volna Stephen King vagy Lovecraft bármelyik teremtménye élükön Cthulhu-val (a végső borzalom és gonosz megtestesítője).<br>Az egyik vízesés alatt volt alkalmam tesztelni a ruhám vízállóságát, ugyanis a hajó behajtott az egyik vízesés alá. A legenda szerint, aki a víz alá áll, megfiatalodik. Nehogymár ne álljak a vízesés alá, mégha nincs is nyári meleg. Egy sima mezei nadrág volt rajtam, amiről tudtam, hogy nem fogja bírni a vizet, minden másom hibátlanul szárazon tartott. A buszba visszaérve kikaptam a csomag legtetején levő nadrágomat és abban utaztam tovább - ez egy rövid pizsamanadrág volt.<br>      
+  <!-- GOBUSZTÁN SECTION -->
+  <h2 class="section-title">Milford Road - Milford Sound</h2>
+  <p class="story-text">
+    9 órát töltöttem a buszon miközben gyönyörű tájakon haladtunk át és áltunk meg sétálgatni a Világörökség részét képező Fiorland Nemzeti Parkban a Milford Road mentén, hogy végül elérjük Milford Sound fjordját. Hajókáztam egyet a hatalmas sziklafalak, vízesések között. A táj ködbe burkolózott és bármikor megjelenhetett volna Stephen King vagy Lovecraft bármelyik teremtménye élükön Cthulhu-val (a végső borzalom és gonosz megtestesítője).<br>Az egyik vízesés alatt volt alkalmam tesztelni a ruhám vízállóságát, ugyanis a hajó behajtott az egyik vízesés alá. A legenda szerint, aki a víz alá áll, megfiatalodik. Nehogymár ne álljak a vízesés alá, mégha nincs is nyári meleg. Egy sima mezei nadrág volt rajtam, amiről tudtam, hogy nem fogja bírni a vizet, minden másom hibátlanul szárazon tartott. A buszba visszaérve kikaptam a csomag legtetején levő nadrágomat és abban utaztam tovább - ez egy rövid pizsamanadrág volt.<br>      
 Másnap repülőre szálltam és átmentem Új-Zéland északi szigetére.
       <a href="https://drpelyheliza.github.io/drpelyheliza/Észak_Új-Zéland.html" 
    target="_blank" 
    rel="Észak Új-Zélandi utazásom leírása">
    👉 Észak Új-Zélandi utazásomhoz kattints ide
-</a>  
-
-</p>
-
-  <div class="about-container">
+</a> 
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1xg4aPAYRQizIBh-Lgm5wmfx20mxp3jEa/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Milford Road látnivalóinak térképe</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1xg4aPAYRQizIBh-Lgm5wmfx20mxp3jEa/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Milford Road látnivalóinak térképe</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/11u4ttFJAHd668e33Ph4e3RRoDQ-kccxg/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Tükör-tó - az alján ki tudja hány éves fatörzsekkel</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1j2UT58QrTE2zrJevDoKxn7CrKNCXjBKX/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Lake Gunn</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <div class="about-container">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/11u4ttFJAHd668e33Ph4e3RRoDQ-kccxg/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Tükör-tó - az alján ki tudja hány éves fatörzsekkel</div>
+    </div>
     
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1iGBfudYUNm8h_5YkaBU1uFRYSzC6-siR/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Intelligens és kíváncsi Kea papagáj</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1nnS4R3b7-vwzDwIeUaEzvt053FZWrjU6/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Esőerdő a Milford Road mentén</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1S25Ti7lfuAUN8U76oNfWc4FjA4UJODCu/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Amikor annyira zöld a táj, hogy a telefon nem tudja befogni a zöld összes árnyalatát</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <div class="about-container">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1j2UT58QrTE2zrJevDoKxn7CrKNCXjBKX/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Lake Gunn</div>
+    </div>
     
-              <div class="column2">
 
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1tyA0sOikYpCda-1Ee2CxGSgFOp8oraGX/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Milford Sound "kapuja"</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1C_InQUxOOTvPyhxujZL1Izm1xNZUwpoF/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Milford Sound vízesései</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1-LKf2ispOaM0AiPvAoc5u0ybFhO5GSty/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Milford Sound esőben</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-  <footer>
-	<div class="footer-p">
-    © 2025 Dr. Pelyhe Liza <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
-	</div>
-  </footer>
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1iGBfudYUNm8h_5YkaBU1uFRYSzC6-siR/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Intelligens és kíváncsi Kea papagáj</div>
+    </div>
     
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1nnS4R3b7-vwzDwIeUaEzvt053FZWrjU6/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Esőerdő a Milford Road mentén</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1S25Ti7lfuAUN8U76oNfWc4FjA4UJODCu/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Amikor annyira zöld a táj, hogy a telefon nem tudja befogni a zöld összes árnyalatát</div>
+    </div>
+
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1tyA0sOikYpCda-1Ee2CxGSgFOp8oraGX/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Milford Sound "kapuja"</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1C_InQUxOOTvPyhxujZL1Izm1xNZUwpoF/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Milford Sound vízesései</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1-LKf2ispOaM0AiPvAoc5u0ybFhO5GSty/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Milford Sound esőben</div>
+    </div>
+
+
+ </div>
+
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 Dr. Pelyhe Liza • <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
+</footer>
+
 </body>
 </html>
-    
-    
-
-    
- 
-
-
-
-
