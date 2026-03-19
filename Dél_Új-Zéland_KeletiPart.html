@@ -1,177 +1,351 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 <head>
   <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<meta name="description" content="Új-Zéland déli szigete – Keleti part és szigetátkelés: személyes történetek, kalandok, fotók és élmények. Fedezd fel Új-Zéland déli szigetének keleti partját és a szigetátkelést a nyugati partra az én szemszögemből.">
-	<meta name="keywords" content="Új-Zéland déli szigete, Új-Zéland, utazás, Kaikoura, Blenheim, Westport">
-	<meta name="author" content="Pelyhe Liza">
-	<meta property="og:title" content="Új-Zéland déli szigete – Keleti part és szigetátkelés • Kalandok • Dr. Pelyhe Liza">
-	<meta property="og:description" content="Új-Zéland déli szigete – Keleti part és szigetátkelés: személyes történetek, kalandok, fotók és élmények. Fedezd fel Új-Zéland déli szigetének keleti partját és a szigetátkelést a nyugati partra az én szemszögemből.">
-	<meta property="og:image" content="https://drive.google.com/uc?id=1M7w7ozmhRyXToDKxX6W_unAY5xINWUek">
-	<meta property="og:type" content="website">        
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Új-Zéland déli szigete – Keleti part és szigetátkelés: személyes történetek, kalandok, fotók és élmények.">
+  <meta name="keywords" content="Új-Zéland déli szigete, Új-Zéland, utazás, Kaikoura, Blenheim, Westport, utazás">
+  <meta name="author" content="Pelyhe Liza">
+  <meta property="og:title" content="Új-Zéland déli szigete – Keleti part és szigetátkelés • Kalandok • Dr. Pelyhe Liza">
+  <meta property="og:description" content="Új-Zéland déli szigete – Keleti part és szigetátkelés: személyes történetek, kalandok, fotók és élmények.">
+  <meta property="og:image" content="https://drive.google.com/uc?id=1zJgtMdu0QLPAiXdglSza-ww_luvxEHK2">
+  <meta property="og:type" content="website">
+  <title>Új-Zéland déli szigete – Keleti part és szigetátkelés • Kalandok • Dr. Pelyhe Liza</title>
 
 <link rel="up" href="kalandok.html">
 <link rel="prev" href="kalandok.html">
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
-  <title>Új-Zéland déli szigete – Keleti part és szigetátkelés • Kalandok • Dr. Pelyhe Liza</title>
-  <link rel="stylesheet" href="orszag.css">
+:root {
+  --primary: #0f4c75;
+  --accent: #3282b8;
+  --dark: #0a2540;
+  --light: #f8f9fa;
+  --gray: #6b7280;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  line-height: 1.7;
+  color: var(--dark);
+  background: var(--light);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 75vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c75 0%, #0a2540 100%);
+}
+
+.hero-bg-iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(1.1);
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+
+.hero-bg-iframe iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 900px;
+  padding: 0 30px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 15px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.hero-date {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  z-index: 10;
+  padding: 25px 30px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+
+/* CONTENT */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 30px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.story-text {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  max-width: 800px;
+  text-align:justify;
+
+}
+
+/* IMAGE GRID */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 50px 0;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.image-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.image-caption {
+  padding: 15px;
+  background: white;
+  font-size: 1rem;
+  color: var(--gray);
+  font-style: italic;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  nav a {
+    font-size: 0.95rem;
+  }
+  
+  .hero-content {
+    padding-top: 80px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
-	<!-- Google tag (gtag.js) -->
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZN25955BY"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-7ZN25955BY');
 </script>
 
-
 <body>
 
-<div class="header">
-  <div class="video-background">
-    <iframe 
-      src="https://drive.google.com/file/d/1M7w7ozmhRyXToDKxX6W_unAY5xINWUek/preview" 
-      allow="autoplay"
-      frameborder="0"
-      allowfullscreen>
-    </iframe>
+<!-- HERO -->
+<section class="hero">
+  <nav>
+    <a href="index.html">Főoldal</a>
+    <a href="kalandok.html">Kalandok</a>
+    <a href="szakmai.html">Szakmai oldal</a>
+  </nav>
+  
+  <div class="hero-bg-iframe">
+    <iframe src="https://drive.google.com/file/d/1zJgtMdu0QLPAiXdglSza-ww_luvxEHK2/preview" allow="autoplay"></iframe>
   </div>
-  <div class="header-content">
-    <h1>Kalandok</h1>
-    <h2>Új-Zéland déli szigete – Keleti part és szigetátkelés</h2>
-    <nav>
-      <a href="index.html">Főoldal</a>
-      <a href="kalandok.html">Kalandok</a>
-      <a href="szakmai.html">Szakmai oldal</a>
-    </nav>
+  
+  <div class="hero-content">
+    <h1>Új-Zéland déli szigete – Keleti part és szigetátkelés</h1>
+    <p class="hero-date">Utazás dátuma: 2025</p> <!-- 2025. 10. 25 - 2025. 10. 27 -->
   </div>
-</div>
+</section>
 
-    <h1 style="background-color: #f5f5f5;">Új-Zéland déli szigete – Keleti part és sziget átkelés jó sok buszozással</h1>
-    <div class="date">Utazás dátuma: 2025</div> <!-- 2025. 10. 25 - 2025. 10. 27 -->
-
-
-<h2 style="background-color: #f5f5f5;">7 nap Új-Zéland déli szigetén</h2>
-
-  <div class="about-container">
-    <div class="column">      
-      <p>Melbourne-ből érkeztünk meg Christchurchbe és onnan azonnal indultunk is Kaikoura-ba.
+<!-- CONTENT -->
+<div class="container">
+  
+  <!-- BAKU SECTION -->
+  <h2 class="section-title">7 nap Új-Zéland déli szigetén</h2>
+  <p class="story-text">
+Melbourne-ből érkeztünk meg Christchurchbe és onnan azonnal indultunk is Kaikoura-ba.
       (<a href="https://drpelyheliza.github.io/drpelyheliza/Sydney_AyersRock_BlueMountains_Canberra_Melbourne.html" 
    target="_blank" 
    rel="Ausztráliai utazásom leírása">
    👉 Ausztráliai utazásomhoz kattints ide
 </a>)
 <br>
-7 nap leforgása alatt eljutottam
-      <ul style="list-style:none; padding:0; margin:0;">
-        <li>- Blenheim-be,</li>
-        <li>- onnnan Westport-ba keresztül a szigeten a nyugati partra,</li>
-        <li>- onnan a Fox gleccserhez,</li>
-        <li>- majd Queenstown-ba,</li>
-        <li>- ahonnan a Milford Sound fjord-ot éritve érkeztem meg Te Anau-ba,</li>
-        <li>hogy onnan visszaérve Queenstown-ba repülhessek át Új-Zéland északi szigetére. </li>
-      </ul><br>
+7 nap leforgása alatt eljutottam <b>Blenheim</b>-be, onnnan <b>Westport</b>-ba keresztül a szigeten a nyugati partra, onnan a <b>Fox gleccser</b>hez, majd <b>Queenstown</b>-ba, ahonnan a <b>Milford Sound</b> fjord-ot éritve érkeztem meg <b>Te Anau</b>-ba, hogy onnan visszaérve <b>Queenstown</b>-ba repülhessek át Új-Zéland északi szigetére.
 
       <a href="https://drpelyheliza.github.io/drpelyheliza/Észak_Új-Zéland.html" 
    target="_blank" 
    rel="Észak Új-Zélandi utazásom leírása">
    👉 Észak Új-Zélandi utazásomhoz kattints ide
 </a>
-</p>
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1YLIigmUcvgL3WuAkrUmOeELnJQhMXu-B/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Új Zéland déli szigete 7 napban</div>
+    </div>
+  </div>
+  
+  <!-- GOBUSZTÁN SECTION -->
+  <h2 class="section-title">Kaikoura (érkezés a Keleti partra)</h2>
+  <p class="story-text">
+    Új-Zéland keleti partjára, Christchurch-be Melbourne-ből érkeztem egy majdnem 3 és fél órás repülőút megtételével. A városnézés kimaradt, az út folytatódott egy 3 órás buszúttal Kaikoura városába. Az egész napos utazás után este 10:30-kor sikerült elindulnom kiszellőztetni a fejemet. Mivel azt az információt kaptam, hogy Új-Zélandon semmi veszélyes nincsen, ami "megölhet", ezért teljesen nyugodtan, fejlámpával felszerelkezve indultam útnak a térképen kinézett 2,5km-re levő kilátóponthoz ("Point Kean Viewpoint"). Közvilágítás nem volt, a csillagok szépen ragyogtak, egész jól lehetett sötétben is haladni fejlámpa nélkül is. Két csillogó szempártól azért frászt kaptam, de nem tudom, hogy az oposszum vagy én ijedtem-e meg jobban a partmenti növényzet mentén haladva. A kilátópontnál pont annyit láttam, amennyit a fejlámpa megvilágított, így másnap azért visszatértem, hogy világosban is feltérképezzem a terepet. Azt nem tudom, hogy éjszaka voltak-e ott fókák, de nappal már lehetett velük haverkodni.<br>A nap hátralevő részében bálnalesen voltam, ahol láttam hosszúszárnyú bálnát (az Antarktisz-i régióban én haverkodtam már hosszúszárnyú bálnákkal elég közelről), delfineket és fókákat.
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/10oA_KvlTnbNI0iCynLJfGupSZGI_d8rs/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Point Kean Viewpoint-nál levő partszakasz éjszaka</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1dO28Y31Bl8FSmHgHqGNFxZtMuvPXHEH6/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Point Kean Viewpoint-nál levő partszakasz nappal</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1BhVW33K1BIybhTbccogzAjphItolfulR/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Üdvözöltük egymást Új-Zélanddal Kaikoura-ban</div>
+    </div>
+    
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1KqW5BWR3p2reahTOdS26gMWMd6vasJwl/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Nem annyira happy bálna (Humpback whale)</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/19hYCxGbtfNwvD_2AFjcgWFe3c7A6rHR3/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Delfinek a Kaikoura hajókiránduláson</div>
+    </div>
+    
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1FUJ4vLfQ4fDBd9G8jPyHtNJOIj1nG4YA/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Pihenő fóka Kaikoura partszakaszán</div>
     </div>
 
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1YLIigmUcvgL3WuAkrUmOeELnJQhMXu-B/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Új Zéland déli szigete 7 napban</div>
-  </div>
-</div>
-</div>
-
-  </div>
-
-
-  <h2 style="background-color: #f5f5f5;">Kaikoura (érkezés a Keleti partra)</h2>
-  <p>Új-Zéland keleti partjára, Christchurch-be Melbourne-ből érkeztem egy majdnem 3 és fél órás repülőút megtételével. A városnézés kimaradt, az út folytatódott egy 3 órás buszúttal Kaikoura városába. Az egész napos utazás után este 10:30-kor sikerült elindulnom kiszellőztetni a fejemet. Mivel azt az információt kaptam, hogy Új-Zélandon semmi veszélyes nincsen, ami "megölhet", ezért teljesen nyugodtan, fejlámpával felszerelkezve indultam útnak a térképen kinézett 2,5km-re levő kilátóponthoz ("Point Kean Viewpoint"). Közvilágítás nem volt, a csillagok szépen ragyogtak, egész jól lehetett sötétben is haladni fejlámpa nélkül is. Két csillogó szempártól azért frászt kaptam, de nem tudom, hogy az oposszum vagy én ijedtem-e meg jobban a partmenti növényzet mentén haladva. A kilátópontnál pont annyit láttam, amennyit a fejlámpa megvilágított, így másnap azért visszatértem, hogy világosban is feltérképezzem a terepet. Azt nem tudom, hogy éjszaka voltak-e ott fókák, de nappal már lehetett velük haverkodni.<br>A nap hátralevő részében bálnalesen voltam, ahol láttam hosszúszárnyú bálnát (az Antarktisz-i régióban én haverkodtam már hosszúszárnyú bálnákkal elég közelről), delfineket és fókákat.  
-  </p>
-
-  <div class="about-container">
-    
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/10oA_KvlTnbNI0iCynLJfGupSZGI_d8rs/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Point Kean Viewpoint-nál levő partszakasz éjszaka</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1dO28Y31Bl8FSmHgHqGNFxZtMuvPXHEH6/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Point Kean Viewpoint-nál levő partszakasz nappal</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1BhVW33K1BIybhTbccogzAjphItolfulR/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Üdvözöltük egymást Új-Zélanddal Kaikoura-ban</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <div class="about-container">
-    
-              <div class="column2">
-
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1KqW5BWR3p2reahTOdS26gMWMd6vasJwl/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Nem annyira happy bálna (Humpback whale)</div>
-  </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/19hYCxGbtfNwvD_2AFjcgWFe3c7A6rHR3/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Delfinek a Kaikoura hajókiránduláson</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1FUJ4vLfQ4fDBd9G8jPyHtNJOIj1nG4YA/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Pihenő fóka Kaikoura partszakaszán</div>
-  </div>
-</div>
-</div>
-
-</div>
-
-
-  <h2 style="background-color: #f5f5f5;">Blenheim - Westport (Keleti partról a Nyugati partra)</h2>
-
-  <div class="about-container">
-    <div class="column">      
-      <p>Blenheim a Marlborough régió legnépesebb városa, Marlborough pedig Új-Zéland legnagyobb borvidéke. Mivel nem iszok alkoholt (nem tudom lebontani), ezért nem tudom véleményezni Új-Zéland borait.<br>Blenheim-i reggelemet szokásomhoz híven egy 5km-es gyaloglással kezdtem a Taylor folyó mentén levő parkban. Reggel 6 és 7 között legalább 50szer köszöntem, hogy "Jó reggelt! Hogy vagy?". Itt biciklizett velem szembe az "50 első randi filmből a Hawaii büfé tulajdonosa" - tudom, hogy nem ő volt, de feldobta a reggelem.<br>
+ </div>
+  
+  <!-- ABSHERON SECTION -->
+  <h2 class="section-title">Blenheim - Westport<br>(Keleti partról a Nyugati partra)</h2>
+  <p class="story-text">
+    Blenheim a Marlborough régió legnépesebb városa, Marlborough pedig Új-Zéland legnagyobb borvidéke. Mivel nem iszok alkoholt (nem tudom lebontani), ezért nem tudom véleményezni Új-Zéland borait.<br>Blenheim-i reggelemet szokásomhoz híven egy 5km-es gyaloglással kezdtem a Taylor folyó mentén levő parkban. Reggel 6 és 7 között legalább 50szer köszöntem, hogy "Jó reggelt! Hogy vagy?". Itt biciklizett velem szembe az "50 első randi filmből a Hawaii büfé tulajdonosa" - tudom, hogy nem ő volt, de feldobta a reggelem.<br>
 Ezen a napon metünk keresztbe a szigeten a nyugati partra egy 5 órás buszos utazás keretén belül. Igen hosszú út volt.<br>
 Westport-ban úgy éreztem magam, mint ha egy 66-os út melletti kisvárosban lennék. Ott a főút, a főút mellett található minden is (pl. benzikút, hatalma szupermarket), a főúttal párhuzamosan pedig csak néhány utca található. Mivel a nap nagyrészében buszban ültem, ezért elég sokat sétálgattam a késő délutáni érkezés után. Megtaláltam az atlétika pályát, rögbi pályát, bmx pályát.<br>Másnap hajnalban (4:30-kor szolt az ébresztő) az 5km-es gyaloglásom során jártam be a kikötőt és valami ipari területre is betévedtem, dehát senki nem szólt, hogy rossz helye vagyok. 8 óra buszozás várt rám, kellett a levegőzés. Az út során láttam hector-delfint, aztán a Palacsinta-szikláknál (rétegesen elhelyezkedő "kőpalacsintákból" álló sziklák) szívtam egy kis sós tengeri levegőt, majd Hokitikában megnéztem a kiwi házban a Kiwi madarat és egy hatamas tépett husos szendvicstől jól lakottan indultam tovább Fox faluba, ahol sikerült megölnöm néhány bogarat, úgy hogy nem is tudtam róla.
 
@@ -180,59 +354,47 @@ Westport-ban úgy éreztem magam, mint ha egy 66-os út melletti kisvárosban le
    rel="Új-Zéland déli szigete – Nyugati part utazásom leírása">
    👉 Új-Zéland déli szigete – Nyugati part utazásomhoz kattints ide
 </a>
-
-
-</p>
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1TRFZRcZzoVXAz-4YDlIhnfojB-z-aC4a/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Blenheim Taylor folyó melleti park - Új-Zéland déli szigete</div>
     </div>
-
-<div class="column">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1TRFZRcZzoVXAz-4YDlIhnfojB-z-aC4a/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Blenheim Taylor folyó melleti park - Új-Zéland déli szigete</div>
-  </div>
-</div>
-</div>
-
-  </div>
-
-  <div class="about-container">
     
-              <div class="column2">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1TDtLmgToqPoSsOfeDzP7BvWJ6MIMuRVZ/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hector-delfin leső partszakasz Új-Zéland déli szigetén</div>
+    </div>
+   </div> 
 
-<div class="image-double">
-  <div class="image-frame">
-
-      <iframe src="https://drive.google.com/file/d/1TDtLmgToqPoSsOfeDzP7BvWJ6MIMuRVZ/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Hector-delfin leső partszakasz Új-Zéland déli szigetén</div>
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1KvKjg4BfdO_ijok_w6DVUKbkcLw3uIRD/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Palacsinta-sziklák (Új-Zéland déli szigete)</div>
+    </div>
+ 
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1zJgtMdu0QLPAiXdglSza-ww_luvxEHK2/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hokitika beach (Új-Zéland déli szigete)</div>
+    </div>
   </div>
-</div>
-	</div>
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1KvKjg4BfdO_ijok_w6DVUKbkcLw3uIRD/preview" allow="autoplay"></iframe>
-    <div class="image-caption">Palacsinta-sziklák (Új-Zéland déli szigete)</div>
-  </div>
-</div>
-</div>
-
-<div class="column2">
-<div class="image-double">
-  <div class="image-frame">
-<iframe src="https://drive.google.com/file/d/1zJgtMdu0QLPAiXdglSza-ww_luvxEHK2/preview"  allow="autoplay"></iframe>
-    <div class="image-caption">Hokitika beach (Új-Zéland déli szigete)</div>
-  </div>
-</div>
-</div>
+ 
 
 </div>
 
+<!-- FOOTER -->
+<footer>
+  © 2025 Dr. Pelyhe Liza • <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
+</footer>
 
-
-  <footer>
-    © 2025 Dr. Pelyhe Liza <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
-  </footer>
-    
 </body>
 </html>
