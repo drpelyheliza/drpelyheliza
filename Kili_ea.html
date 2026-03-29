@@ -3153,29 +3153,24 @@
   </div>
 	
   <!-- ===== DIA 64: ZÁRÁS + QR ===== -->
-  <div class="slide slide-closing" id="slide-64" style="position:relative; overflow:hidden;">
- 
-    <!-- háttér glow -->
-    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%);pointer-events:none;"></div>
- 
-    <!-- Felső sor: köszönöm + kérdések -->
+<div class="slide slide-closing" id="slide-64" style="overflow:hidden; flex-direction: column;">
+    <div style="position:absolute; inset:0; background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%); pointer-events:none;"></div>
+
     <div class="title-eyebrow" style="margin-bottom:12px;">Köszönöm a figyelmet</div>
     <div class="title-main" style="font-size:clamp(36px,5.5vw,68px);">Kérdések,<br><em>gondolatok?</em></div>
     <div class="divider divider-center" style="margin:20px auto;"></div>
- 
-    <!-- Alsó szekció: bal szöveg + jobb QR -->
+
     <div style="display:flex; align-items:center; justify-content:center; gap:60px; margin-top:8px; width:100%; max-width:900px;">
- 
-      <!-- Bal: bemutatkozás + kontakt -->
+
       <div style="text-align:left; flex:1; max-width:440px;">
         <div style="font-family:'Playfair Display',serif; font-size:clamp(16px,2.2vw,24px); color:#F5F0E8; line-height:1.5; margin-bottom:16px;">
           <em>PhD · statisztikus · 7 kontinens · világjáró</em>
         </div>
         <div style="font-size:clamp(13px,1.5vw,16px); color:rgba(245,240,232,0.6); line-height:1.9;">
           <strong style="color:#F5F0E8;">Antarktisz</strong><br>
-		  Spitzbergák · Grönland<br>
+          Spitzbergák · Grönland<br>
           Kilimandzsáró · Kosciuszko<br>
-		  és még sok más
+          és még sok más
         </div>
         <div style="margin-top:20px; display:flex; align-items:center; gap:10px;">
           <div style="width:2px; height:32px; background:var(--gold); opacity:0.5;"></div>
@@ -3185,11 +3180,9 @@
           </div>
         </div>
       </div>
- 
-      <!-- Jobb: QR kód -->
+
       <div style="display:flex; flex-direction:column; align-items:center; gap:14px; flex-shrink:0;">
-        <div style="background:#F5F0E8; padding:16px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
-          <!-- QR kód generálva a Google Charts API-val -->
+        <div style="background:#F5F0E8; padding:16px; border-radius:8px; display:flex; align-items:center; justify-content:center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
           <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://www.drpelyheliza.hu&color=0F0D0A&bgcolor=F5F0E8&margin=0"
                alt="QR kód – www.drpelyheliza.hu"
                width="180" height="180"
@@ -3197,14 +3190,13 @@
         </div>
         <div style="font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(245,240,232,0.3);">Szkenneld be</div>
       </div>
- 
+
     </div>
- 
-    <!-- Legalul: badge -->
-    <div class="altitude-badge" style="margin-top:28px; font-size:11px;">
+
+    <div class="altitude-badge" style="margin-top:28px; font-size:11px; position: relative; z-index: 2;">
       Asztmásként Afrika tetején · Kilimandzsáró 2026 · 5 895 m
     </div>
- 
+
   </div>
  
 </div><!-- end #slideshow -->
