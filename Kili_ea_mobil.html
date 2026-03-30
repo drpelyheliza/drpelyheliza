@@ -1,0 +1,3362 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Kilimandzsáró – Mobil Practice</title>
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --gold: #C9A84C;
+  --rust: #A0522D;
+  --snow: #F5F0E8;
+  --dark: #0F0D0A;
+  --stone: #2C2720;
+  --sky: #7BAFD4;
+  --ice: #D6EAF8;
+  --green: #4A7C59;
+  --fog: rgba(245,240,232,0.07);
+
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  --slide-w: 100vw;
+  --slide-h: 56.25vw; /* 16:9 */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #080604;
+  color: var(--snow);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== TOP BAR ===== */
+#topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  background: rgba(10,8,5,0.96);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 999;
+  gap: 10px;
+}
+
+#topbar-title {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  color: rgba(245,240,232,0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+#mode-toggle {
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.35);
+  color: var(--gold);
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  letter-spacing: 0.5px;
+}
+
+#progress-bar {
+  position: fixed;
+  top: 52px; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--rust), var(--gold));
+  transition: width 0.3s ease;
+  z-index: 998;
+}
+
+/* ===== MAIN CONTENT AREA ===== */
+#main {
+  padding-top: 54px;
+  padding-bottom: 80px;
+}
+
+/* ===== PRESENTATION MODE (default) ===== */
+body.mode-present #main {
+  padding-bottom: 0;
+  overflow: hidden;
+  height: 100vh;
+}
+
+body.mode-present #slideshow {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 54px);
+}
+
+body.mode-present .slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  display: flex;
+}
+
+body.mode-present .slide.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ===== SCROLL MODE ===== */
+body.mode-scroll #slideshow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+body.mode-scroll .slide {
+  position: relative !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  border-bottom: 2px solid rgba(201,168,76,0.1);
+  flex-shrink: 0;
+}
+
+body.mode-scroll .slide-number-badge {
+  display: flex !important;
+}
+
+/* ===== SLIDE NUMBER BADGE (scroll mode) ===== */
+.slide-number-badge {
+  display: none;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(15,13,10,0.8);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  z-index: 10;
+  letter-spacing: 1px;
+  pointer-events: none;
+}
+
+/* ===== BOTTOM NAV (present mode) ===== */
+#bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 64px;
+  background: rgba(10,8,5,0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(201,168,76,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 999;
+  gap: 12px;
+}
+
+body.mode-scroll #bottom-nav {
+  display: none;
+}
+
+.nav-btn {
+  background: rgba(201,168,76,0.1);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+  width: 48px;
+  height: 44px;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s;
+}
+
+.nav-btn:active { background: rgba(201,168,76,0.25); }
+
+#slide-counter {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: rgba(245,240,232,0.5);
+  text-align: center;
+  flex: 1;
+  letter-spacing: 2px;
+}
+
+/* ===== JUMP TO SLIDE ===== */
+#jump-panel {
+  display: none;
+  position: fixed;
+  bottom: 64px; left: 0; right: 0;
+  background: rgba(15,13,10,0.97);
+  border-top: 1px solid rgba(201,168,76,0.2);
+  padding: 12px 16px;
+  z-index: 998;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#jump-panel.open {
+  display: flex;
+}
+
+.jump-btn {
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.2);
+  color: rgba(245,240,232,0.6);
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+
+.jump-btn:active { background: rgba(201,168,76,0.2); }
+
+/* ===== SLIDE CONTENTS – adapt for mobile ===== */
+/* Common slide styles from original */
+.slide {
+  background: var(--dark);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 16px;
+  overflow: hidden;
+}
+
+/* Split slides: stack vertically on mobile */
+.slide-split {
+  flex-direction: column !important;
+  text-align: left;
+  padding: 0 !important;
+  justify-content: flex-start !important;
+  align-items: stretch !important;
+}
+
+.split-text {
+  flex: none !important;
+  padding: 16px 16px 12px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  width: 100% !important;
+}
+
+.split-photo {
+  flex: 1 !important;
+  min-height: 0;
+  background: var(--stone);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  order: -1; /* photo on top */
+  max-height: 38%;
+}
+
+.split-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+}
+
+/* img error state */
+.img-error {
+  background: linear-gradient(135deg, #1a1510, #2c2720) !important;
+}
+.split-photo.img-error::after {
+  content: '▲ fotó';
+  font-size: 11px;
+  color: rgba(245,240,232,0.2);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* Story slides */
+.slide-story {
+  padding: 16px !important;
+  justify-content: flex-start !important;
+  overflow-y: auto;
+}
+
+/* Full photo slides */
+.slide-fullphoto {
+  padding: 0 !important;
+}
+
+.fullphoto-bg img {
+  opacity: 0.55;
+}
+
+/* Map slides */
+.slide-map {
+  padding: 16px !important;
+  gap: 16px !important;
+  overflow-y: auto;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+  text-align: left;
+}
+
+/* Quote slides */
+.slide-quote {
+  padding: 24px 20px !important;
+}
+
+/* Section divider */
+.slide-section-divider {
+  justify-content: center;
+  align-items: center;
+}
+
+/* Summit */
+.slide-summit {
+  padding: 20px !important;
+}
+
+/* Closing */
+.slide-closing {
+  padding: 20px !important;
+  overflow-y: auto;
+  justify-content: flex-start !important;
+}
+
+/* ===== TYPOGRAPHY SCALING ===== */
+.title-main {
+  font-family: var(--font-serif) !important;
+  font-size: clamp(28px, 8vw, 64px) !important;
+  font-weight: 900;
+  line-height: 0.95;
+  color: var(--snow);
+}
+
+.title-eyebrow {
+  font-size: clamp(10px, 2.5vw, 13px) !important;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.title-sub {
+  font-family: var(--font-serif) !important;
+  font-style: italic;
+  font-size: clamp(13px, 3.5vw, 22px) !important;
+  color: rgba(245,240,232,0.6);
+  margin-top: 12px;
+}
+
+.slide-heading {
+  font-family: var(--font-serif) !important;
+  font-size: clamp(18px, 5vw, 40px) !important;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--snow);
+  margin-bottom: 10px !important;
+}
+
+.slide-heading em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.slide-body {
+  font-size: clamp(12px, 3vw, 16px) !important;
+  line-height: 1.65;
+  color: rgba(245,240,232,0.75);
+  font-weight: 300;
+  max-width: 100% !important;
+}
+
+.eyebrow {
+  font-size: clamp(9px, 2vw, 11px) !important;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.big-number {
+  font-family: var(--font-serif) !important;
+  font-size: clamp(48px, 14vw, 120px) !important;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 0.85;
+}
+
+.big-number-label {
+  font-size: clamp(10px, 2.5vw, 13px) !important;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.4);
+  margin-top: 6px;
+}
+
+.stat-value {
+  font-family: var(--font-serif) !important;
+  font-size: clamp(18px, 4.5vw, 32px) !important;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.stat-label {
+  font-size: clamp(9px, 2vw, 12px) !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.4);
+  margin-top: 2px;
+}
+
+.stats-row {
+  display: flex;
+  gap: 20px !important;
+  flex-wrap: wrap;
+  margin: 10px 0 !important;
+}
+
+.quote-text {
+  font-family: var(--font-serif) !important;
+  font-style: italic;
+  font-size: clamp(16px, 4.5vw, 32px) !important;
+  line-height: 1.45;
+  color: var(--snow);
+  max-width: 100%;
+}
+
+.quote-author {
+  margin-top: 20px;
+  font-size: clamp(10px, 2.5vw, 13px) !important;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.bullet-list li {
+  font-size: clamp(12px, 3vw, 17px) !important;
+  padding: 8px 0 8px 20px !important;
+}
+
+.day-badge {
+  margin-bottom: 10px !important;
+  padding: 6px 14px !important;
+}
+
+.day-badge .day-num {
+  font-family: var(--font-serif) !important;
+  font-size: clamp(18px, 5vw, 26px) !important;
+}
+
+.day-badge .day-title {
+  font-size: clamp(9px, 2vw, 11px) !important;
+}
+
+.day-badge .day-alt {
+  font-size: clamp(10px, 2.5vw, 13px) !important;
+}
+
+.divider {
+  width: 32px;
+  height: 2px;
+  background: var(--gold);
+  margin: 10px 0 !important;
+}
+
+.section-number {
+  font-size: 80px !important;
+  right: 20px !important;
+}
+
+.altitude-badge {
+  font-size: clamp(9px, 2vw, 12px) !important;
+  padding: 4px 14px !important;
+  margin-top: 16px !important;
+  letter-spacing: 2px;
+}
+
+/* SVG – scale down */
+svg {
+  max-width: 100%;
+  height: auto !important;
+}
+
+/* Mechanism boxes and grids */
+.content-grid {
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+}
+
+/* Force inline styles with large sizes to scale */
+[style*="font-size:clamp"] { }
+
+/* photo grid */
+.photo-grid {
+  grid-template-columns: 1fr 1fr !important;
+}
+
+/* Mountain silhouette in title */
+.mountain-silhouette {
+  height: 45% !important;
+}
+
+/* Photo placeholder */
+.photo-placeholder, .fullphoto-bg > div {
+  background: linear-gradient(135deg, #1a1510 0%, #2c2720 100%) !important;
+  min-height: 80px;
+}
+
+/* ===== SWIPE HINT ===== */
+#swipe-hint {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15,13,10,0.85);
+  color: rgba(245,240,232,0.4);
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 1s ease;
+  z-index: 997;
+  white-space: nowrap;
+}
+
+#swipe-hint.hidden {
+  opacity: 0;
+}
+
+/* ===== SLIDE INDEX PANEL ===== */
+#index-panel {
+  display: none;
+  position: fixed;
+  inset: 52px 0 0 0;
+  background: rgba(10,8,5,0.98);
+  z-index: 990;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+#index-panel.open {
+  display: block;
+}
+
+#index-close {
+  width: 100%;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.2);
+  color: var(--gold);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  font-family: var(--font-sans);
+}
+
+.index-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(245,240,232,0.06);
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.index-item:active {
+  background: rgba(201,168,76,0.08);
+}
+
+.index-num {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--gold);
+  min-width: 28px;
+  text-align: right;
+  opacity: 0.7;
+}
+
+.index-title {
+  font-size: 13px;
+  color: rgba(245,240,232,0.75);
+  line-height: 1.3;
+}
+
+.index-sub {
+  font-size: 11px;
+  color: rgba(245,240,232,0.35);
+  margin-top: 2px;
+}
+
+</style>
+</head>
+<body class="mode-present">
+
+<div id="topbar">
+  <div id="topbar-title">Kilimandzsáró · Asztmásként Afrika tetején</div>
+  <button id="mode-toggle" onclick="toggleMode()">📋 Lista</button>
+</div>
+
+<div id="progress-bar"></div>
+
+<!-- INDEX PANEL -->
+<div id="index-panel">
+  <button id="index-close" onclick="closeIndex()">✕ Bezárás</button>
+  <div id="index-list"></div>
+</div>
+
+<!-- SWIPE HINT -->
+<div id="swipe-hint">← swipe →</div>
+
+<div id="main">
+  <div id="slideshow">
+
+ 
+  <!-- ===== DIA 1: FŐCÍM ===== -->
+  <div class="slide slide-title active" id="slide-1">
+<div class="slide-number-badge">1</div>
+    <svg class="mountain-silhouette" viewBox="0 0 1400 500" preserveAspectRatio="xMidYMax meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="700,30 1100,480 300,480" fill="rgba(201,168,76,0.5)"/>
+      <polygon points="700,80 990,480 410,480" fill="rgba(245,240,232,0.4)"/>
+      <polygon points="200,480 500,200 650,480" fill="rgba(44,39,32,0.8)"/>
+      <polygon points="1200,480 950,220 1400,480" fill="rgba(44,39,32,0.8)"/>
+    </svg>
+    <div class="title-eyebrow">Beszámoló · 2026 január</div>
+    <div class="title-main">Asztmásként<br><em>Afrika tetején</em></div>
+    <div class="title-sub">Kilimandzsáró – 5 895 m</div>
+    <div class="altitude-badge">5 895 m · Marangu-útvonal · 6 nap</div>
+  <!--  <div class="title-meta">Vetítő: ← → vagy nyílgomb</div> -->
+  </div>
+ 
+ 
+  <!-- ===== DIA 2: EVEREST EBC ===== -->
+  <div class="slide slide-split" id="slide-2">
+<div class="slide-number-badge">2</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-info">
+          <div class="day-title">Everest Base Camp</div>
+          <div class="day-alt">2025 május · Nepál</div>
+        </div>
+      </div>
+      <div class="slide-heading">4 900 m —<br><em>Lobuche</em></div>
+      <div class="slide-body">
+        Légszomj, köhögés, légúti fertőzés.<br>
+        5 164 méter - Gorak Shep.<br>
+        <strong>5 364 méter</strong> — Everest Base Camp.<br>
+	5 545 méter - Kala Patthar.<br>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">4 900 m</div>
+          <div class="stat-label">Ahol megálltam</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">5 364 m</div>
+          <div class="stat-label">Az alaptábor</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/001.jpg" loading="lazy" alt="Lobuche 4900m" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+  <!-- ===== DIA 3: FELKÉSZÜLÉS ===== -->
+  <div class="slide slide-story" id="slide-3">
+<div class="slide-number-badge">3</div>
+    <div class="eyebrow">Everest régió "betegsége"</div>
+    <div class="slide-heading">Khumbu köhögés<br><em>Magassági köhögés</em></div>
+    <div class="divider divider-center"></div>
+    <ul class="bullet-list" style="margin: 0 auto;">
+      <li><strong>>2500</strong> — nagy magasság</li>
+      <li><strong>Köhögés</strong> — tartós, száraz, fájdalmas (fokozódás éjszaka és terhelés után)</li>
+      <li><strong>Régen</strong> — ok: hideg, száraz levegő</li>
+      <li><strong>Most</strong> — ok 1: légzőszervi nyálkahártya sérülés: folyadékvesztés a légutakból, léguti fertőzések</li>
+      <li><strong>Most</strong> — ok 2: szubklinikai tüdőödéma: ödémára jellemző folyadékfelhalmozódás, de még nem súlyos fulladás vagy rózsaszín köpet</li>
+    </ul>
+  </div>
+
+  <!-- ===== DIA 4: ASZTMA  ===== -->
+  <div class="slide slide-split" id="slide-4">
+<div class="slide-number-badge">4</div>
+    <div class="split-text">
+      <div class="eyebrow">EMMI egészségügyi szakmai irányelv (EüK 2022/1.)</div>
+      <div class="slide-heading">Diagnózis<br><em>asztma</em></div>
+      <div class="divider"></div>
+      <div class="slide-body">
+	<strong>Asztma</strong> heterogén betegség - rendszerint légúti gyulladás<br>        
+	- visszatérő sípoló légzés, nehézlégzés, mellkasi feszülés, köhögés<br>
+        - éjszaka vagy kora reggel, terhelésre súlyosbodik<br><br>
+	FVC: erőltetett kilégzés során mért vitálkapacitás.<br>
+	FEV1: erőltetett kilégzési másodperctérfogat.<br>
+	Tiffeneau-index: FEV1/FVC arány.<br>
+
+      </div>
+      <div class="stats-row" style="margin-top: 32px;">
+        <div class="stat-item">
+          <div class="stat-value">ICS</div>
+          <div class="stat-label">gyulladáscsökkentő, hörgőtágító</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">LTRA</div>
+          <div class="stat-label">asztma egyensulyban tartása</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/003.png" loading="lazy" alt="asztma" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 5: TUDOMÁNY I – PATOFIZIOLÓGIA ===== -->
+<div class="slide slide-story" id="slide-5">
+<div class="slide-number-badge">5</div>
+    <div class="eyebrow">Patofiziológia · Holthof et al. 2022</div>
+    <div class="slide-heading">Miért nehéz<br><em>asztmával a magasság?</em></div>
+    <div class="divider divider-center"></div>
+
+    <div class="content-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 900px; margin: 0 auto;">
+        
+        <div class="mechanism-box" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px;">
+            <h3 style="color: #ff6b6b;">⚠ A Valódi Ellenség: A HIDEG</h3>
+            <p style="font-size: 0.9em;">Nem a ritka levegő a fő baj, hanem a <strong>száraz, hideg levegő</strong>.</p>
+            <ul style="font-size: 0.85em; line-height: 1.4;">
+                <li><strong>Láncreakció:</strong> Gyors légzés → Kiszáradó nyálkahártya → Gyulladásos sejtek ébredése.</li>
+                <li><strong>Eredmény:</strong> A hörgők simaizma görcsbe rándul (EIB), akár fizikai terhelés nélkül is.</li>
+            </ul>
+        </div>
+
+        <div class="mechanism-box" style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px;">
+            <h3 style="color: #4ecdc4;">⚖ A Magassági Paradoxon</h3>
+            <p style="font-size: 0.9em;">Van egy pont, ahol a hegy "segíteni" kezd.</p>
+            <ul style="font-size: 0.85em; line-height: 1.4;">
+                <li><strong>2400 m környékén:</strong> Még az irritáció dominál, fokozódik a túlérzékenység.</li>
+                <li><strong>5800 m felett:</strong> Az oxigénhiány stresszt vált ki → <strong>Katekolamin és Kortizol</strong> felszabadulás → hörgőtágító hatás.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="evidence-wrapper" style="max-width: 860px; margin: 0 auto;">
+
+        <div class="case-study" style="margin-bottom: 25px; border-left: 4px solid #f7d794; padding-left: 20px;">
+            <strong style="color: #f7d794;">A Himalája-túra tanulsága:</strong>
+            <p style="margin: 5px 0;">3500 és 4100 m között az asztmások tüdeje (PEF) jobban beesett terhelésre. - <strong>Hörgőszükület</strong> általi hipoxia.</p>
+        </div>
+
+
+        <div class="case-study" style="margin-bottom: 25px; border-left: 4px solid #4ecdc4; padding-left: 20px;">
+            <strong style="color: #4ecdc4;">A Kilimandzsáró-teszt (Stokes et al.):</strong>
+            <p style="margin: 5px 0;">Megvizsgáltak 18 asztmást és 291 egészséges túrázót a csúcson. <strong>Az eredmény: semmi különbség.</strong> A pulzus, a légzésszám és a csúcsra érési arány megegyezett.</p>
+        </div>
+
+
+
+        <div class="verdict-box" style="background: #2d3436; padding: 15px; text-align: center; border-radius: 5px; margin-top: 30px;">
+            <h4 style="margin: 0; color: #fff;">✅ KONKLÚZIÓ: 5000 méter felett is biztonságos, HA...</h4>
+            <p style="font-size: 0.9em; margin: 10px 0 0;">...az asztma enyhe és kontrollált (súlyos esetben bronchoprovokációs + hipoxiás terheléses teszt javasolt).</p>
+        </div>
+    </div>
+
+
+</div>
+
+  <!-- ===== DIA 7: MAGASSÁGI ZÓNÁK FIZIOLÓGIA ===== -->
+  <div class="slide slide-map" id="slide-7" style="padding: 30px 50px;">
+<div class="slide-number-badge">7</div>
+    <div class="eyebrow">Holthof et al. 2022 · Fiziológia és magasság</div>
+    <div class="slide-heading" style="font-size:clamp(22px,3vw,36px); margin-bottom:16px;">Magassági zónák és <em>fiziológiai hatások</em></div>
+    <div style="display:flex; gap:0; width:100%; height:calc(100vh - 200px); max-height:460px;">
+ 
+      <!-- LEFT: zone bars -->
+      <div style="display:flex; flex-direction:column; width:200px; flex-shrink:0; gap:3px;">
+        <div style="flex:1.1; background:rgba(160,82,45,0.55); border-radius:4px; display:flex; flex-direction:column; justify-content:center; padding:0 12px; border-left:3px solid #E24B4A;">
+          <div style="font-size:13px; font-weight:600; color:#F5F0E8; letter-spacing:1px;">EXTRÉM</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.55); margin-top:2px;">&gt; 5 800 m</div>
+        </div>
+        <div style="flex:2; background:rgba(160,82,45,0.35); border-radius:4px; display:flex; flex-direction:column; justify-content:center; padding:0 12px; border-left:3px solid #C9A84C;">
+          <div style="font-size:13px; font-weight:600; color:#F5F0E8; letter-spacing:1px;">NAGYON MAGAS</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.55); margin-top:2px;">3 500 – 5 800 m</div>
+        </div>
+        <div style="flex:1.4; background:rgba(74,124,89,0.35); border-radius:4px; display:flex; flex-direction:column; justify-content:center; padding:0 12px; border-left:3px solid #4A7C59;">
+          <div style="font-size:13px; font-weight:600; color:#F5F0E8; letter-spacing:1px;">MAGAS</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.55); margin-top:2px;">2 500 – 3 500 m</div>
+        </div>
+        <div style="flex:1.6; background:rgba(123,175,212,0.25); border-radius:4px; display:flex; flex-direction:column; justify-content:center; padding:0 12px; border-left:3px solid #7BAFD4;">
+          <div style="font-size:13px; font-weight:600; color:#F5F0E8; letter-spacing:1px;">KÖZEPES</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.55); margin-top:2px;">1 200 – 2 500 m</div>
+        </div>
+        <div style="flex:0.8; background:rgba(245,240,232,0.08); border-radius:4px; display:flex; flex-direction:column; justify-content:center; padding:0 12px; border-left:3px solid rgba(245,240,232,0.2);">
+          <div style="font-size:13px; font-weight:600; color:#F5F0E8; letter-spacing:1px;">ALACSONY</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.55); margin-top:2px;">&lt; 1 200 m</div>
+        </div>
+      </div>
+ 
+      <!-- MIDDLE: landmark markers (SVG) -->
+      <div style="width:220px; flex-shrink:0; position:relative;">
+        <svg width="100%" height="100%" viewBox="0 0 220 460" preserveAspectRatio="none">
+          <!-- vertical axis -->
+          <line x1="110" y1="5" x2="110" y2="455" stroke="rgba(245,240,232,0.12)" stroke-width="1"/>
+ 
+          <!-- Zone boundary lines (matching flex proportions) -->
+          <!-- Total flex = 1.1+2+1.4+1.6+0.8 = 6.9 -->
+          <!-- extreme: 0..73px, very high: 73..206px, high: 206..299px, medium: 299..405px, low: 405..460 -->
+ 
+          <!-- Kilimandzsáró csúcs 5895m → in extreme zone, near bottom of it: y≈65 -->
+          <line x1="30" y1="65" x2="190" y2="65" stroke="#E24B4A" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <circle cx="110" cy="65" r="5" fill="#E24B4A"/>
+          <text x="115" y="58" font-size="11" font-family="sans-serif" fill="#E24B4A" font-weight="600">★ Kili csúcs 5 895 m</text>
+ 
+          <!-- Everest BC 5364m → very high zone, upper portion: y≈118 -->
+          <line x1="30" y1="118" x2="190" y2="118" stroke="rgba(245,240,232,0.4)" stroke-width="1" stroke-dasharray="3 3"/>
+          <circle cx="110" cy="118" r="3" fill="rgba(245,240,232,0.5)"/>
+          <text x="115" y="114" font-size="10" font-family="sans-serif" fill="rgba(245,240,232,0.6)">Everest BC 5 364 m</text>
+          <text x="115" y="126" font-size="10" font-family="sans-serif" fill="rgba(201,168,76,0.7)">← megálltam: 4 900 m</text>
+ 
+          <!-- Kibo Hut 4703m → very high, lower: y≈168 -->
+          <line x1="50" y1="168" x2="190" y2="168" stroke="rgba(245,240,232,0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+          <circle cx="110" cy="168" r="3" fill="rgba(245,240,232,0.35)"/>
+          <text x="115" y="165" font-size="10" font-family="sans-serif" fill="rgba(245,240,232,0.5)">Kibo Hut 4 703 m</text>
+ 
+          <!-- Horombo 3720m → very high, near bottom: y≈198 -->
+          <line x1="50" y1="198" x2="190" y2="198" stroke="rgba(245,240,232,0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+          <circle cx="110" cy="198" r="3" fill="rgba(245,240,232,0.35)"/>
+          <text x="115" y="195" font-size="10" font-family="sans-serif" fill="rgba(245,240,232,0.5)">Horombo 3 720 m</text>
+ 
+          <!-- AMS határ 2500m → boundary high/medium: y≈299 -->
+          <line x1="20" y1="299" x2="200" y2="299" stroke="#BA7517" stroke-width="1.5" stroke-dasharray="5 3"/>
+          <circle cx="110" cy="299" r="4" fill="#BA7517"/>
+          <text x="115" y="295" font-size="10" font-family="sans-serif" fill="#EF9F27" font-weight="600">AMS kockázat ▲ 2 500 m</text>
+ 
+          <!-- Alpi klinikák 1200-2500m sáv jelzés: y≈299..405 -->
+          <rect x="104" y="299" width="12" height="106" fill="#7BAFD4" opacity="0.25" rx="2"/>
+          <text x="115" y="352" font-size="10" font-family="sans-serif" fill="#7BAFD4">← alpi klinikák</text>
+ 
+          <!-- Mandara 2720m → high zone: y≈285 -->
+          <line x1="50" y1="271" x2="190" y2="271" stroke="rgba(245,240,232,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+          <circle cx="110" cy="271" r="3" fill="rgba(245,240,232,0.3)"/>
+          <text x="115" y="268" font-size="10" font-family="sans-serif" fill="rgba(245,240,232,0.45)">Mandara 2 720 m</text>
+ 
+        </svg>
+      </div>
+ 
+      <!-- RIGHT: physiology notes per zone -->
+      <div style="flex:1; display:flex; flex-direction:column; gap:3px; font-size:clamp(11px,1.2vw,13px);">
+        <!-- Extreme -->
+        <div style="flex:1.1; border-left:2px solid rgba(226,75,74,0.4); padding:6px 12px; display:flex; flex-direction:column; justify-content:center; gap:2px;">
+          <span style="color:rgba(245,240,232,0.9);">Katekolamin + kortizol → <strong style="color:#C9A84C;">bronchodilatátor hatás</strong></span>
+          <span style="color:rgba(245,240,232,0.5);">Max O₂-felvétel erősen csökkent · légzési ellenállás ↓ (ritkább levegő)</span>
+        </div>
+        <!-- Very high -->
+        <div style="flex:2; border-left:2px solid rgba(201,168,76,0.4); padding:6px 12px; display:flex; flex-direction:column; justify-content:center; gap:2px;">
+          <span style="color:rgba(245,240,232,0.9);">pO₂ ≈ 100 Hgmm · hipoxiás légzési válasz ↑ · pulmonális érszűkület ↑</span>
+          <span style="color:rgba(245,240,232,0.9);">Hideg levegő → EIB kockázat ↑↑ · BHR fokozódik</span>
+          <span style="color:rgba(245,240,232,0.5);">Hemoglobin ↑ (hosszabb expozíció) · kapilláris sűrűség ↑</span>
+          <span style="color:#C9A84C; font-weight:600;">Stokes et al.: asztmás ≈ egészséges csúcssikerarány (Kili)</span>
+        </div>
+        <!-- High -->
+        <div style="flex:1.4; border-left:2px solid rgba(74,124,89,0.5); padding:6px 12px; display:flex; flex-direction:column; justify-content:center; gap:2px;">
+          <span style="color:rgba(245,240,232,0.9);">AMS megjelenik érzékenyeknél · kompenzációs válaszok fokozódnak</span>
+          <span style="color:rgba(245,240,232,0.5);">Max O₂-felvétel csökken 2 000 m-től · hyperventilláció ↑</span>
+        </div>
+        <!-- Medium -->
+        <div style="flex:1.6; border-left:2px solid rgba(123,175,212,0.4); padding:6px 12px; display:flex; flex-direction:column; justify-content:center; gap:2px;">
+          <span style="color:rgba(245,240,232,0.9);">pO₂ csökkenés 15–20% · AMS valószínűtlen</span>
+          <span style="color:#7BAFD4; font-weight:600;">Asztma-tünetek javulhatnak: poratka ↓, légzési ellenállás ↓</span>
+          <span style="color:rgba(245,240,232,0.5);">Alpi klinikák optimális tartománya</span>
+        </div>
+        <!-- Low -->
+        <div style="flex:0.8; border-left:2px solid rgba(245,240,232,0.15); padding:6px 12px; display:flex; flex-direction:column; justify-content:center; gap:2px;">
+          <span style="color:rgba(245,240,232,0.5);">Fiziológiai hatás minimális · tengerszinti referenciapont</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 8: LÉGZÉSSZABÁLYOZÁS ===== -->
+  <div class="slide" id="slide-8" style="background:var(--dark); padding:40px 60px; justify-content:flex-start; overflow:hidden;">
+<div class="slide-number-badge">8</div>
+ 
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 20% 50%, rgba(160,82,45,0.08) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 80% 40%, rgba(123,175,212,0.06) 0%, transparent 60%); pointer-events:none;"></div>
+ 
+    <div class="eyebrow" style="margin-bottom:10px;">Légzésszabályozás magasban · Merck Manual / AJKD 2023</div>
+    <div class="slide-heading" style="font-size:clamp(22px,3vw,38px); margin-bottom:20px;">Mi történik, ha <em>elveszted a ritmust?</em></div>
+ 
+    <div style="display:flex; gap:16px; width:100%; height:calc(100vh - 220px); max-height:420px; position:relative;">
+ 
+      <!-- COL 1: Pánik-spirál (agytörzs / amygdala) -->
+      <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; letter-spacing:4px; text-transform:uppercase; color:#A0522D; margin-bottom:4px;">Pánik-spirál</div>
+ 
+        <!-- Step boxes -->
+        <div style="background:rgba(160,82,45,0.12); border:1px solid rgba(160,82,45,0.3); border-radius:4px; padding:10px 14px; position:relative;">
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:1px;">① HIPOXIA</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); margin-top:3px;">O₂ ↓ → ventiláció reflexszerűen nő</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.4); margin-top:2px;">Periférikus kemoreceptorok jelzik az agytörzsnek</div>
+        </div>
+ 
+        <div style="text-align:center; color:#A0522D; font-size:16px; line-height:1;">↓</div>
+ 
+        <div style="background:rgba(160,82,45,0.18); border:1px solid rgba(160,82,45,0.4); border-radius:4px; padding:10px 14px;">
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:1px;">② AMYGDALA / AGYTÖRZS</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); margin-top:3px;">Oxigénhiányt érzékel → pánikválasz</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.4); margin-top:2px;">Monoton mozgás = autopilot légzés, szétszórt figyelem</div>
+        </div>
+ 
+        <div style="text-align:center; color:#A0522D; font-size:16px; line-height:1;">↓</div>
+ 
+        <div style="background:rgba(160,82,45,0.22); border:1px solid rgba(160,82,45,0.5); border-radius:4px; padding:10px 14px;">
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:1px;">③ HIPERVENTILÁCIÓ</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); margin-top:3px;">Légzés gyorsul → túl sok CO₂ kifújás → PaCO₂ ↓</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.4); margin-top:2px;">Instabil légzésritmus, szorongás fokozódik</div>
+        </div>
+ 
+        <div style="text-align:center; color:#A0522D; font-size:16px; line-height:1;">↓</div>
+ 
+        <div style="background:rgba(160,82,45,0.3); border:1px solid rgba(226,75,74,0.5); border-radius:4px; padding:10px 14px;">
+          <div style="font-size:12px; font-weight:600; color:#E24B4A; letter-spacing:1px;">④ RESPIRÁCIÓS ALKALÓZIS</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.8); margin-top:3px;">Vér pH ↑ → egyensúly borul → fulladásérzet fokozódik</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.4); margin-top:2px;">pH &gt; 7.45 · HCO₃⁻ csökken · vesekomp. &gt;24 óra</div>
+        </div>
+ 
+        <!-- feedback arrow label -->
+        <div style="font-size:11px; color:rgba(226,75,74,0.6); text-align:center; letter-spacing:2px; margin-top:2px;">↻ ÖRDÖGI KÖR</div>
+      </div>
+ 
+      <!-- DIVIDER + VS -->
+      <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:60px; flex-shrink:0; gap:8px;">
+        <div style="width:1px; flex:1; background:rgba(245,240,232,0.08);"></div>
+        <div style="font-family:'Playfair Display',serif; font-size:18px; font-style:italic; color:rgba(245,240,232,0.25);">vs</div>
+        <div style="width:1px; flex:1; background:rgba(245,240,232,0.08);"></div>
+      </div>
+ 
+      <!-- COL 2: Tudatos légzés (prefrontális kéreg) -->
+      <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; letter-spacing:4px; text-transform:uppercase; color:#7BAFD4; margin-bottom:4px;">Tudatos szabályozás</div>
+ 
+        <div style="background:rgba(123,175,212,0.08); border:1px solid rgba(123,175,212,0.25); border-radius:4px; padding:10px 14px;">
+          <div style="font-size:12px; font-weight:600; color:#7BAFD4; letter-spacing:1px;">① PREFRONTÁLIS KÉREG</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); margin-top:3px;">Gondolkodó agy: fókusz, figyelem, tudatosság</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.4); margin-top:2px;">Felülírja az amygdala pánikválaszát</div>
+        </div>
+ 
+        <div style="text-align:center; color:#7BAFD4; font-size:16px; line-height:1;">↓</div>
+ 
+        <div style="background:rgba(123,175,212,0.12); border:1px solid rgba(123,175,212,0.3); border-radius:4px; padding:10px 14px;">
+          <div style="font-size:12px; font-weight:600; color:#7BAFD4; letter-spacing:1px;">② RITMIKUS LÉGZÉS</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); margin-top:3px;">Tudatos tempó → CO₂ szint stabilizálódik</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.4); margin-top:2px;">Lépéssel szinkronizált be- és kilégzés</div>
+        </div>
+ 
+        <div style="text-align:center; color:#7BAFD4; font-size:16px; line-height:1;">↓</div>
+ 
+        <div style="background:rgba(123,175,212,0.18); border:1px solid rgba(123,175,212,0.4); border-radius:4px; padding:10px 14px;">
+          <div style="font-size:12px; font-weight:600; color:#7BAFD4; letter-spacing:1px;">③ HOSSZÚ KILÉGZÉS</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.8); margin-top:3px; font-weight:600;">2 be — 4 ki</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.4); margin-top:2px;">Paraszimpatikus aktiválás · HR ↓ · szorongás ↓</div>
+        </div>
+ 
+        <div style="text-align:center; color:#7BAFD4; font-size:16px; line-height:1;">↓</div>
+ 
+        <div style="background:rgba(123,175,212,0.25); border:1px solid rgba(123,175,212,0.5); border-radius:4px; padding:10px 14px;">
+          <div style="font-size:12px; font-weight:600; color:#D6EAF8; letter-spacing:1px;">④ pH EGYENSÚLY VISSZAÁLL</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.8); margin-top:3px;">Légzési alkalózis megelőzhető · lépések folytatódnak</div>
+          <div style="font-size:11px; color:rgba(245,240,232,0.4); margin-top:2px;">Vesekomp. &gt;24 óra — megelőzés fontosabb a kezelésnél</div>
+        </div>
+ 
+        <div style="font-size:11px; color:rgba(123,175,212,0.6); text-align:center; letter-spacing:2px; margin-top:2px;">✓ KONTROLL VISSZASZERZÉSE</div>
+      </div>
+ 
+      <!-- COL 3: A mi receptünk -->
+      <div style="width:180px; flex-shrink:0; display:flex; flex-direction:column; gap:8px;">
+        <div style="font-size:11px; letter-spacing:4px; text-transform:uppercase; color:#C9A84C; margin-bottom:4px;">A csúcson</div>
+        <div style="background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.2); border-radius:4px; padding:12px 14px; flex:1; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="font-size:13px; font-weight:600; color:#C9A84C; margin-bottom:8px;">Amit én csináltam:</div>
+            <div style="font-size:12px; color:rgba(245,240,232,0.7); line-height:1.7;">
+              Minden lépésnél<br>
+              <strong style="color:#F5F0E8;">2 be · 4 ki</strong><br><br>
+              Ha pánik jött:<br>
+              <strong style="color:#F5F0E8;">megálltam</strong><br>
+              <br>
+              <br><br>
+              Inhalátor:<br>
+              <strong style="color:#F5F0E8;">mindig kéznél</strong>
+            </div>
+          </div>
+          <div style="font-size:11px; color:rgba(201,168,76,0.5); margin-top:12px; line-height:1.5;">
+            Kili: tudtam mit csinálok.
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 9: Felkészülés  ===== -->
+  <div class="slide slide-split" id="slide-9">
+<div class="slide-number-badge">9</div>
+    <div class="split-text">
+      <div class="eyebrow">2025 június – 2026 január</div>
+      <div class="slide-heading">Hogyan készültem fel<br><em>asztmával?</em></div>
+      <div class="divider"></div>
+      <div class="slide-body">
+	<strong>Júni 14 -> Dec. 26 (bő 6 hónap)</strong><br><br>
+	🏆  2 x MARATON (1hét alatt)<br><br>
+	✨️   2 x 30 km<br>
+	❗️ 11 x FÉLMARATON<br>
+      	   16 x 15 km<br>
+     	   19 x 10 km<br>
+            1 x 5 km ("kanapéról felkelős")
+      </div>
+      <div class="stats-row" style="margin-top: 32px;">
+        <div class="stat-item">
+          <div class="stat-value">Félmaraton</div>
+          <div class="stat-label">heti 1x</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">Tüdőgondozás</div>
+          <div class="stat-label">rendszeres kontroll</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/005.jpg" loading="lazy" alt="maraton" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+  <!-- ===== DIA 10: Felkészülés  ===== -->
+  <div class="slide slide-split" id="slide-10">
+<div class="slide-number-badge">10</div>
+    <div class="split-text">
+      <div class="eyebrow">Mit ne hagyjak otthon</div>
+      <div class="slide-heading">Lényegesebb<br><em>gyógyszerek</em></div>
+      <div class="divider"></div>
+      <div class="slide-body">
+	<strong>Asztmagyógyszerek</strong><br>
+	Antibiotikum<br>
+	Orrspray<br>
+	Fejfájás elleni gyógyszer<br>
+	Hasfogó
+      </div>
+      <div class="stats-row" style="margin-top: 32px;">
+        <div class="stat-item">
+          <div class="stat-value">Asztmagyógyszer</div>
+          <div class="stat-label">melegben tartva</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">Orrspray</div>
+          <div class="stat-label">nyálkahártya nedvesítés</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/006.png" loading="lazy" alt="gyogyszerek" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+   <!-- ===== DIA 11: Felkészülés  ===== -->
+  <div class="slide slide-split" id="slide-11">
+<div class="slide-number-badge">11</div>
+    <div class="split-text">
+      <div class="eyebrow">Mit ne hagyjak otthon</div>
+      <div class="slide-heading">Lényegesebb<br><em>ruházat</em></div>
+      <div class="divider"></div>
+      <div class="slide-body">
+	Aláöltözet<br>
+	Középréteg<br>
+	Pehelykabát<br>
+	<strong>Héjkabát</strong><br>
+	Nadrág - Héjnadrág<br>
+      </div>
+      <div class="stats-row" style="margin-top: 32px;">
+        <div class="stat-item">
+          <div class="stat-value">Hálózsák</div>
+          <div class="stat-label">-10fok komfort</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">Bakancs</div>
+          <div class="stat-label">vízálló</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/007.jpg" loading="lazy" alt="ruházat" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+   <!-- ===== DIA 12: Pakolás  ===== -->
+  <div class="slide slide-split" id="slide-12">
+<div class="slide-number-badge">12</div>
+    <div class="split-text">
+      <div class="eyebrow">Mibe pakoltam?</div>
+      <div class="slide-heading">2-3 darab<br><em>csomag</em></div>
+      <div class="divider"></div>
+      <div class="slide-body">
+	<strong>Duffel Bag (max 10kg)</strong><br>
+	Hátizsák<br>
+	Bármi amit otthagysz a szálláson<br>
+      </div>
+      <div class="stats-row" style="margin-top: 32px;">
+        <div class="stat-item">
+          <div class="stat-value">Duffel Bag</div>
+          <div class="stat-label">30L</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">Hátizsák</div>
+          <div class="stat-label">30L</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/008.jpg" loading="lazy" alt="csomagok" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+<!-- ===== DIA 12: KILIMANDZSÁRÓ – GEOLÓGIA ===== -->
+<div class="slide slide-story" id="slide-12r" style="padding-top:60px;">
+  <div class="eyebrow">Geológia · Geological Society of London · UNESCO Geoheritage Site 2022</div>
+  <div class="slide-heading">Kilimandzsáró —<br><em>3 vulkán egyben</em></div>
+  <div class="divider divider-center"></div>
+
+  <div style="display:flex; gap:40px; max-width:1100px; width:100%; margin:0 auto;">
+
+    <!-- Bal: Kibo / Mawenzi / Shira -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+
+      <div style="background:rgba(201,168,76,0.1); border-left:3px solid #C9A84C; border-radius:0 4px 4px 0; padding:12px 16px;">
+        <div style="font-size:12px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#C9A84C;">Kibo — 5 895 m · szunnyadó</div>
+        <div style="font-size:14px; color:rgba(245,240,232,0.75); margin-top:4px; line-height:1.6;">
+          ~460 000 éve keletkezett. Bazalt, andezit, obszidián. Három koncentrikus kráter — a Reusch-kráterből ma is szulfuros gőz száll fel. Technikailag <strong style="color:#F5F0E8;">nem kialudt</strong>, csak szunnyad.
+        </div>
+      </div>
+
+      <div style="background:rgba(160,82,45,0.1); border-left:3px solid #A0522D; border-radius:0 4px 4px 0; padding:12px 16px;">
+        <div style="font-size:12px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#A0522D;">Mawenzi — 5 149 m · kialudt</div>
+        <div style="font-size:14px; color:rgba(245,240,232,0.75); margin-top:4px; line-height:1.6;">
+          ~1 millió éve keletkezett, erősen erodált. Trachybazalt. Egyike Afrikában a <strong style="color:#F5F0E8;">legnehezebbnek tartott csúcsoknak</strong> — normál turisták nem mászhatják.
+        </div>
+      </div>
+
+      <div style="background:rgba(123,175,212,0.08); border-left:3px solid rgba(123,175,212,0.4); border-radius:0 4px 4px 0; padding:12px 16px;">
+        <div style="font-size:12px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#7BAFD4;">Shira — 4 005 m · kialudt</div>
+        <div style="font-size:14px; color:rgba(245,240,232,0.75); margin-top:4px; line-height:1.6;">
+          ~2,5 millió éve keletkezett, a legrégebbi. Ma lapos platóvá erodálódott — a saját kalderájába roskadt.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Jobb: Érdekességek -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+
+      <div style="font-size:11px; letter-spacing:4px; text-transform:uppercase; color:rgba(245,240,232,0.35); margin-bottom:2px;">Érdekességek</div>
+
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="color:#C9A84C; font-size:18px; line-height:1; margin-top:2px;">◆</div>
+        <div style="font-size:14px; color:rgba(245,240,232,0.75); line-height:1.6;">
+          <strong style="color:#F5F0E8;">Szabadon álló hegy</strong> — nem hegylánc része. Alaptól csúcsig ~4 900 m, ez a világ legnagyobb szintkülönbsége szabadon álló hegynél.
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="color:#C9A84C; font-size:18px; line-height:1; margin-top:2px;">◆</div>
+        <div style="font-size:14px; color:rgba(245,240,232,0.75); line-height:1.6;">
+          <strong style="color:#F5F0E8;">~250 parazitakúp</strong> szóródik a lejtőkön — kisebb másodvulkánok sorozata.
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="color:#C9A84C; font-size:18px; line-height:1; margin-top:2px;">◆</div>
+        <div style="font-size:14px; color:rgba(245,240,232,0.75); line-height:1.6;">
+          <strong style="color:#F5F0E8;">Obszidián</strong> — a jellegzetes fekete kő a csúcson: 360 000 éve keletkezett, gyorsan hűlt láva, amolyan természetes üveg.
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="color:#E24B4A; font-size:18px; line-height:1; margin-top:2px;">◆</div>
+        <div style="font-size:14px; color:rgba(245,240,232,0.75); line-height:1.6;">
+          <strong style="color:#F5F0E8;">Jégsapka 1912 óta 82%-kal csökkent.</strong> 2030-ra teljesen eltűnhet. Az egyenlítőn hó — a klímaváltozás élő mérőeszköze.
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="color:#C9A84C; font-size:18px; line-height:1; margin-top:2px;">◆</div>
+        <div style="font-size:14px; color:rgba(245,240,232,0.75); line-height:1.6;">
+          <strong style="color:#F5F0E8;">„Kilimandzsáró"</strong> — valószínű fordítása: „a fehérség hegye" (szuahéli), vagy a Chagga néptől: „ami legyőz".
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+	
+   <!-- ===== DIA 13: 7 Útvonal  ===== -->
+  <div class="slide slide-split" id="slide-13">
+<div class="slide-number-badge">13</div>
+    <div class="split-text">
+      <div class="eyebrow">Útvonalösszehasonlítás</div>
+      <div class="slide-heading">A Kilimandzsáró<br><em>7 útvonala</em></div>
+      <div class="divider"></div>
+      <div class="slide-body">
+	<strong>Marangu</strong><br>Machame<br>Lemosho<br>Shira<br>Rongai<br>Northern<br>Circuit<br>Umbwe
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/005.png" loading="lazy" alt="útvonalak" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+   <!-- ===== DIA 14: MARANGU ===== -->
+  <div class="slide slide-split" id="slide-14">
+<div class="slide-number-badge">14</div>
+    <div class="split-text">
+      <div class="eyebrow">1. útvonal · Déli oldal</div>
+      <div class="slide-heading">Marangu<br><em>„Coca-Cola út"</em></div>
+      <div class="divider"></div>
+      <div class="slide-body" style="font-size:clamp(14px,1.6vw,17px);">
+        A legrégebbi, legismertebb útvonal. Az egyetlen, ahol <strong>kabinos szállás</strong> van — nem kempingezni kell.<br><br>
+        <strong>✦ Ez az én utam</strong>
+      </div>
+      <div class="stats-row" style="margin-top:20px; flex-wrap:wrap; gap:24px;">
+        <div class="stat-item"><div class="stat-value">64 km</div><div class="stat-label">Távolság</div></div>
+        <div class="stat-item"><div class="stat-value">5–6 nap</div><div class="stat-label">Időtartam</div></div>
+        <div class="stat-item"><div class="stat-value">~55%</div><div class="stat-label">Sikerarány (6 nap)</div></div>
+      </div>
+      <div style="margin-top:18px; display:flex; gap:24px; font-size:13px;">
+        <div style="color: #4A7C59;"><strong>+ Kényelmes, kabinos, olcsóbb</strong></div>
+        <div style="color: #A0522D;"><strong>− Legalacsonyabb sikerarány</strong></div>
+      </div>
+    </div>
+    <div class="split-photo">
+	<img src="https://drpelyheliza.github.io/drpelyheliza/014.jpg" loading="lazy" alt="útvon" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+  <!-- ===== DIA 15: MACHAME ===== -->
+  <div class="slide slide-split" id="slide-15">
+<div class="slide-number-badge">15</div>
+    <div class="split-text">
+      <div class="eyebrow">2. útvonal · Déli oldal</div>
+      <div class="slide-heading">Machame<br><em>„Whisky út"</em></div>
+      <div class="divider"></div>
+      <div class="slide-body" style="font-size:clamp(14px,1.6vw,17px);">
+        A <strong>legnépszerűbb útvonal</strong> jelenleg — évente 20 000+ mászó. Változatos, látványos táj, kiváló akklimatizációs profil. A leszállás Mwekán át zajlik.
+      </div>
+      <div class="stats-row" style="margin-top:20px; flex-wrap:wrap; gap:24px;">
+        <div class="stat-item"><div class="stat-value">62 km</div><div class="stat-label">Távolság</div></div>
+        <div class="stat-item"><div class="stat-value">6–7 nap</div><div class="stat-label">Időtartam</div></div>
+        <div class="stat-item"><div class="stat-value">~85%</div><div class="stat-label">Sikerarány (7 nap)</div></div>
+      </div>
+      <div style="margin-top:18px; display:flex; gap:24px; font-size:13px;">
+        <div style="color: #4A7C59;"><strong>+ Kiváló akklimatizáció, szép táj</strong></div>
+        <div style="color: #A0522D;"><strong>− Csúcsszezonban zsúfolt</strong></div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/014.jpg" loading="lazy" alt="útvon" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+  <!-- ===== DIA 16: LEMOSHO ===== -->
+  <div class="slide slide-split" id="slide-16">
+<div class="slide-number-badge">16</div>
+    <div class="split-text">
+      <div class="eyebrow">3. útvonal · Nyugati oldal</div>
+      <div class="slide-heading">Lemosho</div>
+      <div class="divider"></div>
+      <div class="slide-body" style="font-size:clamp(14px,1.6vw,17px);">
+        A <strong>legjobb összesített útvonal</strong> — hosszabb, csendesebb, és a hegy északi lejtőit is bejárja. 4. nap csatlakozik a Machame-hoz.
+      </div>
+      <div class="stats-row" style="margin-top:20px; flex-wrap:wrap; gap:24px;">
+        <div class="stat-item"><div class="stat-value">70 km</div><div class="stat-label">Távolság</div></div>
+        <div class="stat-item"><div class="stat-value">7–8 nap</div><div class="stat-label">Időtartam</div></div>
+        <div class="stat-item"><div class="stat-value">~90%</div><div class="stat-label">Sikerarány (8 nap)</div></div>
+      </div>
+      <div style="margin-top:18px; display:flex; gap:24px; font-size:13px;">
+        <div style="color: #4A7C59;"><strong>+ Csendes, változatos, magas sikerarány</strong></div>
+        <div style="color: #A0522D;"><strong>− Hosszabb és drágább</strong></div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/014.jpg" loading="lazy" alt="útvon" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">    </div>
+  </div>
+ 
+  <!-- ===== DIA 17: SHIRA ===== -->
+  <div class="slide slide-split" id="slide-17">
+<div class="slide-number-badge">17</div>
+    <div class="split-text">
+      <div class="eyebrow">4. útvonal · Nyugati oldal</div>
+      <div class="slide-heading">Shira</div>
+      <div class="divider"></div>
+      <div class="slide-body" style="font-size:clamp(14px,1.6vw,17px);">
+        Hasonló a Lemoshóhoz, de <strong>magasabb kiindulással</strong> — a mászókat autóval viszik fel a Shira-fennsíkra. Az akklimatizáció ezért kezdetben gyorsabb és nehezebb.
+      </div>
+      <div class="stats-row" style="margin-top:20px; flex-wrap:wrap; gap:24px;">
+        <div class="stat-item"><div class="stat-value">65 km</div><div class="stat-label">Távolság</div></div>
+        <div class="stat-item"><div class="stat-value">6–8 nap</div><div class="stat-label">Időtartam</div></div>
+        <div class="stat-item"><div class="stat-value">~70%</div><div class="stat-label">Sikerarány</div></div>
+      </div>
+      <div style="margin-top:18px; display:flex; gap:24px; font-size:13px;">
+        <div style="color: #4A7C59;"><strong>+ Látványos fennsík, csendes</strong></div>
+        <div style="color: #A0522D;"><strong>− Gyors magasságnyerés, rosszabb akklimatizáció</strong></div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/014.jpg" loading="lazy" alt="útvon" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+  <!-- ===== DIA 18: RONGAI ===== -->
+  <div class="slide slide-split" id="slide-18">
+<div class="slide-number-badge">18</div>
+    <div class="split-text">
+      <div class="eyebrow">5. útvonal · Északi oldal</div>
+      <div class="slide-heading">Rongai</div>
+      <div class="divider"></div>
+      <div class="slide-body" style="font-size:clamp(14px,1.6vw,17px);">
+        Az egyetlen útvonal, amely <strong>észak felől, a kenyai határ közeléből</strong> indul. Jóval csendesebb, mint a déli oldalak. Az esős évszakban is általában szárazabb időjárás.
+      </div>
+      <div class="stats-row" style="margin-top:20px; flex-wrap:wrap; gap:24px;">
+        <div class="stat-item"><div class="stat-value">65 km</div><div class="stat-label">Távolság</div></div>
+        <div class="stat-item"><div class="stat-value">6–7 nap</div><div class="stat-label">Időtartam</div></div>
+        <div class="stat-item"><div class="stat-value">~80%</div><div class="stat-label">Sikerarány (7 nap)</div></div>
+      </div>
+      <div style="margin-top:18px; display:flex; gap:24px; font-size:13px;">
+        <div style="color: #4A7C59;"><strong>+ Csendes, szárazabb, Mawenzi-panoráma</strong></div>
+        <div style="color: #A0522D;"><strong>− Gyengébb akklimatizációs profil</strong></div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/014.jpg" loading="lazy" alt="útvon" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+  <!-- ===== DIA 19: NORTHERN CIRCUIT ===== -->
+  <div class="slide slide-split" id="slide-19">
+<div class="slide-number-badge">19</div>
+    <div class="split-text">
+      <div class="eyebrow">6. útvonal · Körút</div>
+      <div class="slide-heading">Northern Circuit</div>
+      <div class="divider"></div>
+      <div class="slide-body" style="font-size:clamp(14px,1.6vw,17px);">
+        A <strong>leghosszabb és legcsendesebb</strong> útvonal — körbejárja az egész hegy északi lejtőit. 360 fokos panoráma, a legjobb akklimatizációs profil, a legmagasabb sikerarány.
+      </div>
+      <div class="stats-row" style="margin-top:20px; flex-wrap:wrap; gap:24px;">
+        <div class="stat-item"><div class="stat-value">98 km</div><div class="stat-label">Távolság</div></div>
+        <div class="stat-item"><div class="stat-value">9 nap</div><div class="stat-label">Időtartam</div></div>
+        <div class="stat-item"><div class="stat-value">~93%</div><div class="stat-label">Sikerarány</div></div>
+      </div>
+      <div style="margin-top:18px; display:flex; gap:24px; font-size:13px;">
+        <div style="color: #4A7C59;"><strong>+ Legmagasabb sikerarány, legcsendesebb</strong></div>
+        <div style="color: #A0522D;"><strong>− Leghosszabb, legdrágább</strong></div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/014.jpg" loading="lazy" alt="útvon" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+  <!-- ===== DIA 20: UMBWE ===== -->
+  <div class="slide slide-split" id="slide-20">
+<div class="slide-number-badge">20</div>
+    <div class="split-text">
+      <div class="eyebrow">7. útvonal · Déli oldal · Csak tapasztaltaknak</div>
+      <div class="slide-heading">Umbwe<br><em>A legnehezebb</em></div>
+      <div class="divider"></div>
+      <div class="slide-body" style="font-size:clamp(14px,1.6vw,17px);">
+        A <strong>legrövidebb, legmeredekebb, legveszélyesebb</strong> útvonal. Szinte magányos trek az első két napban, drámai sziklás tájak. Csak komoly magashegyi rutinnal ajánlott.
+      </div>
+      <div class="stats-row" style="margin-top:20px; flex-wrap:wrap; gap:24px;">
+        <div class="stat-item"><div class="stat-value">53 km</div><div class="stat-label">Távolság</div></div>
+        <div class="stat-item"><div class="stat-value">5–7 nap</div><div class="stat-label">Időtartam</div></div>
+        <div class="stat-item"><div class="stat-value">~55%</div><div class="stat-label">Sikerarány</div></div>
+      </div>
+      <div style="margin-top:18px; display:flex; gap:24px; font-size:13px;">
+        <div style="color: #4A7C59;"><strong>+ Csendes, kalandos, drámai táj</strong></div>
+        <div style="color: #A0522D;"><strong>− Rossz akklimatizáció, magas visszafordulási arány</strong></div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/014.jpg" loading="lazy" alt="útvon" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+ 
+  <!-- ===== DIA 21: A KILIMANDZSÁRÓ ===== -->
+  <div class="slide slide-section-divider" id="slide-21">
+<div class="slide-number-badge">21</div>
+    <div class="eyebrow">Kilimandzsáró</div>
+    <div class="slide-heading" style="font-size: clamp(40px,6vw,72px);">A Marangu-útvonal</div>
+    <div class="slide-body" style="max-width:640px;">Hat nap. Három szállás. Csúcs: Uhuru Peak, 5 895 m.</div>
+  </div>
+ 
+  <!-- ===== DIA 22: ÚTVONAL ÁTTEKINTÉS ===== -->
+  <div class="slide slide-map" id="slide-22">
+<div class="slide-number-badge">22</div>
+    <div class="eyebrow">Marangu-útvonal · Kilimandzsáró</div>
+    <div class="slide-heading" style="font-size: clamp(24px,3.5vw,42px);">Az útvonal magassági profilja</div>
+    <svg viewBox="0 0 900 300" style="width:100%;max-width:900px;" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="profileGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#C9A84C" stop-opacity="0.05"/>
+        </linearGradient>
+      </defs>
+      <!-- Grid lines -->
+      <line x1="0" y1="50" x2="900" y2="50" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+      <line x1="0" y1="100" x2="900" y2="100" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+      <line x1="0" y1="150" x2="900" y2="150" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+      <line x1="0" y1="200" x2="900" y2="200" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+      <line x1="0" y1="250" x2="900" y2="250" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+      <!-- Altitude labels -->
+      <text x="8" y="54" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">5 900 m</text>
+      <text x="8" y="104" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">5 200 m</text>
+      <text x="8" y="154" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">4 500 m</text>
+      <text x="8" y="204" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">3 700 m</text>
+      <text x="8" y="254" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">3 000 m</text>
+      <!-- Profile path -->
+      <!-- Points: start(1870m)→Mandara(2720)→Horombo(3720)→Kibo(4703)→Summit(5895)→Horombo→Mandara→Gate -->
+      <!-- Scaled: 1870=270px, 5895=55px. Scale=(270-55)/(5895-1870)=215/4025=0.0534px/m -->
+      <!-- y = 270 - (alt-1870)*0.0534 -->
+      <!-- 1870→270, 2720→224, 3720→169, 4703→114, 5895→55 -->
+      <path d="M 80,270  C 160,270 180,224 260,224  C 340,224 360,169 440,169  C 520,169 540,114 620,114  L 680,55  L 720,114  C 760,114 780,169 820,169  L 820,270 Z"
+            fill="url(#profileGrad)" />
+      <path d="M 80,270  C 160,270 180,224 260,224  C 340,224 360,169 440,169  C 520,169 540,114 620,114  L 680,55  L 720,114  C 760,114 780,169 820,169"
+            fill="none" stroke="#C9A84C" stroke-width="2.5"/>
+      <!-- Waypoint dots -->
+      <circle cx="80" cy="270" r="5" fill="#C9A84C"/>
+      <circle cx="260" cy="224" r="5" fill="#C9A84C"/>
+      <circle cx="440" cy="169" r="5" fill="#C9A84C"/>
+      <circle cx="620" cy="114" r="5" fill="#C9A84C"/>
+      <circle cx="680" cy="55" r="7" fill="white" stroke="#C9A84C" stroke-width="2"/>
+      <circle cx="720" cy="114" r="5" fill="#7BAFD4"/>
+      <circle cx="820" cy="169" r="5" fill="#7BAFD4"/>
+      <!-- Labels -->
+      <text x="60" y="290" fill="rgba(245,240,232,0.6)" font-size="11" font-family="Source Sans 3, sans-serif" text-anchor="middle">Marangu</text>
+      <text x="60" y="302" fill="rgba(245,240,232,0.3)" font-size="10" font-family="Source Sans 3, sans-serif" text-anchor="middle">1 870 m</text>
+      <text x="260" y="210" fill="rgba(245,240,232,0.6)" font-size="11" font-family="Source Sans 3, sans-serif" text-anchor="middle">Mandara</text>
+      <text x="260" y="222" fill="rgba(245,240,232,0.3)" font-size="10" font-family="Source Sans 3, sans-serif" text-anchor="middle">2 720 m</text>
+      <text x="440" y="155" fill="rgba(245,240,232,0.6)" font-size="11" font-family="Source Sans 3, sans-serif" text-anchor="middle">Horombo</text>
+      <text x="440" y="167" fill="rgba(245,240,232,0.3)" font-size="10" font-family="Source Sans 3, sans-serif" text-anchor="middle">3 720 m</text>
+      <text x="620" y="100" fill="rgba(245,240,232,0.6)" font-size="11" font-family="Source Sans 3, sans-serif" text-anchor="middle">Kibo</text>
+      <text x="620" y="112" fill="rgba(245,240,232,0.3)" font-size="10" font-family="Source Sans 3, sans-serif" text-anchor="middle">4 703 m</text>
+      <text x="680" y="42" fill="#C9A84C" font-size="13" font-family="Playfair Display, serif" font-weight="700" text-anchor="middle">UHURU</text>
+      <text x="680" y="56" fill="rgba(201,168,76,0.6)" font-size="10" font-family="Source Sans 3, sans-serif" text-anchor="middle">5 895 m</text>
+      <!-- Day markers -->
+      <text x="170" y="285" fill="rgba(201,168,76,0.5)" font-size="10" font-family="Source Sans 3, sans-serif" text-anchor="middle">1. nap ↓</text>
+      <text x="350" y="285" fill="rgba(201,168,76,0.5)" font-size="10" font-family="Source Sans 3, sans-serif" text-anchor="middle">2. nap ↓</text>
+      <text x="530" y="285" fill="rgba(201,168,76,0.5)" font-size="10" font-family="Source Sans 3, sans-serif" text-anchor="middle">3. nap ↓</text>
+      <text x="650" y="285" fill="rgba(201,168,76,0.5)" font-size="10" font-family="Source Sans 3, sans-serif" text-anchor="middle">4-5. éjjel</text>
+    </svg>
+    <div style="display:flex;gap:32px;font-size:12px;color:rgba(245,240,232,0.4);letter-spacing:2px;">
+      <span>▲ Felfelé (arany)</span>
+      <span>▼ Visszafelé (kék)</span>
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 22: 0. NAP ===== -->
+  <div class="slide slide-split" id="slide-22">
+<div class="slide-number-badge">22</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">0</div>
+        <div class="day-info">
+          <div class="day-title">Nulladik nap</div>
+          <div class="day-alt">Megérkezés</div>
+        </div>
+      </div>
+      <div class="slide-heading">Kilimandzsáró<br><em>reptér</em></div>
+      <div class="slide-body">
+        Meleg<br>
+        Nyár<br>
+        <strong>Maradjunk Moshiban</strong>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">0 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">880 m</div>
+          <div class="stat-label">Moshi és Arusha között</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/009.jpg" loading="lazy" alt="reptér" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 23: 1. NAP ===== -->
+  <div class="slide slide-split" id="slide-23">
+<div class="slide-number-badge">23</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">1</div>
+        <div class="day-info">
+          <div class="day-title">Első nap</div>
+          <div class="day-alt">Marangu Gate → Mandara Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Belépsz<br><em>az esőerdőbe</em></div>
+      <div class="slide-body">
+        1 879 m-ről 2 720 m-re. ~8 km, ~3–4 óra.<br><br>
+        Esőerdei ösvény, madárhangok, nedves levegő.<br>
+        Az első nap az <strong>illúzió napja</strong> — könnyűnek tűnik minden.
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">850 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2 720 m</div>
+          <div class="stat-label">Mandara Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/012.jpg" loading="lazy" alt="kapu" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+
+  <!-- ===== DIA 24: 1. NAP ===== -->
+  <div class="slide slide-split" id="slide-24">
+<div class="slide-number-badge">24</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">1</div>
+        <div class="day-info">
+          <div class="day-title">Első nap</div>
+          <div class="day-alt">Marangu Gate → Mandara Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Belépsz<br><em>az esőerdőbe</em></div>
+      <div class="slide-body">
+        1 879 m-ről 2 720 m-re. ~8 km, ~3–4 óra.<br><br>
+        Esőerdei ösvény, madárhangok, nedves levegő.<br>
+        Az első nap az <strong>illúzió napja</strong> — könnyűnek tűnik minden.
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">850 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2 720 m</div>
+          <div class="stat-label">Mandara Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/015.jpg" loading="lazy" alt="ind" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+
+<!-- ===== DIA 25: KÖDERDŐ / SZAKÁLLZUZMÓ ===== -->
+<div class="slide slide-split" id="slide-25">
+<div class="slide-number-badge">25</div>
+
+  <!-- JOBB: fotó — ez a kép annyira erős, jobb ha nagyobb helyet kap -->
+  <div class="split-photo" style="order:1; flex:1.3;">
+    <img src="https://drpelyheliza.github.io/drpelyheliza/018.jpg" loading="lazy" alt="Köderdő – szakállzuzmó, Usnea – Kilimandzsáró ~1800–2800m" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.classList.add('img-error')">
+    <!--
+    <div class="photo-placeholder">
+      <div class="photo-icon">🌫</div>
+      <p>Ide kerül a köderdő fotód</p>
+    </div>
+    -->
+  </div>
+
+  <!-- BAL: szöveg -->
+  <div class="split-text" style="order:0; flex:0.7;">
+    <div class="eyebrow">Hegyi köderdő · 1 800–2 800 m · az első lépések zónája</div>
+    <div class="slide-heading">Fantasy —<br><em>de valódi</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:11px;">
+
+      <!-- Szakállzuzmó -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">1</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Szakállzuzmó · Usnea</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            Nem moha — <strong style="color:#F5F0E8;">zuzmó</strong>. Annyira érzékeny a szennyezésre, hogy jelenléte önmagában bizonyítja: <strong style="color:#F5F0E8;">a levegő kristálytiszta</strong>. A párából közvetlenül issza a vizet.
+          </div>
+        </div>
+      </div>
+
+      <!-- Epifiták -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">2</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Epifita páfrányok</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            A fák ágain élnek, de <strong style="color:#F5F0E8;">nem élősködők</strong> — csak magasabbra akarnak jutni a fényért. A párából és az ágakon felhalmozódott avarból táplálkoznak.
+          </div>
+        </div>
+      </div>
+
+      <!-- Köderdő klíma -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">3</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Miért ilyen sűrű?</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            A lentről felszálló meleg, nedves levegő itt hűl le és csapódik ki <strong style="color:#F5F0E8;">örökös köd és eső</strong> formájában. Ez a folyamatos öntözés hozza létre ezt a zöld falat.
+          </div>
+        </div>
+      </div>
+
+      <!-- személyes -->
+      <div style="margin-top:4px; padding:10px 14px; border-left:3px solid rgba(201,168,76,0.5); background:rgba(201,168,76,0.07); border-radius:0 4px 4px 0;">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:13px; color:rgba(245,240,232,0.8); line-height:1.6;">
+          „A levegő párás, tiszta. Trópusi eső bármikor lehetséges."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== DIA 26: KÉKMAJOM ===== -->
+<div class="slide slide-split" id="slide-26">
+<div class="slide-number-badge">26</div>
+
+  <!-- BAL: fotó — a majom legyen nagy -->
+  <div class="split-photo" style="order:0; flex:1.3;">
+    <img src="https://drpelyheliza.github.io/drpelyheliza/019.jpg" loading="lazy" alt="Kékmajom – Cercopithecus mitis – Kilimandzsáró esőerdő ~2200m" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.classList.add('img-error')">
+    <!--
+    <div class="photo-placeholder">
+      <div class="photo-icon">🐒</div>
+      <p>Ide kerül a majom fotód</p>
+    </div>
+    -->
+  </div>
+
+  <!-- JOBB: szöveg -->
+  <div class="split-text" style="order:1; flex:0.7;">
+    <div class="eyebrow">Montane Forest · ~2 200 m · Cercopithecus mitis</div>
+    <div class="slide-heading">A helyi<br><em>lakó</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:11px;">
+
+      <!-- Nem is kék -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">1</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Kékmajom — de nem kék</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            A neve félrevezető — bundája valójában <strong style="color:#F5F0E8;">sötétszürke, olívazöld, szürkéskék</strong>. A lombok sűrűjében, ellenfényben pontosan így néz ki: egy sötét, mozgó folt.
+          </div>
+        </div>
+      </div>
+
+      <!-- Kizárásos alap -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">2</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Hogyan azonosítható?</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            A másik helyi faj a <strong style="color:#F5F0E8;">fekete-fehér kolobusz</strong> — hófehér gallérral és rojtos farokkal. Mivel ez nincs meg rajta: biztosan kékmajom.
+          </div>
+        </div>
+      </div>
+
+      <!-- Zóna -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">3</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Ez még a dzsungel</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            2 200 méter — még teljesen trópusi. Néhány nappal később ugyanezen a hegyen <strong style="color:#F5F0E8;">kősivatag és nulla fok</strong> várt. Ugyanaz a hegy, más világ.
+          </div>
+        </div>
+      </div>
+
+      <!-- személyes -->
+      <div style="margin-top:4px; padding:10px 14px; border-left:3px solid rgba(201,168,76,0.5); background:rgba(201,168,76,0.07); border-radius:0 4px 4px 0;">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:13px; color:rgba(245,240,232,0.8); line-height:1.6;">
+          „ A kékmajmok általában csoportokban mozognak — ha egyet látunk, a közelben általában van még 5-10."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <!-- ===== DIA 27: 1. NAP ===== -->
+  <div class="slide slide-split" id="slide-27">
+<div class="slide-number-badge">27</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">1</div>
+        <div class="day-info">
+          <div class="day-title">Első nap</div>
+          <div class="day-alt">Marangu Gate → Mandara Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Belépsz<br><em>az esőerdőbe</em></div>
+      <div class="slide-body">
+        1 879 m-ről 2 720 m-re. ~8 km, ~3–4 óra.<br><br>
+        Esőerdei ösvény, madárhangok, nedves levegő.<br>
+        Az első nap az <strong>illúzió napja</strong> — könnyűnek tűnik minden.
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">850 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2 720 m</div>
+          <div class="stat-label">Mandara Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/020.jpg" loading="lazy" alt="Mandara" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+  <!-- ===== DIA 28: 1. NAP ===== -->
+  <div class="slide slide-split" id="slide-28">
+<div class="slide-number-badge">28</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">1</div>
+        <div class="day-info">
+          <div class="day-title">Első nap</div>
+          <div class="day-alt">Marangu Gate → Mandara Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Lakóhely<br><em>és környezete</em></div>
+      <div class="slide-body">
+        Taposós és angol WC<br><br>
+        Belehelhető alvóhelyiség<br>
+        <strong>washi - washi</strong>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">0 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2 720 m</div>
+          <div class="stat-label">Mandara Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/021.jpg" loading="lazy" alt="szoba" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 29: 1. NAP ===== -->
+  <div class="slide slide-split" id="slide-29">
+<div class="slide-number-badge">29</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">1</div>
+        <div class="day-info">
+          <div class="day-title">Első nap</div>
+          <div class="day-alt">Marangu Gate → Mandara Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Lakóhely<br><em>és környezete</em></div>
+      <div class="slide-body">
+        Taposós és angol WC<br><br>
+        Belehelhető alvóhelyiség<br>
+        <strong>washi - washi</strong>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">0 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2 720 m</div>
+          <div class="stat-label">Mandara Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/023.jpg" loading="lazy" alt="wcfele" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 30: 1. NAP ===== -->
+  <div class="slide slide-split" id="slide-30">
+<div class="slide-number-badge">30</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">1</div>
+        <div class="day-info">
+          <div class="day-title">Első nap</div>
+          <div class="day-alt">Marangu Gate → Mandara Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Lakóhely<br><em>és környezete</em></div>
+      <div class="slide-body">
+        Taposós és angol WC<br><br>
+        Belehelhető alvóhelyiség<br>
+        <strong>washi - washi</strong>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">0 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">2 720 m</div>
+          <div class="stat-label">Mandara Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/022.jpg" loading="lazy" alt="washi" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+
+  <!-- ===== DIA 31: 2. NAP ===== -->
+  <div class="slide slide-split" id="slide-31">
+<div class="slide-number-badge">31</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">2</div>
+        <div class="day-info">
+          <div class="day-title">Második nap</div>
+          <div class="day-alt">Mandara Hut → Horombo Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Kilépés a<br><em>hanga-övbe</em></div>
+      <div class="slide-body">
+        2 720 m-ről 3 720 m-re. ~12 km, ~5–6 óra.<br><br>
+        Az erdő elmarad, megjelenik az afroalpin táj - "lápvidék". Óriás aggófüvek, hangás.<br>
+        <strong>3500m:</strong> "határátlépés".
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">1 000 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Horombo Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/025.jpg" loading="lazy" alt="hanga" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+
+<!-- ===== DIA 32: KIBO vs MAWENZI – ELSŐ PILLANTÁS ===== -->
+<div class="slide slide-split" id="slide-32">
+<div class="slide-number-badge">32</div>
+
+  <!-- BAL: fotó -->
+  <div class="split-photo" style="order:0; flex:1.3;">
+    <img src="https://drpelyheliza.github.io/drpelyheliza/026.jpg" loading="lazy" 
+         alt="Kibo és Mawenzi – első pillantás a Moorland zónából" 
+         style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.classList.add('img-error')">
+    <!--
+    <div class="photo-placeholder">
+      <div class="photo-icon">🏔</div>
+      <p>Ide kerül a Kibo–Mawenzi fotód</p>
+    </div>
+    -->
+  </div>
+
+  <!-- JOBB: szöveg -->
+  <div class="split-text" style="order:1; flex:0.7;">
+    <div class="eyebrow">Moorland zóna · ~2 800 m · az első nagy kilátás</div>
+    <div class="slide-heading">Először látom<br><em>hova megyek</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:11px;">
+
+      <!-- Kibo vs Mawenzi -->
+      <div style="display:flex; gap:8px;">
+
+        <div style="flex:1; background:rgba(245,240,232,0.05); border:1px solid rgba(245,240,232,0.12); border-radius:4px; padding:10px 12px;">
+          <div style="font-size:11px; font-weight:600; color:#7BAFD4; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px;">Kibo ← balra</div>
+          <div style="font-size:12px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            Kerekded, havas kúp. <strong style="color:#F5F0E8;">Szunnyadó vulkán.</strong> Az Uhuru Peak itt van — ez a cél.
+          </div>
+        </div>
+
+        <div style="flex:1; background:rgba(245,240,232,0.05); border:1px solid rgba(245,240,232,0.12); border-radius:4px; padding:10px 12px;">
+          <div style="font-size:11px; font-weight:600; color:#A0522D; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px;">Mawenzi → jobbra</div>
+          <div style="font-size:12px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            Csipkés, sziklás, vad. <strong style="color:#F5F0E8;">Régen kialudt.</strong> Csak profi sziklamászóknak.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Helichrysum -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">2</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Helichrysum · „Everlastings" · "Sosem hervadó" virágok</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            Szárazon is megtartják a formájukat és színüket — <strong style="color:#F5F0E8;">papírszerű szirmok</strong>. Régen ezekkel töltötték a táborokban a matracokat. Ma már tilos szedni.
+          </div>
+        </div>
+      </div>
+
+      <!-- Tűz-zóna -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">3</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Tűz-zóna</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            A sötét ágak régi bozóttüzek nyomai. Az óriás hangák <strong style="color:#F5F0E8;">föld alatti gyökerekkel vészelik át</strong> — tűz után pár héttel már újra hajtanak.
+          </div>
+        </div>
+      </div>
+
+      <!-- személyes -->
+      <div style="margin-top:4px; padding:10px 14px; border-left:3px solid rgba(201,168,76,0.5); background:rgba(201,168,76,0.07); border-radius:0 4px 4px 0;">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:13px; color:rgba(245,240,232,0.8); line-height:1.6;">
+          „A két csúcs kb. 11 km-re van egymástól, a köztük lévő nyereg a Saddle — ott megy az út Kibo felé."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== DIA 33: KAMÉLEON ===== -->
+<div class="slide slide-split" id="slide-33">
+<div class="slide-number-badge">33</div>
+
+  <!-- BAL: fotó -->
+  <div class="split-photo" style="order:0; flex:1.3;">
+    <img src="https://drpelyheliza.github.io/drpelyheliza/027.jpg" loading="lazy" 
+         alt="Kinyongia tavetana – kétvonalas sisakos kaméleon – Kilimandzsáró ~3000m" 
+         style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.classList.add('img-error')">
+    <!--
+    <div class="photo-placeholder">
+      <div class="photo-icon">🦎</div>
+      <p>Ide kerül a kaméleon fotód</p>
+    </div>
+    -->
+  </div>
+
+  <!-- JOBB: szöveg -->
+  <div class="split-text" style="order:1; flex:0.7;">
+    <div class="eyebrow">~3 000 m · Kinyongia tavetana · Kilimandzsáró endemikus faja</div>
+    <div class="slide-heading">Nehezen észrevehető<br><em>lakó</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:11px;">
+
+      <!-- Endemikus -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">1</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Kétvonalas sisakos kaméleon</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            A Kilimandzsáró és a környező tanzániai–kenyai hegyvidékek lakója. Kifejezetten jól bírja a hideget — <strong style="color:#F5F0E8;">3 000 méteren ez alapfelszereltség.</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mimikri -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">2</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Rejtőzködő művész</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            A barnás-zöldes-szürkés szín tökéletesen beleolvad a sziklás, füves tájba. <strong style="color:#F5F0E8;">Ha nem mozog, láthatatlan.</strong> A legtöbb túrázó simán elsétál mellette.
+          </div>
+        </div>
+      </div>
+
+      <!-- Szarvak -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:28px; height:28px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; color:#C9A84C; margin-top:2px;">3</div>
+        <div>
+          <div style="font-size:11px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Kétvonalas sisakos — a „szarvak"</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.55;">
+            A hímeknek két jellegzetes szarv nyúlik előre az orrukon — <strong style="color:#F5F0E8;">területvédelemre és rangjelzésre</strong>. 
+          </div>
+        </div>
+      </div>
+
+      <!-- személyes -->
+      <div style="margin-top:4px; padding:10px 14px; border-left:3px solid rgba(201,168,76,0.5); background:rgba(201,168,76,0.07); border-radius:0 4px 4px 0;">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:13px; color:rgba(245,240,232,0.8); line-height:1.6;">
+          „Az egyik legritkábban fotózott kilimandzsárói faj — nem azért, mert kevés van belőlük, hanem mert a mimikrijük annyira tökéletes."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+
+  <!-- ===== DIA 34: 2. NAP ===== -->
+  <div class="slide slide-split" id="slide-34">
+<div class="slide-number-badge">34</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">2</div>
+        <div class="day-info">
+          <div class="day-title">Második nap</div>
+          <div class="day-alt">Mandara Hut → Horombo Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Kilépés a<br><em>hanga-övbe</em></div>
+      <div class="slide-body">
+        2 720 m-ről 3 720 m-re. ~12 km, ~5–6 óra.<br><br>
+        Az erdő elmarad, megjelenik az afroalpin táj - "lápvidék". Óriás aggófüvek, hangás.<br>
+        <strong>3500m:</strong> "határátlépés".
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">1 000 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Horombo Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/029.jpg" loading="lazy" alt="kaja" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+<!-- ===== DIA 35: ÓRIÁS LOBÉLIA ===== -->
+<div class="slide slide-split" id="slide-35">
+<div class="slide-number-badge">35</div>
+
+  <!-- JOBB: a te fotód -->
+  <div class="split-photo" style="order:1;">
+    <img src="https://drpelyheliza.github.io/drpelyheliza/031.jpg" loading="lazy" alt="Óriás lobélia – Kilimandzsáró ~3500m" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.classList.add('img-error')">
+    <!-- ha még nem illesztetted be a képet, hagyd a photo-placeholder-t: -->
+    <!--
+    <div class="photo-placeholder">
+      <div class="photo-icon">🌺</div>
+      <p>Ide kerül a lobélia fotód</p>
+    </div>
+    -->
+  </div>
+
+  <!-- BAL: szöveg -->
+  <div class="split-text" style="order:0;">
+    <div class="eyebrow">Afro-alpin zóna · ~3 500 m · Lobelia deckenii</div>
+    <div class="slide-heading">Óriás lobélia<br><em>a túlélőművész</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+
+      <div style="display:flex; gap:14px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">❄</div>
+        <div>
+          <div style="font-size:13px; font-weight:600; color:#F5F0E8; letter-spacing:1px; margin-bottom:3px;">Természetes fagyálló</div>
+          <div style="font-size:14px; color:rgba(245,240,232,0.7); line-height:1.6;">Éjszaka a levelek összecsukódnak a középső rügy köré — élő bundaként védik a növény szívét a fagypont alatti hidegtől.</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:14px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">💧</div>
+        <div>
+          <div style="font-size:13px; font-weight:600; color:#F5F0E8; letter-spacing:1px; margin-bottom:3px;">Beépített termosz</div>
+          <div style="font-size:14px; color:rgba(245,240,232,0.7); line-height:1.6;">A levelek tövében vizet gyűjt. Éjjel a teteje megfagy — de az alatta lévő folyékony víz és a jégréteg szigetelést alkot. Saját maga tervezi a hőszigetelést.</div>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:14px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">🌸</div>
+        <div>
+          <div style="font-size:13px; font-weight:600; color:#F5F0E8; letter-spacing:1px; margin-bottom:3px;">Egyszer virágzik — aztán meghal</div>
+          <div style="font-size:14px; color:rgba(245,240,232,0.7); line-height:1.6;">Évtizedekig él, mire egyszer virágot hoz. Miután elszórja magvait, az anyanövény elpusztul. A képen látható virágzat: egy élet munkája.</div>
+        </div>
+      </div>
+
+      <!-- személyes párhuzam -->
+      <div style="margin-top:8px; padding:12px 16px; border-left:3px solid rgba(201,168,76,0.5); background:rgba(201,168,76,0.07); border-radius:0 4px 4px 0;">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:15px; color:rgba(245,240,232,0.8); line-height:1.6;">
+          „Csak és kizárólag az afrikai magashegységekben él - sehol máshol a világon."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== DIA 36: DENDROSENECIO + ÓRIÁS HANGA ===== -->
+<div class="slide slide-split" id="slide-36">
+<div class="slide-number-badge">36</div>
+
+  <!-- BAL: fotó -->
+  <div class="split-photo" style="order:0;">
+    <img src="https://drpelyheliza.github.io/drpelyheliza/032.jpg" loading="lazy" alt="Dendrosenecio kilimanjari és óriás hanga – Moorland zóna ~3500m" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.classList.add('img-error')">
+    <!--
+    <div class="photo-placeholder">
+      <div class="photo-icon">🌿</div>
+      <p>Ide kerül a senecio fotód</p>
+    </div>
+    -->
+  </div>
+
+  <!-- JOBB: szöveg -->
+  <div class="split-text" style="order:1;">
+    <div class="eyebrow">Moorland zóna · ~3 500 m · Kilimandzsáró endemikus világa</div>
+    <div class="slide-heading">Egy patak mellett —<br><em>500 éves szomszédok</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+
+      <!-- Dendrosenecio -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">1</div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Óriás aggófű · Dendrosenecio kilimanjari</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); line-height:1.6;">
+            <strong style="color:#F5F0E8;">Csak itt él a világon.</strong> Az elszáradt barna leveleket a törzsén tartja — élő hőszigetelésként védi a vízszállító edényeit a fagy ellen. Növekedése néhány cm/év: a képen látható példány <strong style="color:#F5F0E8;">akár több 100 éves</strong> is lehet.
+          </div>
+        </div>
+      </div>
+
+      <!-- Erica arborea -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">2</div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Óriás hanga · Erica arborea</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); line-height:1.6;">
+            Nálunk apró virág — itt <strong style="color:#F5F0E8;">több méteres sűrű erdő</strong>. A párás, hűvös klímán gigantikusra nőtt. A domboldalakat borító zöld bozót mind ebből áll.
+          </div>
+        </div>
+      </div>
+
+      <!-- Moorland + patak -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">3</div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Moorland zóna · a patak</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); line-height:1.6;">
+            A ködös, füves-sziklás háttér a lápvidéki zóna felső határa. A patak ritkaság — <strong style="color:#F5F0E8;">3 500 méteren folyó víz</strong> táplálja ezeket a növényeket a száraz időszakban.
+          </div>
+        </div>
+      </div>
+
+      <!-- párhuzam -->
+      <div style="margin-top:6px; padding:10px 16px; border-left:3px solid rgba(201,168,76,0.5); background:rgba(201,168,76,0.07); border-radius:0 4px 4px 0;">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:14px; color:rgba(245,240,232,0.8); line-height:1.6;">
+          „Ez a fa már akkor is itt volt, amikor Kolumbusz Amerikát felfedezte."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <!-- ===== DIA 37: 2. NAP ===== -->
+  <div class="slide slide-split" id="slide-37">
+<div class="slide-number-badge">37</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">2</div>
+        <div class="day-info">
+          <div class="day-title">Második nap</div>
+          <div class="day-alt">Mandara Hut → Horombo Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Kilépés a<br><em>hanga-övbe</em></div>
+      <div class="slide-body">
+        2 720 m-ről 3 720 m-re. ~12 km, ~5–6 óra.<br><br>
+        Az erdő elmarad, megjelenik az afroalpin táj - "lápvidék". Óriás aggófüvek, hangás.<br>
+        <strong>3500m:</strong> "határátlépés".
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">1 000 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Horombo Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/033.jpg" loading="lazy" alt="mindjárt ott" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 38: 2. NAP ===== -->
+  <div class="slide slide-split" id="slide-38">
+<div class="slide-number-badge">38</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">2</div>
+        <div class="day-info">
+          <div class="day-title">Második nap</div>
+          <div class="day-alt">Mandara Hut → Horombo Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">Kilépés a<br><em>hanga-övbe</em></div>
+      <div class="slide-body">
+        2 720 m-ről 3 720 m-re. ~12 km, ~5–6 óra.<br><br>
+        Az erdő elmarad, megjelenik az afroalpin táj - "lápvidék". Óriás aggófüvek, hangás.<br>
+        <strong>3500m:</strong> "határátlépés".
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">1 000 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Horombo Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/034.jpg" loading="lazy" alt="ott" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 39: 3. NAP – akklimatizáció ===== -->
+  <div class="slide slide-split" id="slide-39">
+<div class="slide-number-badge">39</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">3</div>
+        <div class="day-info">
+          <div class="day-title">Harmadik nap</div>
+          <div class="day-alt">Akklimatizáció · Horombo</div>
+        </div>
+      </div>
+      <div class="slide-heading">Maradj lenn,<br><em>hogy feljuthass</em></div>
+      <div class="slide-body">
+        6 napos útvonalon a 3. nap akklimatizációs nap.<br>
+        Felmenni 4 300 m-re, vissza aludni 3 720-ra.<br><br>
+        <strong>„Climb high, sleep low"</strong>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">≈4 300 m</div>
+          <div class="stat-label">Akklim. kirándulás</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Alvás Horombón</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/037.jpg" loading="lazy" alt="napfelkelte" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+
+  <!-- ===== DIA 40: 3. NAP – akklimatizáció ===== -->
+  <div class="slide slide-split" id="slide-40">
+<div class="slide-number-badge">40</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">3</div>
+        <div class="day-info">
+          <div class="day-title">Harmadik nap</div>
+          <div class="day-alt">Akklimatizáció · Horombo</div>
+        </div>
+      </div>
+      <div class="slide-heading">Maradj lenn,<br><em>hogy feljuthass</em></div>
+      <div class="slide-body">
+        6 napos útvonalon a 3. nap akklimatizációs nap.<br>
+        Felmenni 4 300 m-re, vissza aludni 3 720-ra.<br><br>
+        <strong>„Climb high, sleep low"</strong>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">≈4 300 m</div>
+          <div class="stat-label">Akklim. kirándulás</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Alvás Horombón</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/038.jpg" loading="lazy" alt="horom" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+  <!-- ===== DIA 41: 3. NAP – akklimatizáció ===== -->
+  <div class="slide slide-split" id="slide-41">
+<div class="slide-number-badge">41</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">3</div>
+        <div class="day-info">
+          <div class="day-title">Harmadik nap</div>
+          <div class="day-alt">Akklimatizáció · Horombo</div>
+        </div>
+      </div>
+      <div class="slide-heading">Maradj lenn,<br><em>hogy feljuthass</em></div>
+      <div class="slide-body">
+        6 napos útvonalon a 3. nap akklimatizációs nap.<br>
+        Felmenni 4 300 m-re, vissza aludni 3 720-ra.<br><br>
+        <strong>„Climb high, sleep low"</strong>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">≈4 300 m</div>
+          <div class="stat-label">Akklim. kirándulás</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Alvás Horombón</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/040.jpg" loading="lazy" alt="tábor" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+<!-- ===== DIA 42: ZEBRASZIKLA ===== -->
+<div class="slide slide-split" id="slide-42">
+<div class="slide-number-badge">42</div>
+
+  <!-- BAL: fotó -->
+  <div class="split-photo" style="order:0;">
+    <img src="https://drpelyheliza.github.io/drpelyheliza/041.jpg" loading="lazy" alt="Zebraszikla – Marangu útvonal ~4000m" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.classList.add('img-error')">
+    <!--
+    <div class="photo-placeholder">
+      <div class="photo-icon">🪨</div>
+      <p>Ide kerül a zebraszikla fotód</p>
+    </div>
+    -->
+  </div>
+
+  <!-- JOBB: szöveg -->
+  <div class="split-text" style="order:1;">
+    <div class="eyebrow">Zebra Rocks · ~4 000 m · Marangu útvonal · akklimatizációs séta</div>
+    <div class="slide-heading">A hegy<br><em>festette ezt</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+
+      <div style="font-size:14px; color:rgba(245,240,232,0.7); line-height:1.7;">
+        Vulkanikus hegy — de a csíkokat <strong style="color:#F5F0E8;">nem a láva</strong> hozta létre. Az időjárás és a kémia festette fel évezredek alatt.
+      </div>
+
+      <!-- Fehér csíkok -->
+      <div style="display:flex; gap:14px; align-items:flex-start;">
+        <div style="flex-shrink:0; margin-top:4px;">
+          <div style="width:28px; height:28px; background:rgba(245,240,232,0.15); border:1px solid rgba(245,240,232,0.4); border-radius:4px;"></div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#F5F0E8; letter-spacing:2px; text-transform:uppercase; margin-bottom:3px;">Fehér csíkok</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.6;">
+            Az esővíz és olvadó hó kioldja a kőzetből a meszet és ásványi sókat. Ahogy lefolyik és elpárolog, <strong style="color:#F5F0E8;">fehér lerakódást hagy.</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fekete csíkok -->
+      <div style="display:flex; gap:14px; align-items:flex-start;">
+        <div style="flex-shrink:0; margin-top:4px;">
+          <div style="width:28px; height:28px; background:rgba(30,25,20,0.8); border:1px solid rgba(245,240,232,0.2); border-radius:4px;"></div>
+        </div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#F5F0E8; letter-spacing:2px; text-transform:uppercase; margin-bottom:3px;">Fekete csíkok</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.6;">
+            Ahol a víz a leggyakrabban és legtovább folyik — ott sötét algák és zuzmók telepednek meg, vagy ásványi oxidok színezik el a követ. <strong style="color:#F5F0E8;">A víz útja látható</strong> a sziklán.
+          </div>
+        </div>
+      </div>
+
+      <!-- személyes -->
+      <div style="margin-top:4px; padding:10px 16px; border-left:3px solid rgba(201,168,76,0.5); background:rgba(201,168,76,0.07); border-radius:0 4px 4px 0;">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:14px; color:rgba(245,240,232,0.8); line-height:1.6;">
+          „4000 méter felett az étvágy sokszor elmegy, de a szénhidrát és a cukor ilyenkor aranyat ér számomra."
+        </div>
+      </div>
+
+      <!-- stat -->
+      <div style="display:flex; gap:32px; margin-top:4px;">
+        <div class="stat-item">
+          <div class="stat-value" style="font-size:28px;">~4 000 m</div>
+          <div class="stat-label">Magasság</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" style="font-size:28px;">évezredek</div>
+          <div class="stat-label">A csíkok kora</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+<!-- ===== DIA 44: MAWENZI – GEOLÓGIA ===== -->
+<div class="slide slide-split" id="slide-44">
+<div class="slide-number-badge">44</div>
+  <div class="split-text">
+    <div class="eyebrow">Mawenzi · Afrika 3. legmagasabb csúcsa</div>
+    <div class="slide-heading">A „törött tetejű" —<br><em>Mawenzi, 5 149 m</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+
+      <div style="font-size:15px; color:rgba(245,240,232,0.8); line-height:1.7;">
+        <strong style="color:#F5F0E8;">~1 millió éve</strong> keletkezett a Shira kalderájában. Trachybazaltból áll — a Kibo obszidiánjával szemben ez sokkal porózusabb, repedezett kőzet. Évmilliók eróziója faragta szét.
+      </div>
+
+      <div style="background:rgba(160,82,45,0.1); border-left:3px solid #A0522D; border-radius:0 4px 4px 0; padding:10px 14px; margin-top:4px;">
+        <div style="font-size:12px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:#A0522D; margin-bottom:4px;">Chagga név: „Kimawenze" = törött tetejű</div>
+        <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.6;">
+          A keleti fal >1 000 m magas sziklafalban szakad le. Két mély szurdok — a Great és a Lesser Barranco — hasítja fel az oldalát.
+        </div>
+      </div>
+
+      <ul class="bullet-list" style="margin-top:8px;">
+        <li><strong>Hans Meyer Peak</strong> — a főcsúcs neve, ironikus módon: Meyer maga soha nem tudta megmászni</li>
+        <li><strong>Csak engedéllyel, tapasztalt mászóknak</strong> — laza kőzet, keskeny sziklák, kiszámíthatatlan időjárás</li>
+        <li><strong>Mawenzi Tarn</strong> — egy kis hegyitó a csúcs alatt, lefolyás nélkül. 1976-ban versenyúszást tartottak benne.</li>
+        <li><strong>Innen ered a Tsavo folyó</strong> — amelyről az 1898-as emberevő oroszlánok sztorija szól</li>
+      </ul>
+
+    </div>
+  </div>
+
+  <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/044.jpg" loading="lazy" alt="tábor" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+  </div>
+</div>
+
+
+  <!-- ===== DIA 45: 3. NAP – akklimatizáció ===== -->
+  <div class="slide slide-split" id="slide-45">
+<div class="slide-number-badge">45</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">3</div>
+        <div class="day-info">
+          <div class="day-title">Harmadik nap</div>
+          <div class="day-alt">Akklimatizáció · Horombo</div>
+        </div>
+      </div>
+      <div class="slide-heading">Maradj lenn,<br><em>hogy feljuthass</em></div>
+      <div class="slide-body">
+        6 napos útvonalon a 3. nap akklimatizációs nap.<br>
+        Felmenni 4 300 m-re, vissza aludni 3 720-ra.<br><br>
+        <strong>„Climb high, sleep low"</strong>
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">≈4 300 m</div>
+          <div class="stat-label">Akklim. kirándulás</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Alvás Horombón</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/045.jpg" loading="lazy" alt="Kili" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 46: 4. NAP ===== -->
+  <div class="slide slide-split" id="slide-46">
+<div class="slide-number-badge">46</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">4</div>
+        <div class="day-info">
+          <div class="day-title">Negyedik nap</div>
+          <div class="day-alt">Horombo → Kibo Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">A sivatagos<br><em>Hold-táj</em></div>
+      <div class="slide-body">
+        3 720 m-ről 4 703 m-re. ~10 km, ~5–6 óra.<br><br>
+        Elhagyod az utolsó növényzetet. Kősivatag, szél, por.<br>
+        <strong>Kibo Hut</strong> — itt töltöd az éjszakát, majd éjfélkor indulsz.
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">983 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">4 703 m</div>
+          <div class="stat-label">Kibo Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/046.jpg" loading="lazy" alt="felkelte" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+
+<!-- ===== DIA 47: TUSSOCK FŰ + ALPESI ÁTMENET ===== -->
+<div class="slide slide-split" id="slide-47">
+<div class="slide-number-badge">47</div>
+
+  <!-- BAL: szöveg -->
+  <div class="split-text" style="order:0;">
+    <div class="eyebrow">Alpesi átmeneti zóna · ~3 800–4 000 m · az erdő vége</div>
+    <div class="slide-heading">Belépés<br><em>a hold-tájba</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+
+      <!-- Tussock fű -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">1</div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Tussock fű · Festuca pilgeri · Csomós csenkesz</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); line-height:1.6;">
+            A sárgás-arany „fűtenger". Nem véletlenül nő csomókban — a sűrű közepük <strong style="color:#F5F0E8;">nedvességet zár be</strong>, az elhalt levelek pedig szigetelik a gyökereket a fagy ellen. Magashegyi szavanna, 4 000 méteren.
+          </div>
+        </div>
+      </div>
+
+      <!-- Dendrosenecio a háttérben -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">2</div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Dendrosenecio · Óriás aggófű „hadsereg" a horizonton</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); line-height:1.6;">
+            Ezen a magasságon már csak a tetejükön van kis zöld üstök — a törzsük csupasz, magas oszlop. Távolról <strong style="color:#F5F0E8;">szürreális hadseregnek</strong> tűnnek a domboldalon.
+          </div>
+        </div>
+      </div>
+
+      <!-- Helichrysum -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">3</div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Szalmagyopár · Helichrysum</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.75); line-height:1.6;">
+            Apró, fehéres-ezüstös virágok a lábad előtt. <strong style="color:#F5F0E8;">„Örökkévaló virág"</strong> — szárazon is ugyanúgy néz ki, mint frissen. Mintha a hegy nem engedné el őket.
+          </div>
+        </div>
+      </div>
+
+      <!-- párhuzam -->
+      <div style="margin-top:6px; padding:10px 16px; border-left:3px solid rgba(201,168,76,0.5); background:rgba(201,168,76,0.07); border-radius:0 4px 4px 0;">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:14px; color:rgba(245,240,232,0.8); line-height:1.6;">
+          „Innen visszanézve az esőerdőre — már más bolygón jártam. Előre nézve pedig még más bolygó várt."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JOBB: fotó -->
+  <div class="split-photo" style="order:1;">
+    <img src="https://drpelyheliza.github.io/drpelyheliza/048.jpg" loading="lazy" alt="Tussock fű és Dendrosenecio – alpesi átmeneti zóna ~4000m" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.classList.add('img-error')">
+    <!--
+    <div class="photo-placeholder">
+      <div class="photo-icon">🌾</div>
+      <p>Ide kerül a tussock fotód</p>
+    </div>
+    -->
+  </div>
+
+</div>
+
+
+
+  <!-- ===== DIA 48: 4. NAP ===== -->
+  <div class="slide slide-split" id="slide-48">
+<div class="slide-number-badge">48</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">4</div>
+        <div class="day-info">
+          <div class="day-title">Negyedik nap</div>
+          <div class="day-alt">Horombo → Kibo Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">A sivatagos<br><em>Hold-táj</em></div>
+      <div class="slide-body">
+        3 720 m-ről 4 703 m-re. ~10 km, ~5–6 óra.<br><br>
+        Elhagyod az utolsó növényzetet. Kősivatag, szél, por.<br>
+        <strong>Kibo Hut</strong> — itt töltöd az éjszakát, majd éjfélkor indulsz.
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">983 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">4 703 m</div>
+          <div class="stat-label">Kibo Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/052.jpg" loading="lazy" alt="sivatag" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+
+<!-- ===== DIA 49: ALPESI SIVATAG 4400m ===== -->
+<div class="slide" id="slide-49" 
+     style="background:#0F0D0A; padding:0; position:relative; overflow:hidden;">
+<div class="slide-number-badge">49</div>
+
+  <!-- TELJES KÉPERNYŐS FOTÓ -->
+  <img src="https://drpelyheliza.github.io/drpelyheliza/054.jpg" loading="lazy" 
+       alt="Alpesi sivatag – 4400m – vulkáni törmelék, Kibo háttérben" 
+       style="width:100%; height:100%; object-fit:cover; opacity:0.85;" onerror="this.parentElement.classList.add('img-error')">
+  <!--
+  <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a1510,#2c2720);
+              display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+    <div style="font-size:48px;opacity:0.2;">🏔</div>
+    <p style="font-size:12px;letter-spacing:3px;text-transform:uppercase;
+              color:rgba(245,240,232,0.2);">Ide kerül a fotód</p>
+  </div>
+  -->
+
+  <!-- Felső sáv: magasság badge -->
+  <div style="position:absolute; top:36px; left:60px;">
+    <div style="display:inline-block; border:1px solid rgba(201,168,76,0.5); 
+                color:#C9A84C; font-size:11px; letter-spacing:4px; 
+                text-transform:uppercase; padding:6px 18px; 
+                background:rgba(15,13,10,0.5); backdrop-filter:blur(4px);">
+      4 400 m · Alpesi sivatag
+    </div>
+  </div>
+
+  <!-- Jobb felső: 3 tény -->
+  <div style="position:absolute; top:36px; right:60px; 
+              display:flex; flex-direction:column; gap:8px; max-width:280px;">
+
+    <div style="background:rgba(15,13,10,0.65); backdrop-filter:blur(6px);
+                border-left:2px solid rgba(201,168,76,0.5); 
+                padding:8px 14px; border-radius:0 4px 4px 0;">
+      <div style="font-size:10px; font-weight:600; color:#C9A84C; 
+                  letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Miért sivatag?</div>
+      <div style="font-size:12px; color:rgba(245,240,232,0.7); line-height:1.5;">
+        A porózus vulkáni talaj azonnal elnyeli a csapadékot. Forrás, patak: nulla.
+      </div>
+    </div>
+
+    <div style="background:rgba(15,13,10,0.65); backdrop-filter:blur(6px);
+                border-left:2px solid rgba(201,168,76,0.5); 
+                padding:8px 14px; border-radius:0 4px 4px 0;">
+      <div style="font-size:10px; font-weight:600; color:#C9A84C; 
+                  letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Hőmérsékleti hullámvasút</div>
+      <div style="font-size:12px; color:rgba(245,240,232,0.7); line-height:1.5;">
+        Nappal a fekete sziklák égnek a naptól. Éjjel <strong style="color:#F5F0E8;">−10°C alá</strong> zuhan. Minden éjszaka fagy.
+      </div>
+    </div>
+
+    <div style="background:rgba(15,13,10,0.65); backdrop-filter:blur(6px);
+                border-left:2px solid rgba(201,168,76,0.5); 
+                padding:8px 14px; border-radius:0 4px 4px 0;">
+      <div style="font-size:10px; font-weight:600; color:#C9A84C; 
+                  letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">A nagy sziklák</div>
+      <div style="font-size:12px; color:rgba(245,240,232,0.7); line-height:1.5;">
+        Régi kitörések során „kilőtt" <strong style="color:#F5F0E8;">vulkáni bombák</strong>, vagy egykori gleccserek hordalékai.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Alsó gradient + szöveg -->
+  <div style="position:absolute; bottom:0; left:0; right:0; 
+              background:linear-gradient(to top, rgba(15,13,10,0.92) 0%, rgba(15,13,10,0.4) 60%, transparent 100%);
+              padding:50px 60px 44px;">
+
+    <div style="display:flex; align-items:flex-end; justify-content:space-between;">
+
+      <div>
+        <div style="font-size:11px; letter-spacing:4px; text-transform:uppercase; 
+                    color:rgba(201,168,76,0.7); margin-bottom:8px;">A lépték</div>
+        <div style="font-family:'Playfair Display',serif; font-size:clamp(18px,2.8vw,32px); 
+                    color:#F5F0E8; font-style:italic; line-height:1.3; max-width:500px;">
+          „A jobb szélen látod a két apró színes pontot?<br>
+          Az emberek. Ez a kép igazi méretaránya."
+        </div>
+      </div>
+
+      <div style="text-align:right; flex-shrink:0; margin-left:40px;">
+        <div style="font-size:clamp(36px,5vw,56px); font-family:'Playfair Display',serif; 
+                    font-weight:900; color:rgba(201,168,76,0.8); line-height:1;">4 400</div>
+        <div style="font-size:11px; letter-spacing:3px; text-transform:uppercase; 
+                    color:rgba(245,240,232,0.3); margin-top:4px;">méter</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+  <!-- ===== DIA 50: 4. NAP ===== -->
+  <div class="slide slide-split" id="slide-50">
+<div class="slide-number-badge">50</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">4</div>
+        <div class="day-info">
+          <div class="day-title">Negyedik nap</div>
+          <div class="day-alt">Horombo → Kibo Hut</div>
+        </div>
+      </div>
+      <div class="slide-heading">A sivatagos<br><em>Hold-táj</em></div>
+      <div class="slide-body">
+        3 720 m-ről 4 703 m-re. ~10 km, ~5–6 óra.<br><br>
+        Elhagyod az utolsó növényzetet. Kősivatag, szél, por.<br>
+        <strong>Kibo Hut</strong> — itt töltöd az éjszakát, majd éjfélkor indulsz.
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">983 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">4 703 m</div>
+          <div class="stat-label">Kibo Hut</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/056.jpg" loading="lazy" alt="fent" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 51: SZEKCIÓ V ===== -->
+  <div class="slide slide-section-divider" id="slide-51">
+<div class="slide-number-badge">51</div>
+    <div class="eyebrow">Summit</div>
+    <div class="slide-heading" style="font-size: clamp(40px,6vw,72px);">A csúcséjszaka</div>
+    <div class="slide-body" style="max-width:600px;">Éjfél. 0°C alatt. Pole - Pole.</div>
+  </div>
+ 
+  <!-- ===== DIA 52: CSÚCS ÉJJEL ===== -->
+  <div class="slide slide-split" id="slide-52">
+<div class="slide-number-badge">52</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">5</div>
+        <div class="day-info">
+          <div class="day-title">Csúcsroham</div>
+          <div class="day-alt">Kibo → Uhuru Peak (éjjel–hajnal)</div>
+        </div>
+      </div>
+      <div class="slide-heading">Éjfél,<br><em>pole pole</em></div>
+      <div class="slide-body">
+        Indulás ~éjfélkor, ~5–7 óra felfelé.<br>
+        Sötétség, fejlámpa, 0°C alatt, szél.<br><br>
+		<strong>Hans Meyer barlang</strong> (5 150 m) — az első "nagyobb" pihenő.<br>
+        <strong>Gillman's Point</strong> (5 681 m) — az első kráterperem.<br>
+        <strong>Uhuru Peak</strong> (5 895 m) — Afrika teteje.
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">5 895 m</div>
+          <div class="stat-label">Uhuru Peak</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">0°C alatt</div>
+          <div class="stat-label">Hőmérséklet</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/060.jpg" loading="lazy" alt="fel1" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+
+
+  <!-- ===== DIA 53: CSÚCS ÉJJEL ===== -->
+  <div class="slide slide-split" id="slide-53">
+<div class="slide-number-badge">53</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">5</div>
+        <div class="day-info">
+          <div class="day-title">Csúcsroham</div>
+          <div class="day-alt">Kibo → Uhuru Peak (éjjel–hajnal)</div>
+        </div>
+      </div>
+      <div class="slide-heading">Éjfél,<br><em>pole pole</em></div>
+      <div class="slide-body">
+        Indulás ~éjfélkor, ~5–7 óra felfelé.<br>
+        Sötétség, fejlámpa, 0°C alatt, szél.<br><br>
+		<strong>Hans Meyer barlang</strong> (5 150 m) — az első "nagyobb" pihenő.<br>
+        <strong>Gillman's Point</strong> (5 681 m) — az első kráterperem.<br>
+        <strong>Uhuru Peak</strong> (5 895 m) — Afrika teteje.
+      </div>
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">5 895 m</div>
+          <div class="stat-label">Uhuru Peak</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">0°C alatt</div>
+          <div class="stat-label">Hőmérséklet</div>
+        </div>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/061.jpg" loading="lazy" alt="fel2" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+  <!-- ===== DIA 54: CSÚCS FOTÓ ===== -->
+  <div class="slide slide-split" id="slide-54">
+<div class="slide-number-badge">54</div>
+    <div class="split-text">
+      <div class="eyebrow">A peremen</div>
+      <div class="slide-heading">2 km<br><em> - 200m szint</em></div>
+      <div class="slide-body">
+        Hajnali 6:00-tól. Napfelkelte Afrikán.<br>
+        A Kibo-kráter felett a jégmezők maradékai.
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/062.jpg" loading="lazy" alt="hó" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+  <!-- ===== DIA 55: CSÚCS FOTÓ ===== -->
+  <div class="slide slide-split" id="slide-55">
+<div class="slide-number-badge">55</div>
+    <div class="split-text">
+      <div class="eyebrow">A peremen</div>
+      <div class="slide-heading">2 km<br><em> - 200m szint</em></div>
+      <div class="slide-body">
+        Hajnali 6:00-tól. Napfelkelte Afrikán.<br>
+        A Kibo-kráter felett a jégmezők maradékai.
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/063.jpg" loading="lazy" alt="hó" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+  <!-- ===== DIA 56: DÉLI JÉGMEZŐ ===== -->
+<div class="slide" id="slide-56" 
+     style="background:#0F0D0A; padding:0; overflow:hidden;">
+<div class="slide-number-badge">56</div> <img src="https://drpelyheliza.github.io/drpelyheliza/068.jpg" loading="lazy" 
+       alt="Déli Jégmező – kráter perem – 5895m felé" 
+       style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0.88; z-index:0;" onerror="this.parentElement.classList.add('img-error')"> <div style="position:absolute; top:36px; left:60px; z-index:1;"> <div style="display:inline-block; border:1px solid rgba(123,175,212,0.6); 
+                color:#7BAFD4; font-size:11px; letter-spacing:4px; 
+                text-transform:uppercase; padding:6px 18px; 
+                background:rgba(15,13,10,0.5); backdrop-filter:blur(4px);">
+      Kráterperem · Déli Jégmező
+    </div>
+  </div>
+
+  <div style="position:absolute; top:36px; right:60px; 
+              display:flex; flex-direction:column; gap:8px; max-width:290px; z-index:1;"> <div style="background:rgba(15,13,10,0.65); backdrop-filter:blur(6px);
+                border-left:2px solid rgba(123,175,212,0.5); 
+                padding:8px 14px; border-radius:0 4px 4px 0;">
+      <div style="font-size:10px; font-weight:600; color:#7BAFD4; 
+                  letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Miért „függnek"?</div>
+      <div style="font-size:12px; color:rgba(245,240,232,0.7); line-height:1.5;">
+        Nem a kráterben pihennek — a hegy meredek <strong style="color:#F5F0E8;">külső vállára vannak rátapasztva</strong>. Függőleges faluk <strong style="color:#F5F0E8;">szublimáció</strong> eredménye: a jég a tűző nap hatására nem vízzé válik, hanem közvetlenül gázzá (gőzzé) alakul.
+      </div>
+    </div>
+
+    <div style="background:rgba(15,13,10,0.65); backdrop-filter:blur(6px);
+                border-left:2px solid rgba(201,168,76,0.5); 
+                padding:8px 14px; border-radius:0 4px 4px 0;">
+      <div style="font-size:10px; font-weight:600; color:#C9A84C; 
+                  letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Rebmann, 1848</div>
+      <div style="font-size:12px; color:rgba(245,240,232,0.7); line-height:1.5;">
+        Az első európai, aki megpillantotta ezeket. <strong style="color:#F5F0E8;">Senki nem hitte el neki</strong> — azt hitték, napszúrást kapott és hallucinál. Az egyenlítőn hó? Lehetetlen.
+      </div>
+    </div>
+
+  </div>
+
+  <div style="position:absolute; bottom:0; left:0; right:0; 
+              background:linear-gradient(to top, rgba(15,13,10,0.95) 0%, rgba(15,13,10,0.4) 65%, transparent 100%);
+              padding:50px 60px 44px; z-index:1;"> <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:40px;">
+
+      <div style="flex:1;">
+        <div style="font-family:'Playfair Display',serif; font-size:clamp(16px,2.3vw,26px); 
+                    color:#F5F0E8; font-style:italic; line-height:1.45; max-width:580px;">
+          „Csak 1889-ben, Hans Meyer első megmászásakor vált hivatalosan elfogadottá, hogy Rebmann-nak igaza volt."
+        </div>
+      </div>
+
+      <div style="text-align:right; flex-shrink:0;">
+        <div style="font-size:clamp(28px,4vw,42px); font-family:'Playfair Display',serif; 
+                    font-weight:900; color:#7BAFD4; line-height:1; opacity:0.9;">5 895 m</div>
+        <div style="font-size:11px; letter-spacing:3px; text-transform:uppercase; 
+                    color:rgba(245,240,232,0.3); margin-top:4px;">felé vezet az út</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+  <!-- ===== DIA 57: CSÚCS FOTÓ ===== -->
+  <div class="slide slide-split" id="slide-57">
+<div class="slide-number-badge">57</div>
+    <div class="split-text">
+      <div class="eyebrow">A csúcson</div>
+      <div class="slide-heading">Sorban állni<br><em>Afrika tetején</em></div>
+      <div class="slide-body">
+        Hajnali 6:50.
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/065.jpg" loading="lazy" alt="csúcs" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+  <!-- ===== DIA 58: CSÚCS FOTÓ ===== -->
+  <div class="slide slide-split" id="slide-58">
+<div class="slide-number-badge">58</div>
+    <div class="split-text">
+      <div class="eyebrow">A csúcson</div>
+      <div class="slide-heading">Sorban állni<br><em>Afrika tetején</em></div>
+      <div class="slide-body">
+        Hajnali 6:50.
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/066.jpg" loading="lazy" alt="csúcs2" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+
+<!-- ===== DIA 59: ALPESI SIVATAG / SCREE ===== -->
+<div class="slide slide-split" id="slide-59">
+<div class="slide-number-badge">59</div>
+
+  <!-- BAL: fotó -->
+  <div class="split-photo" style="order:0;">
+    <img src="https://drpelyheliza.github.io/drpelyheliza/070.jpg" loading="lazy" alt="Törmeléklejtő – alpesi sivatag, Kibo–Gilman's Point között" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.classList.add('img-error')">
+    <!--
+    <div class="photo-placeholder">
+      <div class="photo-icon">🪨</div>
+      <p>Ide kerül a scree fotód</p>
+    </div>
+    -->
+  </div>
+
+  <!-- JOBB: szöveg -->
+  <div class="split-text" style="order:1;">
+    <div class="eyebrow">Alpesi sivatag · 5 685–4 700 m · Gilman's Point → Kibo</div>
+    <div class="slide-heading">A hegy<br><em>önmagát őrli fel</em></div>
+    <div class="divider"></div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+
+      <div style="font-size:14px; color:rgba(245,240,232,0.7); line-height:1.7;">
+        Ez nem egyszerűen „sok kő". Ez a hegy <strong style="color:#F5F0E8;">folyamatos pusztulásának</strong> eredménye — évezredek munkája minden egyes kavicsban.
+      </div>
+
+      <!-- Fagyaprózódás -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">1</div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Fagyaprózódás</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.6;">
+            Nappal olvad, éjjel megfagy. A víz befolyik a bazalt és fonolit repedéseibe, tágul, szétfeszíti a sziklát. <strong style="color:#F5F0E8;">Naponta ismétlődik</strong> — évezredek óta.
+          </div>
+        </div>
+      </div>
+
+      <!-- Scree run -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">2</div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Scree run — bakancsos síelés</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.6;">
+            Felfelé: 6–7 óra küzdelem a csúszó kavicson. Lefelé: <strong style="color:#F5F0E8;">30–60 perc</strong> — minden lépésnél csúszol a törmelékkel együtt. 
+          </div>
+        </div>
+      </div>
+
+      <!-- Élet nélkül -->
+      <div style="display:flex; gap:12px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:32px; height:32px; border:1px solid rgba(201,168,76,0.4); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#C9A84C; margin-top:2px;">3</div>
+        <div>
+          <div style="font-size:12px; font-weight:600; color:#C9A84C; letter-spacing:2px; text-transform:uppercase; margin-bottom:2px;">Élet nélkül</div>
+          <div style="font-size:13px; color:rgba(245,240,232,0.7); line-height:1.6;">
+            A talaj porózus, nem tartja meg a vizet. <strong style="color:#F5F0E8;">Szinte semmi nem él meg itt</strong> — sem növény, sem állat.
+          </div>
+        </div>
+      </div>
+
+      <!-- személyes -->
+      <div style="margin-top:4px; padding:10px 16px; border-left:3px solid rgba(201,168,76,0.5); background:rgba(201,168,76,0.07); border-radius:0 4px 4px 0;">
+        <div style="font-family:'Playfair Display',serif; font-style:italic; font-size:14px; color:rgba(245,240,232,0.8); line-height:1.6;">
+          „A scree (törmelék) szakasz az, ahol a legtöbb ember feladja — nem azért, mert nem bírja fizikailag, hanem mert pszichológiailag megtöri."
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+  <!-- ===== DIA 60: VISSZAÚT ===== -->
+  <div class="slide slide-split" id="slide-60">
+<div class="slide-number-badge">60</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">5–6</div>
+        <div class="day-info">
+          <div class="day-title">Visszafelé</div>
+          <div class="day-alt">Uhuru → Horombo → Marangu Gate</div>
+        </div>
+      </div>
+      <div class="slide-heading">Le is kell<br><em>jönni valahogy</em></div>
+      <div class="slide-body">
+        A visszaút gyorsabb.<br><br>
+        5. nap: Kibo-ból le Horombóra.<br>
+        6. nap: Horomboról vissza a kapuhoz.<br>
+        <strong>Oklevél. Ünneplés. Alvás.</strong>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/071.jpg" loading="lazy" alt="le1" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+ 
+   <!-- ===== DIA 61: VISSZAÚT ===== -->
+  <div class="slide slide-split" id="slide-61">
+<div class="slide-number-badge">61</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">5–6</div>
+        <div class="day-info">
+          <div class="day-title">Visszafelé</div>
+          <div class="day-alt">Uhuru → Horombo → Marangu Gate</div>
+        </div>
+      </div>
+      <div class="slide-heading">Le is kell<br><em>jönni valahogy</em></div>
+      <div class="slide-body">
+        A visszaút gyorsabb.<br><br>
+        5. nap: Kibo-ból le Horombóra.<br>
+        6. nap: Horomboról vissza a kapuhoz.<br>
+        <strong>Oklevél. Ünneplés. Alvás.</strong>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/075.jpg" loading="lazy" alt="le1" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+ 
+   <!-- ===== DIA 62: VISSZAÚT ===== -->
+  <div class="slide slide-split" id="slide-62">
+<div class="slide-number-badge">62</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">5–6</div>
+        <div class="day-info">
+          <div class="day-title">Visszafelé</div>
+          <div class="day-alt">Uhuru → Horombo → Marangu Gate</div>
+        </div>
+      </div>
+      <div class="slide-heading">Le is kell<br><em>jönni valahogy</em></div>
+      <div class="slide-body">
+        A visszaút gyorsabb.<br><br>
+        5. nap: Kibo-ból le Horombóra.<br>
+        6. nap: Horomboról vissza a kapuhoz.<br>
+        <strong>Oklevél. Ünneplés. Alvás.</strong>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/077.jpg" loading="lazy" alt="le1" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+
+   <!-- ===== DIA 63: VISSZAÚT ===== -->
+  <div class="slide slide-split" id="slide-63">
+<div class="slide-number-badge">63</div>
+    <div class="split-text">
+      <div class="day-badge">
+        <div class="day-num">5–6</div>
+        <div class="day-info">
+          <div class="day-title">Visszafelé</div>
+          <div class="day-alt">Uhuru → Horombo → Marangu Gate</div>
+        </div>
+      </div>
+      <div class="slide-heading">Le is kell<br><em>jönni valahogy</em></div>
+      <div class="slide-body">
+        A visszaút gyorsabb.<br><br>
+        5. nap: Kibo-ból le Horombóra.<br>
+        6. nap: Horomboról vissza a kapuhoz.<br>
+        <strong>Oklevél. Ünneplés. Alvás.</strong>
+      </div>
+    </div>
+    <div class="split-photo">
+<img src="https://drpelyheliza.github.io/drpelyheliza/079.jpg" loading="lazy" alt="le1" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.parentElement.classList.add('img-error')">
+    </div>
+  </div>
+	
+  <!-- ===== DIA 64: ZÁRÁS + QR ===== -->
+<div class="slide slide-closing" id="slide-64" style="overflow:hidden; flex-direction: column;">
+<div class="slide-number-badge">64</div>
+    <div style="position:absolute; inset:0; background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(201,168,76,0.07) 0%, transparent 70%); pointer-events:none;"></div>
+
+    <div class="title-eyebrow" style="margin-bottom:12px;">Köszönöm a figyelmet</div>
+    <div class="title-main" style="font-size:clamp(36px,5.5vw,68px);">Kérdések,<br><em>gondolatok?</em></div>
+    <div class="divider divider-center" style="margin:20px auto;"></div>
+
+    <div style="display:flex; align-items:center; justify-content:center; gap:60px; margin-top:8px; width:100%; max-width:900px;">
+
+      <div style="text-align:left; flex:1; max-width:440px;">
+        <div style="font-family:'Playfair Display',serif; font-size:clamp(16px,2.2vw,24px); color:#F5F0E8; line-height:1.5; margin-bottom:16px;">
+          <em>PhD · statisztikus · 7 kontinens · világjáró</em>
+        </div>
+        <div style="font-size:clamp(13px,1.5vw,16px); color:rgba(245,240,232,0.6); line-height:1.9;">
+          <strong style="color:#F5F0E8;">Antarktisz</strong><br>
+          Spitzbergák · Grönland<br>
+          Kilimandzsáró · Kosciuszko<br>
+          és még sok más
+        </div>
+        <div style="margin-top:20px; display:flex; align-items:center; gap:10px;">
+          <div style="width:2px; height:32px; background:var(--gold); opacity:0.5;"></div>
+          <div>
+            <div style="font-size:clamp(16px,2vw,22px); font-weight:600; color:#C9A84C; letter-spacing:1px;">www.drpelyheliza.hu</div>
+            <div style="font-size:12px; color:rgba(245,240,232,0.35); letter-spacing:2px; margin-top:2px;">liza@drpelyheliza.hu</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:14px; flex-shrink:0;">
+        <div style="background:#F5F0E8; padding:16px; border-radius:8px; display:flex; align-items:center; justify-content:center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://www.drpelyheliza.hu&color=0F0D0A&bgcolor=F5F0E8&margin=0"
+               alt="QR kód – www.drpelyheliza.hu"
+               width="180" height="180"
+               style="display:block; border-radius:4px;">
+        </div>
+        <div style="font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(245,240,232,0.3);">Szkenneld be</div>
+      </div>
+
+    </div>
+
+    <div class="altitude-badge" style="margin-top:28px; font-size:11px; position: relative; z-index: 2;">
+      Asztmásként Afrika tetején · Kilimandzsáró 2026 · 5 895 m
+    </div>
+
+  </div>
+ 
+
+  </div><!-- end slideshow -->
+</div><!-- end main -->
+
+<!-- BOTTOM NAV -->
+<div id="bottom-nav">
+  <button class="nav-btn" onclick="changeSlide(-1)" aria-label="Előző">&#8592;</button>
+  <span id="slide-counter">1 / ?</span>
+  <button class="nav-btn" id="btn-index" onclick="openIndex()" aria-label="Diajegyzék">☰</button>
+  <button class="nav-btn" onclick="changeSlide(1)" aria-label="Következő">&#8594;</button>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var current = 0;
+var isScrollMode = false;
+
+// Build index
+var indexTitles = [];
+slides.forEach(function(s, i) {
+  var h = s.querySelector('.slide-heading, .title-main, .quote-text');
+  var sub = s.querySelector('.eyebrow, .title-eyebrow, .day-badge .day-title');
+  var title = h ? h.textContent.trim().replace(/\s+/g,' ').slice(0,50) : ('Dia ' + (i+1));
+  var subtitle = sub ? sub.textContent.trim().slice(0,40) : '';
+  indexTitles.push({title: title, subtitle: subtitle});
+});
+
+// Populate index
+var indexList = document.getElementById('index-list');
+indexTitles.forEach(function(t, i) {
+  var item = document.createElement('div');
+  item.className = 'index-item';
+  item.innerHTML = '<div class="index-num">' + (i+1) + '</div><div><div class="index-title">' + escHtml(t.title) + '</div>' + (t.subtitle ? '<div class="index-sub">' + escHtml(t.subtitle) + '</div>' : '') + '</div>';
+  item.onclick = function() { showSlide(i); closeIndex(); };
+  indexList.appendChild(item);
+});
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function updateUI() {
+  document.getElementById('slide-counter').textContent = (current + 1) + ' / ' + total;
+  document.getElementById('progress-bar').style.width = ((current + 1) / total * 100).toFixed(1) + '%';
+  document.getElementById('topbar-title').textContent = (current + 1) + ' / ' + total + ' · ' + (indexTitles[current] ? indexTitles[current].title : '');
+}
+
+function showSlide(n) {
+  if (isScrollMode) return;
+  slides[current].classList.remove('active');
+  current = ((n % total) + total) % total;
+  slides[current].classList.add('active');
+  updateUI();
+}
+
+function changeSlide(dir) { showSlide(current + dir); }
+
+// Init first slide
+slides[0].classList.add('active');
+updateUI();
+
+// Keyboard
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+  if (e.key === 'Home') showSlide(0);
+  if (e.key === 'End') showSlide(total - 1);
+});
+
+// Touch swipe
+var touchStartX = null, touchStartY = null;
+document.addEventListener('touchstart', function(e) {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, {passive: true});
+
+document.addEventListener('touchend', function(e) {
+  if (touchStartX === null || isScrollMode) return;
+  var dx = e.changedTouches[0].clientX - touchStartX;
+  var dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+    changeSlide(dx < 0 ? 1 : -1);
+  }
+  touchStartX = null;
+}, {passive: true});
+
+// Swipe hint
+setTimeout(function() {
+  document.getElementById('swipe-hint').classList.add('hidden');
+}, 2800);
+
+// Mode toggle
+function toggleMode() {
+  isScrollMode = !isScrollMode;
+  var btn = document.getElementById('mode-toggle');
+  var body = document.body;
+  if (isScrollMode) {
+    body.className = 'mode-scroll';
+    btn.textContent = '▶ Előadás';
+    document.getElementById('swipe-hint').style.display = 'none';
+    // Scroll to current slide
+    setTimeout(function() {
+      slides[current].scrollIntoView({behavior: 'smooth', block: 'start'});
+    }, 100);
+  } else {
+    body.className = 'mode-present';
+    btn.textContent = '📋 Lista';
+    document.getElementById('swipe-hint').style.display = '';
+    // Restore active slide
+    slides[current].classList.add('active');
+  }
+}
+
+function openIndex() {
+  document.getElementById('index-panel').classList.add('open');
+}
+
+function closeIndex() {
+  document.getElementById('index-panel').classList.remove('open');
+}
+
+// Click left/right half to navigate (present mode)
+document.getElementById('slideshow').addEventListener('click', function(e) {
+  if (isScrollMode) return;
+  if (e.target.closest('#bottom-nav, button, a')) return;
+  changeSlide(e.clientX > window.innerWidth / 2 ? 1 : -1);
+});
+</script>
+</body>
+</html>
