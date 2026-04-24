@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A világ szélén – Tavaszi kalandok -20 °C-ban a Spitzbergákon és Grönlandon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Warm African palette */
+    --warm-dark: #120b04;
+    --warm-mid: #2a1a08;
+    --warm-gold: #c8912a;
+    --warm-cream: #f0e6cc;
+    --warm-amber: #d4a44c;
+    /* Cool Arctic palette */
+    --arctic-dark: #06101a;
+    --arctic-mid: #0d2035;
+    --arctic-blue: #4a9fc8;
+    --arctic-ice: #c8e8f5;
+    --arctic-white: #e8f4fb;
+    /* Bridge / transition */
+    --bridge-bg: #0d1520;
+    --bridge-accent: #7ab8d4;
+    /* Shared */
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Cormorant Garamond', Georgia, serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: var(--font-body);
+  }
+
+  /* ── SLIDESHOW SHELL ── */
+  #slideshow {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .slide {
+    display: none;
+    position: absolute; inset: 0;
+    overflow: hidden;
+  }
+  .slide.active { display: block; }
+
+  /* ── SLIDE INNER ── */
+  .slide-inner {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 4vh 6vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── BACKGROUNDS ── */
+  .bg-warm {
+    background: radial-gradient(ellipse at 30% 40%, #2e1808 0%, var(--warm-dark) 70%);
+  }
+  .bg-warm-img {
+    background: var(--warm-dark);
+  }
+  .bg-arctic {
+    background: radial-gradient(ellipse at 60% 30%, #0e2a42 0%, var(--arctic-dark) 70%);
+  }
+  .bg-arctic-img {
+    background: var(--arctic-dark);
+  }
+  .bg-bridge {
+    background: radial-gradient(ellipse at 50% 50%, #112030 0%, #04080f 80%);
+  }
+  .bg-greenland {
+    background: radial-gradient(ellipse at 40% 60%, #0a1e30 0%, #030d18 75%);
+  }
+
+  /* Full-bleed image slides */
+  .slide-image-bg {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.45);
+    z-index: 0;
+  }
+  .slide-inner.over-image { z-index: 1; }
+
+  /* ── DECORATIVE LINES ── */
+  .deco-line-warm {
+    position: absolute; left: 0; top: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--warm-gold), transparent);
+  }
+  .deco-line-arctic {
+    position: absolute; left: 0; top: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, var(--arctic-blue), transparent);
+  }
+  .deco-line-bottom-warm {
+    position: absolute; left: 0; bottom: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--warm-gold) 40%, transparent);
+  }
+  .deco-line-bottom-arctic {
+    position: absolute; left: 0; bottom: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--arctic-blue) 40%, transparent);
+  }
+
+  /* ── TYPOGRAPHY ── */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: clamp(0.55rem, 1.1vw, 0.8rem);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.8em;
+  }
+  .eyebrow-warm { color: var(--warm-amber); }
+  .eyebrow-arctic { color: var(--arctic-blue); }
+  .eyebrow-bridge { color: var(--bridge-accent); }
+
+  h1.display {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5.5vw, 5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    text-align: center;
+    margin-bottom: 0.4em;
+  }
+  h2.display {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3.8vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0.4em;
+  }
+  h3.section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2.8vw, 2.2rem);
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 0.5em;
+  }
+  .italic-lead {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1rem, 2.2vw, 1.6rem);
+    font-weight: 400;
+    line-height: 1.4;
+    margin-bottom: 1.2em;
+  }
+  .body-text {
+    font-family: var(--font-body);
+    font-size: clamp(0.9rem, 1.6vw, 1.2rem);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .caption {
+    font-family: var(--font-mono);
+    font-size: clamp(0.5rem, 0.9vw, 0.7rem);
+    letter-spacing: 0.12em;
+    opacity: 0.55;
+    text-transform: uppercase;
+  }
+  .text-warm { color: var(--warm-cream); }
+  .text-arctic { color: var(--arctic-ice); }
+  .text-gold { color: var(--warm-gold); }
+  .text-blue { color: var(--arctic-blue); }
+  .text-dim { opacity: 0.7; }
+
+  /* ── LAYOUT HELPERS ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4vw;
+    width: 100%;
+    max-width: 1200px;
+  }
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3vw;
+    width: 100%;
+    max-width: 1300px;
+  }
+  .centered {
+    text-align: center;
+    max-width: 900px;
+  }
+  .left-content {
+    max-width: 1200px;
+    width: 100%;
+  }
+
+  /* ── STAT BOXES ── */
+  .stat-box {
+    padding: 1.5em 1.8em;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .stat-box-warm {
+    background: rgba(200, 145, 42, 0.12);
+    border: 1px solid rgba(200, 145, 42, 0.3);
+  }
+  .stat-box-arctic {
+    background: rgba(74, 159, 200, 0.1);
+    border: 1px solid rgba(74, 159, 200, 0.25);
+  }
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 900;
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.2em;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: clamp(0.5rem, 0.8vw, 0.68rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  /* ── CARD / PANEL ── */
+  .panel-warm {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,145,42,0.2);
+    border-radius: 6px;
+    padding: 1.5em 2em;
+  }
+  .panel-arctic {
+    background: rgba(74,159,200,0.06);
+    border: 1px solid rgba(74,159,200,0.2);
+    border-radius: 6px;
+    padding: 1.5em 2em;
+  }
+
+  /* ── BULLET LIST ── */
+  .fact-list {
+    list-style: none;
+    padding: 0;
+  }
+  .fact-list li {
+    font-family: var(--font-body);
+    font-size: clamp(0.85rem, 1.4vw, 1.1rem);
+    font-weight: 300;
+    padding: 0.45em 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8em;
+  }
+  .fact-list li:last-child { border-bottom: none; }
+  .fact-list .marker-warm { color: var(--warm-gold); flex-shrink: 0; }
+  .fact-list .marker-arctic { color: var(--arctic-blue); flex-shrink: 0; }
+
+  /* ── IMAGE COMPONENT ── */
+  .photo-frame {
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .photo-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 0.6em 1em;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+  }
+
+  /* ── QUOTE BLOCK ── */
+  .quote-block {
+    border-left: 3px solid;
+    padding: 0.6em 1.5em;
+    font-style: italic;
+    font-family: var(--font-display);
+    font-size: clamp(0.95rem, 1.7vw, 1.3rem);
+    line-height: 1.5;
+  }
+  .quote-warm { border-color: var(--warm-gold); color: var(--warm-cream); }
+  .quote-arctic { border-color: var(--arctic-blue); color: var(--arctic-ice); }
+
+  /* ── DIVIDER ── */
+  .divider-warm {
+    width: 60px; height: 2px;
+    background: var(--warm-gold);
+    margin: 0.8em 0;
+  }
+  .divider-arctic {
+    width: 60px; height: 2px;
+    background: var(--arctic-blue);
+    margin: 0.8em 0;
+  }
+
+  /* ── ZONE BADGE ── */
+  .zone-badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: clamp(0.5rem, 0.9vw, 0.7rem);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.35em 1em;
+    border-radius: 2px;
+    margin-bottom: 1em;
+  }
+  .zone-badge-warm { background: rgba(200,145,42,0.2); color: var(--warm-gold); border: 1px solid rgba(200,145,42,0.4); }
+  .zone-badge-arctic { background: rgba(74,159,200,0.15); color: var(--arctic-blue); border: 1px solid rgba(74,159,200,0.35); }
+  .zone-badge-bridge { background: rgba(122,184,212,0.12); color: var(--bridge-accent); border: 1px solid rgba(122,184,212,0.3); }
+
+  /* ── NAVIGATION ── */
+  #nav {
+    position: fixed;
+    bottom: 2.5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 1.5em;
+    z-index: 100;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    padding: 0.6em 1.5em;
+    border-radius: 40px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-btn {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,0.6);
+    font-size: 1.2rem;
+    transition: color 0.2s;
+    padding: 0.2em 0.5em;
+    line-height: 1;
+  }
+  .nav-btn:hover { color: #fff; }
+  #slide-counter {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.5);
+    min-width: 5em;
+    text-align: center;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--warm-gold), var(--arctic-blue));
+    transition: width 0.3s ease;
+    z-index: 99;
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+  }
+  .compare-table th {
+    font-family: var(--font-mono);
+    font-size: clamp(0.5rem, 0.85vw, 0.68rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.6em 1em;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  .compare-table td {
+    font-family: var(--font-body);
+    font-size: clamp(0.8rem, 1.3vw, 1rem);
+    font-weight: 300;
+    padding: 0.6em 1em;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .col-kili { color: var(--warm-amber); }
+  .col-spitz { color: #7ac8e8; }
+  .col-gronland { color: #a8d4f0; }
+
+  /* ── TRANSITION ANIMATION ── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .slide.active .slide-inner > * {
+    animation: fadeIn 0.5s ease forwards;
+  }
+
+  /* ── SLIDE 1: Title ── */
+  .title-ornament {
+    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    opacity: 0.4;
+    letter-spacing: 0.5em;
+    margin: 0.5em 0;
+    display: block;
+  }
+  .triple-dots {
+    display: flex; gap: 0.8em; justify-content: center;
+    margin: 1.2em 0;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .dot-gold { background: var(--warm-gold); }
+  .dot-mid { background: var(--bridge-accent); }
+  .dot-blue { background: var(--arctic-blue); }
+
+  /* ── GRADIENT OVERLAP (bridge slide) ── */
+  .dual-gradient {
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(135deg,
+      rgba(42,26,8,0.95) 0%,
+      rgba(10,20,35,0.95) 100%
+    );
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .two-col, .three-col { grid-template-columns: 1fr; gap: 2vw; }
+    .slide-inner { padding: 6vw 5vw; }
+    h1.display { font-size: clamp(1.6rem, 7vw, 3rem); }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<div id="slideshow">
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 1 · TITLE
+  ═══════════════════════════════════════════════ -->
+  <div class="slide active">
+    <div class="slide-inner bg-bridge" style="justify-content:center;">
+      <div class="deco-line-warm" style="background:linear-gradient(90deg,transparent,var(--warm-gold) 30%,var(--arctic-blue) 70%,transparent);"></div>
+
+      <div style="text-align:center; max-width:900px; position:relative; z-index:1;">
+        <span class="eyebrow eyebrow-bridge">Előadás · 2026</span>
+        <h1 class="display text-warm" style="font-size:clamp(2rem,5vw,4.2rem); margin-bottom:0.15em;">
+          A világ szélén
+        </h1>
+        <span class="title-ornament text-warm">⸻</span>
+        <div style="font-family:var(--font-display); font-size:clamp(0.9rem,2vw,1.5rem); color:var(--warm-cream); opacity:0.8; letter-spacing:0.08em; margin:0.4em 0 1.5em;">
+          Tavaszi kalandok -20 °C-ban a Spitzbergákon és Grönlandon
+        </div>
+        <div class="triple-dots">
+          <div class="dot dot-gold"></div>
+          <div class="dot dot-mid"></div>
+          <div class="dot dot-blue"></div>
+        </div>
+        <div style="margin-top:1.6em; font-family:var(--font-mono); font-size:clamp(0.5rem,0.95vw,0.72rem); letter-spacing:0.22em; text-transform:uppercase; color:rgba(255,255,255,0.4);">
+          Dr. Pelyhe Liza · 2026. 05. 05.
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic" style="background:linear-gradient(90deg,transparent,var(--arctic-blue) 60%,transparent);"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 2 · AZ ÖSSZEKÖTŐ GONDOLAT
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-bridge" style="justify-content:center;">
+      <div class="deco-line-warm" style="background:linear-gradient(90deg,transparent,var(--warm-gold),transparent);"></div>
+
+      <div style="text-align:center; max-width:820px;">
+        <span class="eyebrow eyebrow-bridge">Arctic Zone</span>
+        <h2 class="display text-warm" style="font-style:italic; margin-bottom:0.6em;">
+          Johannes Rebmann, 1848<br>az egyenlítőnél hó található.
+        </h2>
+        <div class="divider-warm" style="margin:0 auto 1.4em;"></div>
+        <p class="body-text text-warm" style="margin-bottom:1.4em; opacity:0.85;">
+          A Kilimandzsáró csúcsa — mindössze 3 fokra az egyenlítőtől — az úgynevezett <strong style="color:var(--warm-gold);">Sarkvidéki Zóna</strong>-ban végződik: jégmezők, gleccserek, semmiféle növényzet, sarki sivatagi körülmények.
+        </p>
+        <div style="display:flex; gap:3vw; justify-content:center; flex-wrap:wrap; margin-top:1.5em;">
+          <div style="text-align:center;">
+            <span class="stat-number text-gold">3°S</span>
+            <span class="stat-label text-dim text-warm" style="display:block;">az egyenlítőtől</span>
+          </div>
+          <div style="text-align:center; opacity:0.3; font-size:2rem; color:white;">→</div>
+          <div style="text-align:center;">
+            <span class="stat-number" style="color:var(--arctic-blue);">78°N</span>
+            <span class="stat-label text-dim" style="display:block; color:var(--arctic-ice);">Spitzbergák</span>
+          </div>
+          <div style="text-align:center; opacity:0.3; font-size:2rem; color:white;">→</div>
+          <div style="text-align:center;">
+            <span class="stat-number" style="color:var(--arctic-ice);">69°N</span>
+            <span class="stat-label text-dim" style="display:block; color:var(--arctic-ice);">Grönland</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic"></div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 4 · KILIMANDZSÁRÓ – ARCTIC ZONE
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-image-bg" style="background-image:url('https://drpelyheliza.github.io/drpelyheliza/001.jpg');"></div>
+    <div class="slide-inner bg-warm-img over-image">
+      <div class="deco-line-warm"></div>
+
+      <div class="two-col" style="align-items:center;">
+        <div>
+          <span class="eyebrow eyebrow-warm">Kilimandzsáró · 5 895 m</span>
+          <h2 class="display text-warm">Az Arctic Zone</h2>
+          <div class="divider-warm"></div>
+          <p class="body-text text-warm" style="margin-bottom:1.2em;">
+            A Kilimandzsáró öt klímazónára osztható — az egyenlítői őserdőtől egészen a sarki sivatagig. A csúcs zónáját <strong style="color:var(--warm-gold);">Arctic Zone-nak</strong> hívják: kizárólag a tengerszint feletti magasság tartja fenn, nem az éghajlati szélesség.
+          </p>
+          <ul class="fact-list">
+            <li><span class="marker-warm">▲</span><span class="text-warm body-text">Magasság: 5 000–5 895 m</span></li>
+            <li><span class="marker-warm">▲</span><span class="text-warm body-text">Éjjel −10 / −20 °C, szélben −30 °C</span></li>
+            <li><span class="marker-warm">▲</span><span class="text-warm body-text">Jég, gleccserek, kőzetomladék — semmi növényzet</span></li>
+            <li><span class="marker-warm">▲</span><span class="text-warm body-text">Oxigénszint: tengerszinti 50%-a</span></li>
+            <li><span class="marker-warm">▲</span><span class="text-warm body-text">Szublimáció: a jég közvetlenül gőzzé alakul</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="photo-frame" style="height:55vh;">
+            <img src="https://drpelyheliza.github.io/drpelyheliza/063.jpg" alt="Déli Jégmező – Kilimandzsáró kráterperem">
+            <div class="photo-caption">Déli Jégmező · Kráterperem · ~5 800 m</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-warm"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 5 · A PARADOXON
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-warm">
+      <div class="deco-line-warm"></div>
+
+      <div style="max-width:1050px; width:100%;">
+        <span class="eyebrow eyebrow-warm" style="display:block; text-align:center; margin-bottom:1em;">A Paradoxon</span>
+        <div class="two-col" style="align-items:start;">
+          <div>
+            <h2 class="display text-warm" style="font-style:italic;">"Finding the Arctic on the equator"</h2>
+            <div class="divider-warm"></div>
+            <p class="body-text text-warm" style="margin-bottom:1.2em; opacity:0.85;">
+              A hegy bejárása olyan, mint egyetlen héten belül az egyenlítőről az Északi-sarkig sétálni — ahogy a tudományos irodalom fogalmaz. A Kilimandzsáró csúcsa egy <strong style="color:var(--warm-gold);">poláris sivatag</strong>, annak ellenére, hogy Tanzánia szavannája veszi körül.
+            </p>
+            <div class="quote-block quote-warm" style="margin-bottom:1.2em;">
+              „Nowhere else on Earth can a traveler walk from the tropics to the arctic within a single week — but on Mount Kilimanjaro, this is exactly what happens."
+              <div style="font-family:var(--font-mono); font-size:0.55rem; opacity:0.5; letter-spacing:0.15em; margin-top:0.5em;">Kilimanjaro National Park · 2026</div>
+            </div>
+          </div>
+          <div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2em; margin-bottom:1.2em;">
+              <div class="stat-box stat-box-warm">
+                <span class="stat-number text-gold">1912</span>
+                <span class="stat-label text-warm">jégsapka első mérése</span>
+              </div>
+              <div class="stat-box stat-box-warm">
+                <span class="stat-number text-gold">−85%</span>
+                <span class="stat-label text-warm">jégterület csökkenés 112 év alatt</span>
+              </div>
+              <div class="stat-box stat-box-warm">
+                <span class="stat-number text-gold">11 700</span>
+                <span class="stat-label text-warm">éve folyamatos a Northern Ice Field</span>
+              </div>
+              <div class="stat-box stat-box-warm">
+                <span class="stat-number text-gold">2030?</span>
+                <span class="stat-label text-warm">a gleccserek várható eltűnése</span>
+              </div>
+            </div>
+            <div class="photo-frame" style="height:22vh;">
+              <img src="https://drpelyheliza.github.io/drpelyheliza/062.jpg" alt="Jégmező a kráterperemen">
+              <div class="photo-caption">Kibo-kráter · Arctic Zone · hajnali 6:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-warm"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 6 · A CSÚCSON · SZEMÉLYES
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-image-bg" style="background-image:url('https://drpelyheliza.github.io/drpelyheliza/065.jpg');"></div>
+    <div class="slide-inner over-image">
+      <div class="deco-line-warm"></div>
+
+      <div style="max-width:700px; text-align:center;">
+        <span class="zone-badge zone-badge-warm">Uhuru Peak · 5 895 m · Hajnali 6:50</span>
+        <h2 class="display text-warm" style="font-size:clamp(1.6rem,4vw,3.2rem); margin:0.4em 0;">Asztmával<br><em>Afrika tetején</em></h2>
+        <div class="divider-warm" style="margin:0.8em auto;"></div>
+        <p class="body-text text-warm" style="margin-bottom:1.2em; opacity:0.9; font-size:clamp(0.9rem,1.5vw,1.15rem);">
+          A csúcson jégmezők fogadtak — az egyenlítőn, 5 895 méteren.<br>
+          Légzésszám, pulzus, sikerarány: asztmás és egészséges mászók közt semmi különbség.<br>
+          <strong style="color:var(--warm-gold);">(Stokes et al. – 18 asztmás, 291 egészséges mászó vizsgálata)</strong>
+        </p>
+        <div class="quote-block quote-warm" style="text-align:left; max-width:560px; margin:0 auto;">
+          Minden lépésnél 2 be · 4 ki. Ha pánik jött: megálltam. Az inhalátor mindig kéznél.
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-warm"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 7 · HÍDSLA – ÁTMENET AZ ARKTISZBA
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-bridge">
+      <div style="position:absolute; inset:0; background:linear-gradient(135deg, rgba(42,26,8,0.5) 0%, rgba(6,16,26,0.5) 100%); z-index:0;"></div>
+
+      <div style="text-align:center; max-width:780px; position:relative; z-index:1;">
+        <span class="eyebrow eyebrow-bridge">A kérdés, ami maradt</span>
+        <h2 class="display" style="font-size:clamp(1.7rem,4.2vw,3.6rem); font-style:italic; color:var(--warm-cream); margin-bottom:0.6em;">
+          „Milyen az igazi Arktisz?"
+        </h2>
+        <div style="width:100%; height:2px; background:linear-gradient(90deg, rgba(200,145,42,0.8), rgba(74,159,200,0.8)); margin:1.2em 0;"></div>
+        <p class="body-text text-warm" style="opacity:0.8; margin-bottom:1.8em; font-size:clamp(0.9rem,1.7vw,1.25rem);">
+          A Kilimandzsárón megtaláltam az Arctic Zone-t — de az igazi Arktiszt nem a magasság tartja életben, hanem a szélesség. Sarki medvék, sarkköri éjszaka, jéghegyek, igluk. Más világ — <em>ugyanaz a jég.</em>
+        </p>
+        <div class="triple-dots" style="margin:0 auto 1.8em;">
+          <div class="dot dot-gold"></div>
+          <div style="width:80px; height:2px; background:linear-gradient(90deg,var(--warm-gold),var(--arctic-blue)); border-radius:2px; align-self:center;"></div>
+          <div class="dot dot-blue"></div>
+        </div>
+        <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35);">
+          Kilimandzsáró 2025 &nbsp;⟶&nbsp; Spitzbergák 2022 &nbsp;⟶&nbsp; Grönland 2023
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 8 · SPITZBERGÁK – BEVEZETŐ
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-arctic">
+      <div class="deco-line-arctic"></div>
+
+      <div class="two-col" style="align-items:center; max-width:1100px;">
+        <div>
+          <span class="zone-badge zone-badge-arctic">Svalbard · 2022. április</span>
+          <h2 class="display text-arctic">Spitzbergák</h2>
+          <div class="italic-lead text-arctic" style="opacity:0.8;">78°N — 1 309 km az Északi-sarktól</div>
+          <div class="divider-arctic"></div>
+          <p class="body-text text-arctic" style="opacity:0.85; margin-bottom:1.2em;">
+            A Spitzbergák — norvégul Svalbard — a világ egyik legtávolabbi lakott területe. A Longyearbyen repülőtérről kilépve az ember egy egészen más fizikai valóságba lép: sarki éjszaka, −20 °C-os hőérzet, és a jégtáblák birodalma.
+          </p>
+          <ul class="fact-list">
+            <li><span class="marker-arctic">◆</span><span class="text-arctic body-text">Felszín 60%-a gleccser — 2 100 gleccser</span></li>
+            <li><span class="marker-arctic">◆</span><span class="text-arctic body-text">Sarki nappal/éjszaka — 24 órás világosság</span></li>
+            <li><span class="marker-arctic">◆</span><span class="text-arctic body-text">Jegesmedve-populáció: ~3 000 egyed</span></li>
+            <li><span class="marker-arctic">◆</span><span class="text-arctic body-text">Longyearbyen: világ legészakibb városa</span></li>
+            <li><span class="marker-arctic">◆</span><span class="text-arctic body-text">Hőérzet mínusz 20 fok · snowcat · snowmobile</span></li>
+          </ul>
+        </div>
+        <div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1em;">
+            <div class="stat-box stat-box-arctic">
+              <span class="stat-number text-blue">78°N</span>
+              <span class="stat-label text-arctic">szélességi fok</span>
+            </div>
+            <div class="stat-box stat-box-arctic">
+              <span class="stat-number text-blue">−20°C</span>
+              <span class="stat-label text-arctic">hőérzet (április)</span>
+            </div>
+            <div class="stat-box stat-box-arctic">
+              <span class="stat-number text-blue">2 100</span>
+              <span class="stat-label text-arctic">gleccser Svalbardban</span>
+            </div>
+            <div class="stat-box stat-box-arctic">
+              <span class="stat-number text-blue">60%</span>
+              <span class="stat-label text-arctic">jégfedett felszín</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 9 · LONGYEARBYEN · SARKI NAPPAL
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-arctic-img">
+      <div class="deco-line-arctic"></div>
+
+      <div style="max-width:1100px; width:100%;">
+        <span class="eyebrow eyebrow-arctic" style="display:block; text-align:center; margin-bottom:1em;">Longyearbyen · A világ legészakibb városa</span>
+        <div class="two-col" style="align-items:center;">
+          <div>
+            <h2 class="display text-arctic" style="font-size:clamp(1.4rem,3vw,2.5rem);">Sarki nappal<br><em style="font-weight:400;">és az idő elvesztése</em></h2>
+            <div class="divider-arctic"></div>
+            <p class="body-text text-arctic" style="margin-bottom:1em; opacity:0.85;">
+              Este 8-kor snowcat-tel indultunk völgybe és hegycsúcsra „naplementét" nézni. A Nap lement — de a világ fényes maradt. Hajnali 2-kor, 6-kor, reggel 9-kor: ugyanaz a hideg kék fény.
+            </p>
+            <div class="quote-block quote-arctic" style="margin-bottom:1em;">
+              „Lelkesen sétálgattam hajnali 1-kor is alvási ingerencia nélkül, úgy hogy másnak hajnali 6-kor keltem."
+            </div>
+            <ul class="fact-list">
+              <li><span class="marker-arctic">→</span><span class="text-arctic body-text">Sarki nappal: folyamatos világosság hónapokig</span></li>
+              <li><span class="marker-arctic">→</span><span class="text-arctic body-text">Longyearbyen reptér — Oslo–Tromsø–Svalbard</span></li>
+              <li><span class="marker-arctic">→</span><span class="text-arctic body-text">Jegesmedve-veszély: a városon kívül puska kötelező</span></li>
+              <li><span class="marker-arctic">→</span><span class="text-arctic body-text">Hiorthhamn — elhagyatott bányatelepülés a közelben</span></li>
+            </ul>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:1em;">
+            <div class="panel-arctic" style="text-align:center;">
+              <div style="font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.15em; color:var(--arctic-blue); text-transform:uppercase; margin-bottom:0.5em;">Sarki nappal vs. éjszaka</div>
+              <div style="font-family:var(--font-body); font-size:1rem; color:var(--arctic-ice); line-height:1.8;">
+                <div>Április: sarki nappal kezdete</div>
+                <div>Október: sarki éjszaka kezdete</div>
+                <div>Egész nyáron: <strong style="color:var(--arctic-blue);">0 sötétség</strong></div>
+                <div>Egész télen: <strong style="color:var(--arctic-blue);">0 fény</strong></div>
+              </div>
+            </div>
+            <div class="panel-arctic">
+              <div style="font-family:var(--font-mono); font-size:0.6rem; letter-spacing:0.15em; color:var(--arctic-blue); text-transform:uppercase; margin-bottom:0.5em;">Svalbardi rénszarvasok</div>
+              <div class="body-text text-arctic">Kisebb termetű, kerekebb testű az anyaföldivel szemben — a szélsőséges hidegre való evolúciós adaptáció.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 10 · KUTYASZÁN + JÉGBARLANG
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-arctic">
+      <div class="deco-line-arctic"></div>
+
+      <div style="max-width:1100px; width:100%;">
+        <span class="eyebrow eyebrow-arctic" style="display:block; text-align:center; margin-bottom:1em;">Spitzbergák · Gleccserkaland</span>
+        <div class="two-col" style="align-items:start;">
+          <div>
+            <h3 class="section-title text-arctic">🐕 Kutyaszán a gleccseren</h3>
+            <div class="divider-arctic"></div>
+            <p class="body-text text-arctic" style="margin-bottom:1em; opacity:0.85;">
+              Gyorstalpalóban megtanítottak bekötni és leoldani a kutyákat, majd fel a gleccserre. −10 °C, ketten irányítottuk a szánt — az oldalán kés medvetámadás esetére. A túravezető mottója: „itt annyi a nyár, hogy leveszik a sapkát."
+            </p>
+            <div class="quote-block quote-arctic" style="margin-bottom:1em;">
+              „Csilis babot ettünk zacsiból a gleccser tetején — ez az autentikus hegyi kulináris élmény."
+            </div>
+          </div>
+          <div>
+            <h3 class="section-title text-arctic">🧊 Jégbarlang séta</h3>
+            <div class="divider-arctic"></div>
+            <p class="body-text text-arctic" style="margin-bottom:1em; opacity:0.85;">
+              A gleccser belsejébe vágott folyosókon haladtunk — a jég kék és zöld árnyalatokban izzott. Kívülről: vakító fehér. Belülről: egy más világ, ezerszínű.
+            </p>
+            <ul class="fact-list">
+              <li><span class="marker-arctic">◆</span><span class="text-arctic body-text">A gleccser jég korának és sűrűségének mutatója a szín</span></li>
+              <li><span class="marker-arctic">◆</span><span class="text-arctic body-text">Kék szín = nagyon tömörített, légbuborékmentes jég</span></li>
+              <li><span class="marker-arctic">◆</span><span class="text-arctic body-text">Az Austfonna gleccser (Svalbard) – az egyik legnagyobb Észak-Európában</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 11 · BARENTSBURG + JÉGTÖRŐ
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-arctic-img">
+      <div class="deco-line-arctic"></div>
+
+      <div class="two-col" style="align-items:center; max-width:1100px;">
+        <div>
+          <span class="eyebrow eyebrow-arctic">Spitzbergák · Tengeri expedíció</span>
+          <h2 class="display text-arctic">Jégtörő hajóval<br><em>Pyramiden felé</em></h2>
+          <div class="divider-arctic"></div>
+          <p class="body-text text-arctic" style="opacity:0.85; margin-bottom:1.2em;">
+            Longyearbyen-ből hajóval az Esmark-gleccserig (Esmarkbreen), majd Barentsburgba. Másnap: Pyramiden felé — de a jégmező nyert. Fél órányi hajóútra a céltól, többszöri tolatás-izomból belehajtás után sem sikerült lyukat ütni.
+          </p>
+          <div class="quote-block quote-arctic">
+            „Megjelentek a jégtáblák, aztán sűrűsödtek, jött az egybefüggő jégmező — a hajó még bírta. Aztán jött az, amelyiken nem ment át."
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:1.2em;">
+          <div class="panel-arctic">
+            <div style="font-family:var(--font-mono); font-size:0.6rem; color:var(--arctic-blue); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.6em;">Barentsburg · Orosz bányatelepülés</div>
+            <div class="body-text text-arctic" style="opacity:0.85;">
+              471 fős orosz és ukrán közösség. Aktív szénbányászat. Saját iskola, kocsma, postakocsi — egy szovjet-éra konzervje a Spitzbergákon.
+            </div>
+          </div>
+          <div class="panel-arctic">
+            <div style="font-family:var(--font-mono); font-size:0.6rem; color:var(--arctic-blue); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.6em;">Pyramiden · A szellemváros</div>
+            <div class="body-text text-arctic" style="opacity:0.85;">
+              1998-ban elhagyott szovjet bányaváros. A befagyott Billefjorden fjordon keresztül közelíthető meg — ha a jég engedi.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 12 · JEGESMEDVE-LES
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-arctic">
+      <div class="deco-line-arctic"></div>
+
+      <div style="max-width:1000px; width:100%;">
+        <span class="eyebrow eyebrow-arctic" style="display:block; text-align:center; margin-bottom:1em;">Spitzbergák · A nagy kaland</span>
+        <h2 class="display text-arctic" style="text-align:center; margin-bottom:0.5em;">195 km motorosszánon<br><em style="font-weight:400;">a medvék nyomában</em></h2>
+        <div class="divider-arctic" style="margin:0 auto 1.5em;"></div>
+
+        <div class="three-col">
+          <div class="panel-arctic" style="text-align:center;">
+            <div style="font-size:2rem; margin-bottom:0.4em;">🏔️</div>
+            <div class="body-text text-arctic" style="font-weight:600; margin-bottom:0.4em; color:var(--arctic-blue);">Az út</div>
+            <div class="body-text text-arctic" style="opacity:0.8; font-size:0.9em;">Völgyeken, szurdokokon, befagyott folyón, morénákon át. Keletre, a befagyott tengerhez — 12 óra, bruttó.</div>
+          </div>
+          <div class="panel-arctic" style="text-align:center;">
+            <div style="font-size:2rem; margin-bottom:0.4em;">🐾</div>
+            <div class="body-text text-arctic" style="font-weight:600; margin-bottom:0.4em; color:var(--arctic-blue);">A lelet</div>
+            <div class="body-text text-arctic" style="opacity:0.8; font-size:0.9em;">2 napos, brutál nagy jegesmedve-lábnyom + sarki róka nyoma. Aztán: egy mamamaci két picimacival — 3 pötty a jéghegy mellett.</div>
+          </div>
+          <div class="panel-arctic" style="text-align:center;">
+            <div style="font-size:2rem; margin-bottom:0.4em;">🌫️</div>
+            <div class="body-text text-arctic" style="font-weight:600; margin-bottom:0.4em; color:var(--arctic-blue);">A visszaút</div>
+            <div class="body-text text-arctic" style="opacity:0.8; font-size:0.9em;">Hatalmas ködben száguldás. Megálló egy gleccsernél és egy befagyott vízesésnél. Közben a hátunk mögött: rénszarvasok.</div>
+          </div>
+        </div>
+
+        <div class="quote-block quote-arctic" style="text-align:center; border-left:none; border-top:1px solid rgba(74,159,200,0.3); padding:1em; margin-top:1.5em;">
+          „Selfiztem jégheggyel a befagyott tengeren — és közben a gps tudta csak, merre vagyunk."
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 13 · GRÖNLAND – BEVEZETŐ
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-greenland">
+      <div class="deco-line-arctic" style="background:linear-gradient(90deg,transparent,#a8d4f0,transparent);"></div>
+
+      <div class="two-col" style="align-items:center; max-width:1100px;">
+        <div>
+          <span class="zone-badge" style="background:rgba(168,212,240,0.1); color:#a8d4f0; border-color:rgba(168,212,240,0.3);">Grönland · 2023. február–március</span>
+          <h2 class="display text-arctic" style="color:#c8e4f5;">Grönland</h2>
+          <div class="italic-lead text-arctic" style="color:#a8d4f0; opacity:0.9;">Kangerlussuaq · Ilulissat</div>
+          <div class="divider-arctic" style="background:#a8d4f0;"></div>
+          <p class="body-text text-arctic" style="opacity:0.85; margin-bottom:1.2em;">
+            A világ legnagyobb szigete, és az Északi-sarkot övező sarki rendszer szíve. A Grönlandi-jégtakaró a Föld édesvízkészletének 10%-át tartalmazza — olvadása a tengerszintre közvetlen hatással van.
+          </p>
+          <ul class="fact-list">
+            <li><span style="color:#a8d4f0;">◆</span><span class="text-arctic body-text">Kangerlussuaq: −30 °C · lékhorgászat a befagyott folyón</span></li>
+            <li><span style="color:#a8d4f0;">◆</span><span class="text-arctic body-text">Ice Sheet Point 660 — a grönlandi jégmező pereme</span></li>
+            <li><span style="color:#a8d4f0;">◆</span><span class="text-arctic body-text">Ilulissat: jéghegyek fővárosa · Kangia-fjord</span></li>
+            <li><span style="color:#a8d4f0;">◆</span><span class="text-arctic body-text">Igluban töltött éjszaka: −15 °C belül, −30 °C kint</span></li>
+            <li><span style="color:#a8d4f0;">◆</span><span class="text-arctic body-text">Sarki fény — a városban állva, a közepében</span></li>
+          </ul>
+        </div>
+        <div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1em;">
+            <div class="stat-box stat-box-arctic">
+              <span class="stat-number" style="color:#a8d4f0;">−30°C</span>
+              <span class="stat-label text-arctic">Kangerlussuaq</span>
+            </div>
+            <div class="stat-box stat-box-arctic">
+              <span class="stat-number" style="color:#a8d4f0;">660 m</span>
+              <span class="stat-label text-arctic">Ice Sheet Point magassága</span>
+            </div>
+            <div class="stat-box stat-box-arctic">
+              <span class="stat-number" style="color:#a8d4f0;">10%</span>
+              <span class="stat-label text-arctic">Föld édesvizének aránya</span>
+            </div>
+            <div class="stat-box stat-box-arctic">
+              <span class="stat-number" style="color:#a8d4f0;">3M km²</span>
+              <span class="stat-label text-arctic">jégtakaró területe</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic" style="background:linear-gradient(90deg,transparent,#a8d4f0,transparent);"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 14 · KANGERLUSSUAQ + ICE SHEET
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-greenland">
+      <div class="deco-line-arctic" style="background:linear-gradient(90deg,transparent,#a8d4f0,transparent);"></div>
+
+      <div style="max-width:1100px; width:100%;">
+        <span class="eyebrow" style="font-family:var(--font-mono); color:#a8d4f0; letter-spacing:0.2em; text-transform:uppercase; font-size:0.65rem; display:block; text-align:center; margin-bottom:1em;">Kangerlussuaq · Grönland</span>
+        <div class="two-col" style="align-items:start;">
+          <div>
+            <h3 class="section-title text-arctic" style="color:#c8e4f5;">Kangerlussuaq<br><em style="font-weight:400;">„amit azóta sem tudok kimondani"</em></h3>
+            <div class="divider-arctic" style="background:#a8d4f0;"></div>
+            <p class="body-text text-arctic" style="opacity:0.85; margin-bottom:1em;">
+              A szállás 6 percre a reptértől — de gyalog, −30 °C-ban. A táj látszólag sivár: befagyott folyók, tavak, roncsolt repülőgép 1968-ból. Aztán rénszarvasok, pézsmatulkok — és az Ice Sheet Point 660.
+            </p>
+            <div class="quote-block" style="border-left:3px solid #a8d4f0; color:var(--arctic-ice); font-style:italic; font-family:var(--font-display); padding:0.6em 1.5em; margin-bottom:1em;">
+              „Kb 2 percig horgásztam a jeges lyukba, a maradék 48 percben aerobikoztam és power jumpokat csináltam, hogy ne fagyjak meg."
+            </div>
+          </div>
+          <div>
+            <h3 class="section-title text-arctic" style="color:#c8e4f5;">Ice Sheet Point 660<br><em style="font-weight:400;">a jégmező pereme</em></h3>
+            <div class="divider-arctic" style="background:#a8d4f0;"></div>
+            <p class="body-text text-arctic" style="opacity:0.85; margin-bottom:1em;">
+              Feltúráztam a jégmezőre jeges, erős szélben. A Grönlandi-jégtakaró pereme — itt véget ér a szárazföld és elkezdődik a jég, ami a belsejében 3 km vastag.
+            </p>
+            <ul class="fact-list">
+              <li><span style="color:#a8d4f0;">→</span><span class="text-arctic body-text">Átlagos jégvastagság: 2-3 km (belső területek)</span></li>
+              <li><span style="color:#a8d4f0;">→</span><span class="text-arctic body-text">A jégmag fúrásokból 110 000 éves klímaarchívum olvasható</span></li>
+              <li><span style="color:#a8d4f0;">→</span><span class="text-arctic body-text">Pézsmatulkok és rénszarvasok a peremen</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic" style="background:linear-gradient(90deg,transparent,#a8d4f0,transparent);"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 15 · ILULISSAT · JÉGHEGYEK
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-greenland">
+      <div class="deco-line-arctic" style="background:linear-gradient(90deg,transparent,#a8d4f0,transparent);"></div>
+
+      <div style="max-width:1100px; width:100%;">
+        <span class="eyebrow" style="font-family:var(--font-mono); color:#a8d4f0; letter-spacing:0.2em; text-transform:uppercase; font-size:0.65rem; display:block; text-align:center; margin-bottom:1em;">Ilulissat · Jéghegyek fővárosa</span>
+        <div class="two-col" style="align-items:center;">
+          <div>
+            <h2 class="display" style="color:#c8e4f5; font-size:clamp(1.5rem,3.2vw,2.8rem);">A Kangia-fjord<br><em style="font-weight:400;">ahol a Titanic jéghegyei születnek</em></h2>
+            <div class="divider-arctic" style="background:#a8d4f0;"></div>
+            <p class="body-text text-arctic" style="opacity:0.85; margin-bottom:1.2em;">
+              Az Ilulissat Icefjord (Kangia) az UNESCO Világörökség részét képezi. A Sermeq Kujalleq gleccser naponta 20-40 métert mozdul — az egyik leggyorsabb a világon. A vízre érkező jéghegyek innen sodródnak el az Atlanti-óceán felé.
+            </p>
+            <div class="quote-block" style="border-left:3px solid #a8d4f0; color:var(--arctic-ice); font-style:italic; font-family:var(--font-display); padding:0.6em 1.5em; margin-bottom:1em;">
+              „Hajókáztam a jéghegyek között. Aztán tea jéghegyből vájt jéggel hűtve — ilyen is van."
+            </div>
+            <ul class="fact-list">
+              <li><span style="color:#a8d4f0;">◆</span><span class="text-arctic body-text">Több éjszaka is sarki fény — a város közepéből</span></li>
+              <li><span style="color:#a8d4f0;">◆</span><span class="text-arctic body-text">Hurrikán: minden grönlandi repülőjárat törölve — +1 nap</span></li>
+              <li><span style="color:#a8d4f0;">◆</span><span class="text-arctic body-text">Közért: görögdinnye, ananász, eper — a sarkkörön belül</span></li>
+            </ul>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:1em;">
+            <div class="panel-arctic" style="border-color:rgba(168,212,240,0.2);">
+              <div style="font-family:var(--font-mono); font-size:0.6rem; color:#a8d4f0; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5em;">Ilulissat Icefjord · UNESCO</div>
+              <div class="body-text text-arctic" style="opacity:0.8;">A Sermeq Kujalleq gleccser évi 20-46 km² jéget bocsát a tengerbe — ez az Északi-félteke jégtermelésének ~7%-a.</div>
+            </div>
+            <div class="panel-arctic" style="border-color:rgba(168,212,240,0.2);">
+              <div style="font-family:var(--font-mono); font-size:0.6rem; color:#a8d4f0; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:0.5em;">Az iglus</div>
+              <div class="body-text text-arctic" style="opacity:0.8;">Hójáróval 2 óra az érintetlen tájba. Kint −30 °C, igluban −15 °C. Rénszarvasbőr + expedíciós hálózsák. Az iglu „ajtaján": fejjel előre lecsúszás U alakban.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic" style="background:linear-gradient(90deg,transparent,#a8d4f0,transparent);"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 16 · IGLU-SZTORI
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-greenland">
+      <div class="deco-line-arctic" style="background:linear-gradient(90deg,transparent,#a8d4f0,transparent);"></div>
+
+      <div style="max-width:1000px; width:100%;">
+        <span class="eyebrow" style="font-family:var(--font-mono); color:#a8d4f0; letter-spacing:0.2em; text-transform:uppercase; font-size:0.65rem; display:block; text-align:center; margin-bottom:0.8em;">Grönland · Az iglu-sztori</span>
+        <h2 class="display" style="color:#c8e4f5; text-align:center; font-size:clamp(1.4rem,3vw,2.5rem); margin-bottom:1em;">Az igluban töltött éjszaka<br><em style="font-weight:400;">−15 °C belül · −30 °C kint</em></h2>
+
+        <div class="three-col">
+          <div class="panel-arctic" style="border-color:rgba(168,212,240,0.2);">
+            <div style="font-family:var(--font-mono); font-size:0.6rem; color:#a8d4f0; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:0.6em;">Bevonulás az igluba</div>
+            <div class="body-text text-arctic" style="opacity:0.8; font-size:0.85em;">Fejjel előre lecsúszás a mélyedésbe, majd homorítva U alakban gerinchajlítás, felhúzás talajszintre. Bal kézben kulacs, jobb kézben „szeretetcsomag" (hálózsákbélés, melegvizes tömlő, fejlámpa).</div>
+          </div>
+          <div class="panel-arctic" style="border-color:rgba(168,212,240,0.2);">
+            <div style="font-family:var(--font-mono); font-size:0.6rem; color:#a8d4f0; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:0.6em;">Az éjszakai protokoll</div>
+            <div class="body-text text-arctic" style="opacity:0.8; font-size:0.85em;">Hálózsákbélés, forró lábmelegítő palack, kesztyű, nadrág, kabát — mind bele, aztán te is bele, gyorsan. Ha a vese dolgozik: fejlámpa, hálózsák, kabát, nadrág, csizma — igluból kijutás — sprint a faházikóba. Aztán minden elölről.</div>
+          </div>
+          <div class="panel-arctic" style="border-color:rgba(168,212,240,0.2);">
+            <div style="font-family:var(--font-mono); font-size:0.6rem; color:#a8d4f0; text-transform:uppercase; letter-spacing:0.12em; margin-bottom:0.6em;">Az este programja</div>
+            <div class="body-text text-arctic" style="opacity:0.8; font-size:0.85em;">Hótalpas séta. Gyertyafénynél kávézás. Vacsora: tejszínes rénszarvas curry (3 bödönnel). Sarki fény lesése. Iglu: matrac + rénszarvasbőr + expedíciós hálózsák. Hójáró + befagyott tó + befagyott folyó.</div>
+          </div>
+        </div>
+
+        <div class="quote-block" style="border-left:3px solid #a8d4f0; color:var(--arctic-ice); font-style:italic; font-family:var(--font-display); padding:0.8em 1.5em; margin-top:1.5em; text-align:center;">
+          „A kávé és tea a hó felolvasztásával készül. Meg is mondták, hogy ne pisiljünk a hóba."
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic" style="background:linear-gradient(90deg,transparent,#a8d4f0,transparent);"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 17 · ÖSSZEHASONLÍTÁS
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-bridge">
+      <div style="position:absolute; inset:0; background:linear-gradient(160deg, rgba(42,26,8,0.3) 0%, rgba(6,16,26,0.5) 100%); z-index:0;"></div>
+      <div class="deco-line-arctic" style="background:linear-gradient(90deg,transparent,var(--warm-gold) 30%,var(--arctic-blue) 70%,transparent);"></div>
+
+      <div style="max-width:1100px; width:100%; position:relative; z-index:1;">
+        <span class="eyebrow eyebrow-bridge" style="display:block; text-align:center; margin-bottom:1em;">A három jégvilág összehasonlítása</span>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th style="color:rgba(255,255,255,0.4);"></th>
+              <th class="col-kili">🏔️ Kilimandzsáró</th>
+              <th class="col-spitz">❄️ Spitzbergák</th>
+              <th class="col-gronland">🧊 Grönland</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:rgba(255,255,255,0.5); font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase;">Koordináta</td>
+              <td class="col-kili">3°S (egyenlítő közelében)</td>
+              <td class="col-spitz">78°N</td>
+              <td class="col-gronland">65–69°N</td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.5); font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase;">Jégtípus</td>
+              <td class="col-kili">Egyenlítői jégsapka<br><span style="opacity:0.6; font-size:0.85em;">szublimáció által formált</span></td>
+              <td class="col-spitz">Alpesi és sarki gleccserek<br><span style="opacity:0.6; font-size:0.85em;">2 100 gleccser, 60% jégfedett</span></td>
+              <td class="col-gronland">Kontinentális jégtakaró<br><span style="opacity:0.6; font-size:0.85em;">3 km vastag belsejében</span></td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.5); font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase;">Min. hőmérséklet</td>
+              <td class="col-kili">−30 °C (szélben, csúcson)</td>
+              <td class="col-spitz">−20 °C hőérzet (április)</td>
+              <td class="col-gronland">−30 °C (Kangerlussuaq)</td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.5); font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase;">Miért „sarki"?</td>
+              <td class="col-kili">Magasság (5 000–5 895 m)</td>
+              <td class="col-spitz">Szélesség (78°N)</td>
+              <td class="col-gronland">Szélesség + jégtakaró</td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.5); font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase;">Gleccser sorsa</td>
+              <td class="col-kili">−85% 1912 óta · 2030-ra eltűnhet</td>
+              <td class="col-spitz">Visszahúzódás · Austfonna csökken</td>
+              <td class="col-gronland">Sermeq Kujalleq: napi 20-40 m mozgás</td>
+            </tr>
+            <tr>
+              <td style="color:rgba(255,255,255,0.5); font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase;">Személyes élmény</td>
+              <td class="col-kili">Asztmával a csúcson — 5 895 m</td>
+              <td class="col-spitz">195 km motorosszán · 3 pötty a jéghegy előtt</td>
+              <td class="col-gronland">Iglu −15 °C · sarki fény a városból</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="deco-line-bottom-arctic" style="background:linear-gradient(90deg,transparent,var(--arctic-blue),transparent);"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 18 · KLÍMAVÁLTOZÁS · KÖZÖS ÜZENET
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-bridge">
+      <div class="deco-line-arctic" style="background:linear-gradient(90deg,transparent,var(--warm-gold) 40%,var(--arctic-blue) 60%,transparent);"></div>
+
+      <div style="max-width:1000px; width:100%;">
+        <span class="eyebrow eyebrow-bridge" style="display:block; text-align:center; margin-bottom:1em;">A közös üzenet · Klímaváltozás</span>
+        <h2 class="display" style="color:var(--warm-cream); text-align:center; font-size:clamp(1.4rem,3.2vw,2.6rem); margin-bottom:1em;">
+          Mindhárom helyen ugyanazt láttam:<br><em>a jég visszahúzódik.</em>
+        </h2>
+
+        <div class="three-col">
+          <div class="stat-box stat-box-warm" style="text-align:center; padding:1.5em;">
+            <span class="stat-number text-gold">−85%</span>
+            <span class="stat-label text-warm" style="display:block; margin-top:0.4em;">Kilimandzsáró jégsapka<br>1912 → 2024</span>
+          </div>
+          <div class="stat-box stat-box-arctic" style="text-align:center; padding:1.5em;">
+            <span class="stat-number text-blue">−50%</span>
+            <span class="stat-label text-arctic" style="display:block; margin-top:0.4em;">Svalbard gleccserek<br>tömegvesztés · utóbbi évtized</span>
+          </div>
+          <div class="stat-box stat-box-arctic" style="text-align:center; padding:1.5em; border-color:rgba(168,212,240,0.25);">
+            <span class="stat-number" style="color:#a8d4f0;">+7mm/év</span>
+            <span class="stat-label" style="display:block; margin-top:0.4em; color:#a8d4f0;">Grönlandi jégtakaró<br>hozzájárulása a tengerszint-emelkedéshez</span>
+          </div>
+        </div>
+
+        <div style="margin-top:1.5em; padding:1.2em 2em; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:6px;">
+          <p class="body-text" style="color:var(--warm-cream); opacity:0.8; text-align:center; font-size:clamp(0.85rem,1.4vw,1.1rem);">
+            A Kilimandzsáró Arctic Zone-jának gleccserei az egyenlítői szárazság és szublimáció miatt olvadnak — nem elsősorban a melegedő levegő miatt. A svalbardi és grönlandi gleccserek ezzel szemben az óceán és a levegő melegedésére reagálnak. <em>Különböző mechanizmus — ugyanaz az eredmény.</em>
+          </p>
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 19 · SZEMÉLYES SZÁL – ÖSSZEGZÉS
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-bridge">
+      <div class="deco-line-warm" style="background:linear-gradient(90deg,transparent,var(--warm-gold),transparent);"></div>
+
+      <div style="text-align:center; max-width:820px;">
+        <span class="eyebrow eyebrow-bridge">Ami összeköti őket</span>
+        <h2 class="display text-warm" style="font-size:clamp(1.5rem,3.5vw,3rem); margin-bottom:0.5em;">
+          A jég mindenhol ugyanaz —<br><em>és mindenhol más.</em>
+        </h2>
+        <div style="width:100%; height:2px; background:linear-gradient(90deg, var(--warm-gold), var(--arctic-blue)); margin:1.2em 0;"></div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2vw; text-align:left; margin:1.2em 0;">
+          <div style="padding:1em;">
+            <div style="font-family:var(--font-mono); font-size:0.6rem; color:var(--warm-gold); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.5em;">Kilimandzsáró</div>
+            <div class="body-text text-warm" style="opacity:0.8; font-size:0.9em;">A magasság teremti az Arktiszt. Asztmával, 5 895 méteren — és a jégmező ott van, ahol nem várod.</div>
+          </div>
+          <div style="padding:1em; border-left:1px solid rgba(255,255,255,0.1); border-right:1px solid rgba(255,255,255,0.1);">
+            <div style="font-family:var(--font-mono); font-size:0.6rem; color:var(--arctic-blue); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.5em;">Spitzbergák</div>
+            <div class="body-text text-arctic" style="opacity:0.8; font-size:0.9em;">A szélesség csinálja a jégvilágot. Kutyaszán, medvekeresés, sarki nappal — ez a jég otthona.</div>
+          </div>
+          <div style="padding:1em;">
+            <div style="font-family:var(--font-mono); font-size:0.6rem; color:#a8d4f0; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:0.5em;">Grönland</div>
+            <div class="body-text text-arctic" style="opacity:0.8; font-size:0.9em; color:#c8e4f5;">A jégtakaró maga a kontinens. Igluba bújva, sarki fénnyel — ahol a jéghegyek születnek.</div>
+          </div>
+        </div>
+
+        <div class="quote-block" style="border-left:none; border-top:1px solid rgba(255,255,255,0.15); padding:1em; margin-top:0.5em; color:var(--warm-cream); font-family:var(--font-display); font-style:italic; font-size:clamp(0.9rem,1.6vw,1.2rem);">
+          „Az egyenlítőn megtaláltam az Arktiszt. Aztán elmentem megnézni az eredetit — kétszer is."
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SLIDE 20 · ZÁRÓ
+  ═══════════════════════════════════════════════ -->
+  <div class="slide">
+    <div class="slide-inner bg-bridge" style="justify-content:center;">
+      <div style="position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%, rgba(20,40,60,0.8) 0%, rgba(4,8,15,0.95) 70%); z-index:0;"></div>
+      <div class="deco-line-warm" style="background:linear-gradient(90deg,transparent,var(--warm-gold) 30%,var(--arctic-blue) 70%,transparent); z-index:1;"></div>
+
+      <div style="text-align:center; max-width:700px; position:relative; z-index:1;">
+        <span class="eyebrow eyebrow-bridge">Köszönöm a figyelmet</span>
+        <h1 class="display text-warm" style="font-size:clamp(1.6rem,4.5vw,3.8rem); margin-bottom:0.2em;">
+          Kérdések,<br><em style="font-weight:400; font-style:italic; color:var(--warm-amber);">gondolatok?</em>
+        </h1>
+        <div class="divider-warm" style="margin:1em auto;"></div>
+
+        <p style="font-family:var(--font-body); font-size:clamp(0.85rem,1.4vw,1.1rem); color:var(--warm-cream); opacity:0.7; line-height:1.8; margin-bottom:1.5em;">
+          PhD · Statisztikus · 7 kontinens<br>
+          <span style="color:var(--warm-gold);">Kilimandzsáró · 5 895 m</span> &nbsp;·&nbsp; Kosciuszko &nbsp;·&nbsp; Everest BC<br>
+          <span style="color:var(--arctic-blue);">Antarktisz &nbsp;·&nbsp; Spitzbergák &nbsp;·&nbsp; Grönland</span>
+        </p>
+
+        <div class="triple-dots" style="margin-bottom:1.5em;">
+          <div class="dot dot-gold"></div>
+          <div class="dot dot-mid"></div>
+          <div class="dot dot-blue"></div>
+        </div>
+
+        <div style="font-family:var(--font-mono); font-size:clamp(0.55rem, 0.9vw, 0.7rem); letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35);">
+          www.drpelyheliza.hu &nbsp;·&nbsp; lizapelyhe.dr@mensa.hu
+        </div>
+
+        <div style="margin-top:1.5em;">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://www.drpelyheliza.hu&color=c8912a&bgcolor=04080f&margin=4"
+               alt="QR kód" style="border-radius:4px; opacity:0.8;">
+        </div>
+      </div>
+
+      <div class="deco-line-bottom-arctic" style="background:linear-gradient(90deg,transparent,var(--arctic-blue),transparent); z-index:1;"></div>
+    </div>
+  </div>
+
+</div><!-- #slideshow -->
+
+<!-- NAVIGATION -->
+<div id="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">&#8592;</button>
+  <span id="slide-counter">1 / 20</span>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">&#8594;</button>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const counter = document.getElementById('slide-counter');
+  const progress = document.getElementById('progress');
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + total;
+    progress.style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  function changeSlide(dir) { showSlide(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); changeSlide(-1); }
+  });
+
+  // Touch swipe
+  let startX = 0;
+  document.addEventListener('touchstart', e => { startX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) changeSlide(dx < 0 ? 1 : -1);
+  });
+
+  // Init
+  showSlide(0);
+</script>
+
+</body>
+</html>
