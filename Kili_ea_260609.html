@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asztmásként Afrika tetején – Kilimandzsáró 5895m</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+  :root {
+    --gold: #C9A84C;
+    --rust: #A0522D;
+    --snow: #F5F0E8;
+    --dark: #0F0D0A;
+    --stone: #2C2720;
+    --sky: #7BAFD4;
+    --green: #4A7C59;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--snow);
+    font-family: 'Source Sans 3', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: default;
+  }
+
+  /* ─────────────── SLIDESHOW VÁZ ─────────────── */
+  #slideshow { width: 100vw; height: 100vh; position: relative; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* ─────────────── NAVIGÁCIÓ ─────────────── */
+  #nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 200;
+    background: rgba(15,13,10,0.7);
+    backdrop-filter: blur(12px);
+    padding: 8px 20px;
+    border-radius: 40px;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  #nav button {
+    background: none; border: none;
+    color: var(--gold); font-size: 18px;
+    cursor: pointer; padding: 4px 10px;
+    opacity: 0.85; transition: opacity 0.2s;
+    font-family: inherit;
+  }
+  #nav button:hover { opacity: 0.5; }
+  #slide-counter {
+    font-family: 'Playfair Display', serif;
+    font-size: 12px;
+    color: rgba(245,240,232,0.45);
+    min-width: 72px;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+  #progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--rust), var(--gold));
+    transition: width 0.5s ease;
+    z-index: 200;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SEGÉD OSZTÁLYOK – ezeket használd a dián belül
+     ═══════════════════════════════════════════════ */
+
+  .eyebrow {
+    font-size: 11px; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 14px; font-weight: 600;
+  }
+  .slide-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4.5vw, 56px);
+    font-weight: 700; line-height: 1.1;
+    color: var(--snow); margin-bottom: 20px;
+  }
+  .slide-heading em { font-style: italic; color: var(--gold); }
+  .slide-body {
+    font-size: clamp(15px, 1.8vw, 19px);
+    line-height: 1.85; color: rgba(245,240,232,0.75);
+    font-weight: 300;
+  }
+  .slide-body strong { color: var(--snow); font-weight: 600; }
+  .divider { width: 44px; height: 2px; background: var(--gold); margin: 18px 0; }
+  .divider-center { margin: 18px auto; }
+  .stats-row { display: flex; gap: 40px; margin-top: 28px; }
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 700; color: var(--gold);
+  }
+  .stat-label {
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; color: rgba(245,240,232,0.4);
+    margin-top: 2px;
+  }
+  .bullet-list { list-style: none; width: 100%; max-width: 700px; }
+  .bullet-list li {
+    font-size: clamp(15px, 1.8vw, 19px); line-height: 1.6;
+    color: rgba(245,240,232,0.8); padding: 9px 0 9px 24px;
+    position: relative; border-bottom: 1px solid rgba(245,240,232,0.06);
+    font-weight: 300;
+  }
+  .bullet-list li::before {
+    content: ''; position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%); width: 8px; height: 8px;
+    border: 1.5px solid var(--gold); border-radius: 50%;
+  }
+  .bullet-list li strong { color: var(--snow); font-weight: 600; }
+  .day-badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 8px 18px; border-radius: 3px; margin-bottom: 20px;
+  }
+  .day-badge .day-title {
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold); font-weight: 600;
+  }
+  .day-badge .day-alt {
+    font-size: 12px; color: rgba(245,240,232,0.5); font-weight: 300;
+  }
+  .big-number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(80px, 14vw, 160px);
+    font-weight: 900; line-height: 0.85; color: var(--gold); opacity: 0.9;
+  }
+  .big-number-label {
+    font-size: 12px; letter-spacing: 5px;
+    text-transform: uppercase; color: rgba(245,240,232,0.4); margin-top: 8px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     1. SABLON: OSZTOTT DIA VÍZSZINTES KÉPPEL
+        (kép 55%, szöveg 45% – fekvő fotókhoz)
+     ═══════════════════════════════════════════════
+     Struktúra:
+     <div class="slide s-split-h">
+       <div class="sh-text"> … </div>
+       <div class="sh-photo">
+         <img src="kep.jpg" alt="">
+       </div>
+     </div>
+     ═══════════════════════════════════════════════ */
+  .s-split-h {
+    display: flex; flex-direction: row;
+    background: var(--dark);
+  }
+  .sh-text {
+    flex: 0 0 42%;
+    padding: 60px 50px 60px 70px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid rgba(201,168,76,0.1);
+  }
+  .sh-photo {
+    flex: 0 0 58%;
+    background: #0a0805;
+    overflow: hidden; position: relative;
+  }
+  .sh-photo img {
+    width: 100%; height: 100%;
+    object-fit: contain;    /* nem vágja le! */
+    object-position: center;
+  }
+
+  /* ═══════════════════════════════════════════════
+     2. SABLON: OSZTOTT DIA FÜGGŐLEGES KÉPPEL
+        (kép 38%, szöveg 62% – álló/portré fotókhoz)
+     ═══════════════════════════════════════════════
+     Struktúra:
+     <div class="slide s-split-v">
+       <div class="sv-text"> … </div>
+       <div class="sv-photo">
+         <img src="kep.jpg" alt="">
+       </div>
+     </div>
+     ═══════════════════════════════════════════════ */
+  .s-split-v {
+    display: flex; flex-direction: row;
+    background: var(--dark);
+  }
+  .sv-text {
+    flex: 0 0 60%;
+    padding: 60px 50px 60px 70px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid rgba(201,168,76,0.1);
+  }
+  .sv-photo {
+    flex: 0 0 40%;
+    background: #0a0805;
+    overflow: hidden; position: relative;
+  }
+  .sv-photo img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  /* ═══════════════════════════════════════════════
+     3. SABLON: TELJES KÉPES DIA VÍZSZINTES KÉPPEL
+        Szöveg: bal alsó sarokba rendezett overlay
+     ═══════════════════════════════════════════════
+     Struktúra:
+     <div class="slide s-fullphoto">
+       <img src="kep.jpg" alt="">
+       <div class="fp-overlay">
+         <div class="fp-badge">Felirat</div>
+         <div class="fp-title">Főcím</div>
+         <div class="fp-sub">Alcím vagy szöveg</div>
+       </div>
+     </div>
+     ═══════════════════════════════════════════════ */
+  .s-fullphoto {
+    background: #0a0805;
+    overflow: hidden;
+    position: absolute;   /* felülírja a .slide position:absolute-ot, de inset:0 megmarad */
+    inset: 0;
+    display: block;
+    width: 100%; height: 100%;
+  }
+  .s-fullphoto > img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: center;
+    opacity: 0.88;
+  }
+  /* Gradient alján a szöveghez */
+  .fp-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(15,13,10,0.92) 0%,
+      rgba(15,13,10,0.55) 28%,
+      transparent 55%
+    );
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 70px 60px;
+  }
+  .fp-badge {
+    display: inline-block;
+    border: 1px solid rgba(123,175,212,0.6);
+    color: var(--sky);
+    font-size: 11px; letter-spacing: 4px;
+    text-transform: uppercase; padding: 5px 16px;
+    background: rgba(15,13,10,0.5);
+    backdrop-filter: blur(4px);
+    margin-bottom: 16px;
+    align-self: flex-start;
+  }
+  .fp-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(22px, 3.5vw, 44px);
+    color: var(--snow); line-height: 1.3;
+    max-width: 700px; margin-bottom: 8px;
+  }
+  .fp-sub {
+    font-size: clamp(14px, 1.5vw, 17px);
+    color: rgba(245,240,232,0.55);
+    font-weight: 300; max-width: 600px;
+  }
+  /* Opcionális – jobb felső info-box a full-photo diákhoz */
+  .fp-infobox {
+    position: absolute; top: 36px; right: 60px;
+    background: rgba(15,13,10,0.7); backdrop-filter: blur(6px);
+    border-left: 2px solid rgba(201,168,76,0.5);
+    padding: 12px 16px; border-radius: 0 4px 4px 0;
+    max-width: 300px;
+  }
+  .fp-infobox-title {
+    font-size: 10px; font-weight: 600; color: var(--gold);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .fp-infobox-body {
+    font-size: 12px; color: rgba(245,240,232,0.8); line-height: 1.5;
+  }
+
+  /* ─────────────── SPECIÁLIS SLIDE STÍLUSOK (cím, idézet, stb.) ─────────────── */
+  .s-title {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 60px;
+    background: var(--dark); overflow: hidden;
+  }
+  .s-title::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(160,82,45,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 30% at 80% 20%, rgba(201,168,76,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .s-story {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 70px 80px;
+    background: var(--dark); overflow: hidden;
+  }
+  .s-map {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 32px; padding: 50px 60px;
+    background: var(--dark);
+  }
+  .s-divider {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 60px;
+    background: var(--stone); overflow: hidden;
+  }
+  .s-divider::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(160,82,45,0.1) 0%, transparent 60%);
+  }
+  .s-quote {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 80px;
+    background: var(--stone); overflow: hidden;
+  }
+  .s-quote::before {
+    content: '"';
+    position: absolute; top: -40px; left: 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 300px; color: rgba(201,168,76,0.06);
+    line-height: 1; pointer-events: none;
+  }
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: clamp(22px, 3.5vw, 42px);
+    line-height: 1.4; color: var(--snow); max-width: 800px; position: relative;
+  }
+  .quote-author {
+    margin-top: 28px; font-size: 12px; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--gold); position: relative;
+  }
+  .title-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 22px; position: relative;
+  }
+  .title-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 92px);
+    font-weight: 900; line-height: 0.95; position: relative; color: var(--snow);
+  }
+  .title-main em { font-style: italic; color: var(--gold); }
+  .title-sub {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(18px, 2.5vw, 26px);
+    color: rgba(245,240,232,0.6); margin-top: 18px; position: relative;
+  }
+  .altitude-badge {
+    display: inline-block;
+    border: 1px solid var(--gold); color: var(--gold);
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    padding: 6px 20px; margin-top: 28px; position: relative;
+  }
+  .mountain-silhouette {
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 55%; opacity: 0.15;
+  }
+  .section-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 180px; font-weight: 900;
+    color: rgba(201,168,76,0.08); line-height: 1;
+    position: absolute; right: 60px; bottom: -20px;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div id="slideshow">
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 1: FŐCÍM
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-title active" id="slide-1">
+  <svg class="mountain-silhouette" viewBox="0 0 1400 500" preserveAspectRatio="xMidYMax meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="700,30 1100,480 300,480" fill="rgba(201,168,76,0.5)"/>
+    <polygon points="700,80 990,480 410,480" fill="rgba(245,240,232,0.4)"/>
+    <polygon points="200,480 500,200 650,480" fill="rgba(44,39,32,0.8)"/>
+    <polygon points="1200,480 950,220 1400,480" fill="rgba(44,39,32,0.8)"/>
+  </svg>
+  <div class="title-eyebrow">Beszámoló · Dr. Pelyhe Liza · 2026. 06. 09.</div>
+  <div class="title-main">Asztmásként<br><em>Afrika tetején</em></div>
+  <div class="title-sub">Kilimandzsáró – 5 895 m</div>
+  <div class="altitude-badge">5 895 m · Marangu-útvonal · 6 nap</div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 2: OSZTOTT – VÍZSZINTES KÉP (sh-photo jobb oldal)
+     Másold ezt ha fekvő fotód van
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-h" id="slide-2">
+  <div class="sh-text">
+    <div class="day-badge">
+      <div>
+        <div class="day-title">Everest Base Camp</div>
+        <div class="day-alt">2025 május · Nepál</div>
+      </div>
+    </div>
+    <div class="slide-heading">4 900 m —<br><em>Lobuche</em></div>
+    <div class="slide-body">
+      Légszomj, köhögés, légúti fertőzés.<br>
+      5 164 méter — Gorak Shep<br>
+      <strong>5 364 méter</strong> — Everest Base Camp / 5 545 méter — Kala Patthar<br><br>
+      Everest régió „betegsége" · <strong>Khumbu köhögés </strong><br>
+      Tartós, száraz, fájdalmas (fokozódás éjszaka és terhelés után)<br>
+      Holthof K. et al. 2022 · Fieten KB. et al. 2022<br>
+        <ul class="bullet-list" style="margin: 0 auto;">
+    <li>Magashegy > 2500m</li>
+    <li>Hideg, száraz levegő</li>
+    <li>Légzőszervi nyálkahártya sérülés: folyadékvesztés a légutakból, légúti fertőzések</li>
+    <li>Szubklinikai tüdőödéma: ödémára jellemző folyadékfelhalmozódás</li>
+  </ul>
+    </div>
+    <div class="stats-row">
+      <div>
+        <div class="stat-value">4 900 m</div>
+        <div class="stat-label">Ahol megálltam</div>
+      </div>
+      <div>
+        <div class="stat-value">5 364 m</div>
+        <div class="stat-label">Az alaptábor</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-photo">
+    <img src="002.jpg" alt="Lobuche 4900m">
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 3: OSZTOTT – VÍZSZINTES KÉP (maraton fotó)
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-h" id="slide-3">
+  <div class="sh-text">
+    <div class="eyebrow">2025 június – 2026 január</div>
+    <div class="slide-heading">Felkészülés<br><em>asztmával</em></div>
+    <div class="divider"></div>
+    <div class="slide-body">
+      <strong>Júni 14 → Dec. 26 (bő 6 hónap)</strong><br><br>
+      🏆 2 × MARATON (1 hét alatt)<br>
+      ✨ 2 × 30 km<br>
+      ❗ 11 × FÉLMARATON<br>
+      &nbsp;&nbsp;&nbsp;16 × 15 km<br>
+      &nbsp;&nbsp;&nbsp;19 × 10 km<br>
+      &nbsp;&nbsp;&nbsp;1 × 5 km („kanapéról felkelős")
+    </div>
+    <div class="stats-row">
+      <div>
+        <div class="stat-value">Félmaraton</div>
+        <div class="stat-label">heti 1×</div>
+      </div>
+      <div>
+        <div class="stat-value">Tüdőgondozás</div>
+        <div class="stat-label">rendszeres kontroll</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-photo">
+    <img src="005.jpg" alt="Maraton felkészülés">
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 4: TELJES KÉPES DIA
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-4">
+  <img src="008.jpg" alt="Útvonalak">
+  <div class="fp-infobox">
+    <div class="fp-infobox-title">Kibo · 5 895 m · szunnyadó</div>
+    <div class="fp-infobox-body">~460 000 éve keletkezett. Bazalt, andezit, obszidián.</div>
+    <div class="fp-infobox-title" style="margin-top:10px;">Mawenzi · 5 149 m · kialudt</div>
+    <div class="fp-infobox-body">~1 millió éve, erősen erodált. Trachybazalt.</div>
+    <div class="fp-infobox-title" style="margin-top:10px;">Shira · 4 005 m · kialudt</div>
+    <div class="fp-infobox-body">~2,5 millió éve — lapos platóvá erodálódott.</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-badge">3 vulkán · 7 útvonal</div>
+    <div class="fp-title">„Whisky út" vs. „Coca-Cola út"</div>
+    <div class="fp-sub">Uhuru-csúcs · 5 895 m</div>
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 5: SZEKCIÓ ELVÁLASZTÓ
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-divider" id="slide-5">
+  <div class="eyebrow">Kilimandzsáró</div>
+  <div class="slide-heading" style="font-size:clamp(40px,6vw,72px);">A Marangu-útvonal</div>
+  <div class="slide-body" style="max-width:640px;">Hat nap. Három szállás. Csúcs: Uhuru Peak, 5 895 m.</div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 9: MAGASSÁGI PROFIL (térkép dia)
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-map" id="slide-9">
+  <div class="eyebrow">Marangu-útvonal · Kilimandzsáró</div>
+  <div class="slide-heading" style="font-size:clamp(22px,3vw,38px);margin-bottom:20px;">Az útvonal magassági profilja</div>
+  <svg viewBox="0 0 900 280" style="width:100%;max-width:900px;" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#C9A84C" stop-opacity="0.04"/>
+      </linearGradient>
+    </defs>
+    <line x1="0" y1="50" x2="900" y2="50" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+    <line x1="0" y1="100" x2="900" y2="100" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+    <line x1="0" y1="150" x2="900" y2="150" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+    <line x1="0" y1="200" x2="900" y2="200" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+    <line x1="0" y1="240" x2="900" y2="240" stroke="rgba(245,240,232,0.05)" stroke-width="1"/>
+    <text x="8" y="54" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">5 900 m</text>
+    <text x="8" y="104" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">5 200 m</text>
+    <text x="8" y="154" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">4 500 m</text>
+    <text x="8" y="204" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">3 700 m</text>
+    <text x="8" y="244" fill="rgba(245,240,232,0.3)" font-size="11" font-family="Source Sans 3, sans-serif">3 000 m</text>
+    <path d="M 80,260 C 160,260 180,214 260,214 C 340,214 360,159 440,159 C 520,159 540,104 620,104 L 680,48 L 720,104 C 760,104 780,159 820,159 L 820,260 Z" fill="url(#pg)"/>
+    <path d="M 80,260 C 160,260 180,214 260,214 C 340,214 360,159 440,159 C 520,159 540,104 620,104 L 680,48 L 720,104 C 760,104 780,159 820,159" fill="none" stroke="#C9A84C" stroke-width="2.5"/>
+    <circle cx="80" cy="260" r="5" fill="#C9A84C"/>
+    <circle cx="260" cy="214" r="5" fill="#C9A84C"/>
+    <circle cx="440" cy="159" r="5" fill="#C9A84C"/>
+    <circle cx="620" cy="104" r="5" fill="#C9A84C"/>
+    <circle cx="680" cy="48" r="7" fill="white" stroke="#C9A84C" stroke-width="2"/>
+    <circle cx="720" cy="104" r="5" fill="#7BAFD4"/>
+    <circle cx="820" cy="159" r="5" fill="#7BAFD4"/>
+    <text x="80" y="276" fill="rgba(245,240,232,0.6)" font-size="11" font-family="Source Sans 3" text-anchor="middle">Marangu</text>
+    <text x="80" y="288" fill="rgba(245,240,232,0.3)" font-size="10" font-family="Source Sans 3" text-anchor="middle">1 870 m</text>
+    <text x="260" y="200" fill="rgba(245,240,232,0.6)" font-size="11" font-family="Source Sans 3" text-anchor="middle">Mandara</text>
+    <text x="260" y="212" fill="rgba(245,240,232,0.3)" font-size="10" font-family="Source Sans 3" text-anchor="middle">2 720 m</text>
+    <text x="440" y="145" fill="rgba(245,240,232,0.6)" font-size="11" font-family="Source Sans 3" text-anchor="middle">Horombo</text>
+    <text x="440" y="157" fill="rgba(245,240,232,0.3)" font-size="10" font-family="Source Sans 3" text-anchor="middle">3 720 m</text>
+    <text x="620" y="90" fill="rgba(245,240,232,0.6)" font-size="11" font-family="Source Sans 3" text-anchor="middle">Kibo</text>
+    <text x="620" y="102" fill="rgba(245,240,232,0.3)" font-size="10" font-family="Source Sans 3" text-anchor="middle">4 703 m</text>
+    <text x="680" y="36" fill="#C9A84C" font-size="13" font-family="Playfair Display, serif" font-weight="700" text-anchor="middle">UHURU</text>
+    <text x="680" y="48" fill="rgba(201,168,76,0.6)" font-size="10" font-family="Source Sans 3" text-anchor="middle">5 895 m</text>
+    <text x="170" y="275" fill="rgba(201,168,76,0.5)" font-size="10" font-family="Source Sans 3" text-anchor="middle">1. nap ↓</text>
+    <text x="350" y="275" fill="rgba(201,168,76,0.5)" font-size="10" font-family="Source Sans 3" text-anchor="middle">2. nap ↓</text>
+    <text x="530" y="275" fill="rgba(201,168,76,0.5)" font-size="10" font-family="Source Sans 3" text-anchor="middle">3. nap ↓</text>
+    <text x="650" y="275" fill="rgba(201,168,76,0.5)" font-size="10" font-family="Source Sans 3" text-anchor="middle">4–5. éjjel</text>
+  </svg>
+  <div style="display:flex;gap:28px;font-size:12px;color:rgba(245,240,232,0.35);letter-spacing:2px;">
+    <span>▲ Felfelé (arany)</span>
+    <span>▼ Visszafelé (kék)</span>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 10: OSZTOTT – VÍZSZINTES KÉP (sh-photo jobb oldal)
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-h" id="slide-10">
+  <div class="sh-text">
+    <div class="day-badge">
+      <div>
+          <div class="day-title">Nulladik nap</div>
+          <div class="day-alt">Megérkezés</div>
+      </div>
+    </div>
+    <div class="slide-heading">Kilimandzsáró<br><em>reptér</em></div>
+    <div class="slide-body">
+        Meleg<br>
+        Nyár<br>
+        <strong>Maradjunk Moshiban</strong>
+    </div>
+    <div class="stats-row">
+      <div>
+          <div class="stat-value">0 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+      </div>
+      <div>
+          <div class="stat-value">880 m</div>
+          <div class="stat-label">Moshi és Arusha között</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-photo">
+    <img src="011.jpg" alt="Kilimandzsáró reptér">
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 11: OSZTOTT – FÜGGŐLEGES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-v" id="slide-11">
+  <div class="sv-text">
+    <div class="day-badge">
+      <div>
+        <div class="day-title">Első nap</div>
+        <div class="day-alt">Marangu Gate → Mandara Hut</div>
+      </div>
+    </div>
+    <div class="slide-heading">Belépés<br><em>az esőerdőbe</em></div>
+    <div class="divider"></div>
+    <div class="slide-body">
+        1 879 m-ről 2 720 m-re. ~8 km, ~3–4 óra.<br><br>
+        Esőerdei ösvény, madárhangok, nedves levegő.<br>
+        Az első nap az <strong>illúzió napja</strong> — könnyűnek tűnik minden.
+    </div>
+    <div class="stats-row">
+      <div>
+        <div class="stat-value">850 m</div>
+        <div class="stat-label">Szintemelkedés</div>
+      </div>
+      <div>
+        <div class="stat-value">2 720 m</div>
+        <div class="stat-label">Mandara Hut</div>
+      </div>
+    </div>
+  </div>
+  <div class="sv-photo">
+    <img src="012a.jpg" alt="Indulás">
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 12: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-12">
+  <img src="013a.jpg" alt="Jelzőkő">
+  <div class="fp-overlay">
+    <div class="fp-title">Jelzőkő</div>
+    <div class="fp-sub">Tengerszinten · 1 óra út</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 13: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-13">
+  <img src="014a.jpg" alt="Köderdő – szakállzuzmó, Usnea – Kilimandzsáró ~1800–2800m">
+    <div class="fp-infobox">
+    <div class="fp-infobox-title">Szakállzuzmó · Usnea</div>
+    <div class="fp-infobox-body">Jelenléte önmagában bizonyítja: a levegő kristály tiszta. Párából issza a vizet.</div>
+    <div class="fp-infobox-title" style="margin-top:10px;">Epifita páfrányok</div>
+    <div class="fp-infobox-body">Nem élősködik. A párából és az ágakon felhalmozódott avarból táplálkoznak.</div>
+    <div class="fp-infobox-title" style="margin-top:10px;">Esőerdő - Köderdő</div>
+    <div class="fp-infobox-body">A lentről felszálló meleg, nedves levegő itt hűl le és csapódik ki - örökös köd és eső.</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Magashegyi esőerdő</div>
+    <div class="fp-sub">2 200 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 14: OSZTOTT – FÜGGŐLEGES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-v" id="slide-14">
+  <div class="sv-text">
+    <div class="eyebrow">Montane Forest · ~2 200 m · Cercopithecus mitis</div>
+    <div class="slide-heading">A helyi<br><em>lakó</em></div>
+    <div class="divider"></div>
+    <div class="slide-body">
+      <strong>Kékmajom</strong><br>
+      sötétszürke, olívazöld, szürkéskék<br>
+      Általában csoportokban mozognak - 5-10 tag<br>
+      <strong>Kolobusz majom</strong><br>
+      fekete-fehér<br>
+      Hófehér gallérral és rojtos farokkal
+    </div>
+    <div class="stats-row">
+      <div>
+        <div class="stat-value">Kékmajom</div>
+        <div class="stat-label">sötétszürke, olívazöld, szürkéskék</div>
+      </div>
+      <div>
+        <div class="stat-value">Kolobusz</div>
+        <div class="stat-label">fekete-fehér</div>
+      </div>
+    </div>
+  </div>
+  <div class="sv-photo">
+    <img src="015a.jpg" alt="Kékmajom – Cercopithecus mitis – Kilimandzsáró esőerdő ~2200m">
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 15: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-15">
+  <img src="016.jpg" alt="Mandara Hut">
+  <div class="fp-overlay">
+    <div class="fp-title">Mandara Hut</div>
+    <div class="fp-sub">850 m szintemelkedés · 2 720 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 16: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-16">
+  <img src="017.jpg" alt="Mandara Hut - szállás">
+  <div class="fp-overlay">
+    <div class="fp-title">Mandara Hut</div>
+    <div class="fp-sub">Szállás</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 17: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-17">
+  <img src="018.png" alt="Mandara Hut - washi washi">
+  <div class="fp-overlay">
+    <div class="fp-title">Washi - Washi</div>
+    <div class="fp-sub">Napi kétszer</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 18: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-18">
+  <img src="019.jpg" alt="Mandara Hut - WC felé">
+  <div class="fp-overlay">
+    <div class="fp-title">Mandara Hut - WC felé</div>
+    <div class="fp-sub">WC · majmok</div>
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 19: OSZTOTT – VÍZSZINTES KÉP (sh-photo jobb oldal)
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-h" id="slide-19">
+  <div class="sh-text">
+    <div class="day-badge">
+      <div>
+          <div class="day-title">Második nap</div>
+          <div class="day-alt">Mandara Hut → Horombo Hut</div>
+      </div>
+    </div>
+      <div class="slide-heading">Kilépés a<br><em>hanga-övbe</em></div>
+      <div class="slide-body">
+        2 720 m-ről 3 720 m-re. ~12 km, ~5–6 óra.<br><br>
+        Az erdő elmarad, megjelenik az afroalpin táj - "lápvidék". Óriás aggófüvek, hangás.<br>
+        <strong>3500m:</strong> "határátlépés".
+      </div>
+    <div class="stats-row">
+      <div>
+          <div class="stat-value">1 000 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+      </div>
+      <div>
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Horombo Hut</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-photo">
+    <img src="019b.jpg" alt="hanga">
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 20: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-20">
+  <img src="020.jpg" alt="Kibo és Mawenzi – első pillantás a Moorland zónából">
+    <div class="fp-infobox">
+    <div class="fp-infobox-title">Kibo · 5 895 m</div>
+    <div class="fp-infobox-body">Kerekded, havas kúp. Szunnyadó vulkán.</div>
+    <div class="fp-infobox-title" style="margin-top:10px;">Mawenzi · 5 149 m</div>
+    <div class="fp-infobox-body">Csipkés, sziklás, vad. Régen kialudt.</div>
+    <div class="fp-infobox-title" style="margin-top:10px;">Saddle - Nyereg</div>
+    <div class="fp-infobox-body">A két csúcs kb. 11 km-re van egymástól — ott megy az út Kibo felé.</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Lápvidék · Moorland zóna</div>
+    <div class="fp-sub"> ~2 800 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 21: OSZTOTT – FÜGGŐLEGES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-v" id="slide-21">
+  <div class="sv-text">
+    <div class="eyebrow">~3 000 m · Kinyongia tavetana · Kilimandzsáró endemikus faja</div>
+    <div class="slide-heading">Nehezen észrevehető<br><em>lakó</em></div>
+    <div class="divider"></div>
+    <div class="slide-body">
+      <strong>Kilimandzsáró kétszarvú kaméleon</strong><br>
+      A Kilimandzsáró és a környező tanzániai–kenyai hegyvidékek lakója.<br>
+      Kifejezetten jól bírja a hideget - 3 000 méteren alapfelszereltség.<br>
+      Barnás-zöldes-szürkés szín - tökéletesen beleolvad a sziklás, füves tájba.<br>
+      Ha nem mozog, láthatatlan.<br>
+      A hímeknek két jellegzetes szarv nyúlik előre az orrukon — területvédelemre és rangjelzésre.
+    </div>
+    <div class="stats-row">
+      <div>
+        <div class="stat-value">Dél-Kenya</div>
+        <div class="stat-label">hegyvidék</div>
+      </div>
+      <div>
+        <div class="stat-value">Észak-Tanzánia</div>
+        <div class="stat-label">hegyvidék</div>
+      </div>
+    </div>
+  </div>
+  <div class="sv-photo">
+    <img src="021.jpg" alt="Kinyongia tavetana – Kilimandzsáró kétszarvú kaméleon – Kilimandzsáró ~3000m">
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 22: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-22">
+  <img src="022.jpg" alt="Ebéd">
+  <div class="fp-overlay">
+    <div class="fp-title">Ebéd - Horombo felé</div>
+    <div class="fp-sub">~ 3400 m</div>
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 23: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-23">
+  <img src="023.jpg" alt="Étel">
+  <div class="fp-overlay">
+    <div class="fp-title">Miket ettünk</div>
+    <div class="fp-sub">Ünnepi ebéd</div>
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 24: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-24">
+  <img src="024.jpg" alt="Óriás lobélia">
+    <div class="fp-infobox">
+    <div class="fp-infobox-title">Óriás lobélia · Lobelia deckenii</div>
+    <div class="fp-infobox-body">Csak és kizárólag az afrikai magashegységekben él.</div>
+    <div class="fp-infobox-title">Éjszaka fagypont alatti hideg</div>
+    <div class="fp-infobox-body">Éjszaka a levelek összecsukódnak — élő bundaként védik a növényt.</div>
+    <div class="fp-infobox-body">A levelek hatalmas tölcsért képeznek, amely vizet tárol.</div>
+    <div class="fp-infobox-body">Ez a folyadék éjszaka megfagy, így védi a belső növekedési csúcsot.</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Óriás lobélia · Lápvidék</div>
+    <div class="fp-sub"> ~3 500 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 25: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-25">
+  <img src="025.jpg" alt="Dendrosenecio kilimanjari és óriás hanga – Moorland zóna ~3500m">
+    <div class="fp-infobox">
+    <div class="fp-infobox-title">Óriás aggófű · Dendrosenecio kilimanjari</div>
+    <div class="fp-infobox-body">Csak itt él a világon.</div>
+    <div class="fp-infobox-body">Az elszáradt barna leveleket a törzsén tartja — hőszigetelés.</div>
+    <div class="fp-infobox-body">Növekedése néhány cm/év — több 100 éves is lehet.</div>
+    <div class="fp-infobox-title">Óriás hanga · Erica arborea</div>
+    <div class="fp-infobox-body">Nálunk apró virág — itt több méteres sűrű erdő.</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Kilimandzsáró endemikus világa</div>
+    <div class="fp-sub"> ~3 500 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 26: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-26">
+  <img src="026.jpg" alt="mindjárt ott">
+  <div class="fp-overlay">
+    <div class="fp-title">Horombo előtt</div>
+    <div class="fp-sub">3 720 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 27: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-27">
+  <img src="027.jpg" alt="Horombo">
+  <div class="fp-overlay">
+    <div class="fp-title">Horombo · "határátlépés"</div>
+    <div class="fp-sub">3 720 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 28: OSZTOTT – VÍZSZINTES KÉP (sh-photo jobb oldal)
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-h" id="slide-28">
+  <div class="sh-text">
+    <div class="day-badge">
+      <div>
+          <div class="day-title">Harmadik nap</div>
+          <div class="day-alt">Akklimatizáció · Horombo</div>
+      </div>
+    </div>
+      <div class="slide-heading">Maradj lenn,<br><em>hogy feljuthass</em></div>
+      <div class="slide-body">
+        6 napos útvonalon a 3. nap akklimatizációs nap.<br>
+        Felmenni 4 300 m-re, vissza aludni 3 720-ra.<br><br>
+        <strong>„Climb high, sleep low"</strong>
+      </div>
+    <div class="stats-row">
+      <div>
+          <div class="stat-value">≈4 300 m</div>
+          <div class="stat-label">Akklim. kirándulás</div>
+      </div>
+      <div>
+          <div class="stat-value">3 720 m</div>
+          <div class="stat-label">Alvás Horombón</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-photo">
+    <img src="028b.jpg" alt="napfelkelte">
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 29: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-29">
+  <img src="029.jpg" alt="Horombo madártávlatbol">
+  <div class="fp-overlay">
+    <div class="fp-title">Horombo · tábor</div>
+    <div class="fp-sub">3 720 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 30: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-30">
+  <img src="030.jpg" alt="Zebraszikla – Marangu útvonal ~4000m">
+      <div class="fp-infobox">
+    <div class="fp-infobox-title">Fehér csíkok</div>
+    <div class="fp-infobox-body">Az esővíz és olvadó hó kioldja a kőzetből a meszet és ásványi sókat.</div>
+    <div class="fp-infobox-body">Ahogy lefolyik és elpárolog, fehér lerakódást hagy.</div>
+    <div class="fp-infobox-title">Fekete csíkok</div>
+    <div class="fp-infobox-body">A víz útja látható a sziklán.</div>
+    <div class="fp-infobox-body">Ahol a víz a leggyakrabban és legtovább folyik — ott sötét algák és zuzmók telepednek meg, vagy ásványi oxidok színezik el a követ.</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Zebraszikla</div>
+    <div class="fp-sub">~4 000 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 31: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-31">
+  <img src="031.jpg" alt="Mawenzi">
+      <div class="fp-infobox">
+    <div class="fp-infobox-title">Mawenzi · 5 149 m</div>
+    <div class="fp-infobox-body">Chagga név: „törött tetejű"</div>
+    <div class="fp-infobox-body">~1 millió éves · Trachybazalt · Porózus, repedezett kőzet · Erózió faragta</div>
+    <div class="fp-infobox-body">Hans Meyer Peak - Meyer maga soha nem tudta megmászni</div>
+    <div class="fp-infobox-body">Mawenzi Tarn - 1976-ban úszóverseny</div>
+    <div class="fp-infobox-body">Tsavo folyó eredés - 1898-as emberevő oroszlánok</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Mawenzi</div>
+    <div class="fp-sub">~4 300 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 32: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-32">
+  <img src="032.jpg" alt="Kili">
+  <div class="fp-overlay">
+    <div class="fp-title">Kibo</div>
+    <div class="fp-sub">~4 300 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 33: OSZTOTT – VÍZSZINTES KÉP (sh-photo jobb oldal)
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-h" id="slide-33">
+  <div class="sh-text">
+    <div class="day-badge">
+      <div>
+          <div class="day-title">Negyedik nap</div>
+          <div class="day-alt">Horombo → Kibo Hut</div>
+      </div>
+    </div>
+      <div class="slide-heading">A sivatagos<br><em>Hold-táj</em></div>
+      <div class="slide-body">
+        3 720 m-ről 4 703 m-re. ~10 km, ~5–6 óra.<br><br>
+        Elhagyod az utolsó növényzetet. Kősivatag, szél, por.<br>
+        <strong>Kibo Hut</strong> — itt töltöd az éjszakát, majd éjfélkor indulsz.
+      </div>
+    <div class="stats-row">
+      <div>
+          <div class="stat-value">983 m</div>
+          <div class="stat-label">Szintemelkedés</div>
+      </div>
+      <div>
+          <div class="stat-value">4 703 m</div>
+          <div class="stat-label">Kibo Hut</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-photo">
+    <img src="028.jpg" alt="napfelkelte_2">
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 34: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-34">
+  <img src="034.jpg" alt="Tussock fű és Dendrosenecio">
+      <div class="fp-infobox">
+    <div class="fp-infobox-title">Csomós csenkesz · Festuca pilgeri</div>
+    <div class="fp-infobox-body">Sárgás-arany „fűtenger".</div>
+    <div class="fp-infobox-body">Sűrű közepük nedvességet zár be, az elhalt levelek pedig szigetelik a gyökereket a fagy ellen.</div>
+    <div class="fp-infobox-title">Óriás aggófű · Dendrosenecio</div>
+    <div class="fp-infobox-body">Már csak a tetejükön van kis zöld üstök.</div>
+    <div class="fp-infobox-title">Szalmagyopár · Helichrysum</div>
+    <div class="fp-infobox-body">Apró, fehéres-ezüstös virágok.</div>
+    <div class="fp-infobox-body">Szárazon is ugyanúgy néz ki, mint frissen.</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Magashegyi szavanna</div>
+    <div class="fp-sub">~3 800–4 000 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 35: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-35">
+  <img src="035.jpg" alt="a sivatag kapuja">
+  <div class="fp-overlay">
+    <div class="fp-title">A sivatagos Holdbéli táj</div>
+    <div class="fp-sub">~4 100 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 36: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-36">
+  <img src="036.jpg" alt="sivatag">
+      <div class="fp-infobox">
+    <div class="fp-infobox-title">Miért sivatag?</div>
+    <div class="fp-infobox-body">A porózus vulkáni talaj azonnal elnyeli a csapadékot.</div>
+    <div class="fp-infobox-body">Forrás, patak: nulla.</div>
+    <div class="fp-infobox-title">Hőmérsékleti hullámvasút</div>
+    <div class="fp-infobox-body">Nappal a fekete sziklák égnek a naptól.</div>
+    <div class="fp-infobox-body">Éjjel −10°C alá zuhan. Minden éjszaka fagy.</div>
+    <div class="fp-infobox-title">A nagy sziklák</div>
+    <div class="fp-infobox-body">Régi kitörések során „kilőtt" vulkáni bombák;</div>
+    <div class="fp-infobox-body">vagy egykori gleccserek hordalékai.</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Alpesi sivatag</div>
+    <div class="fp-sub">~4 400 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 37: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-37">
+  <img src="037.jpg" alt="Kibo">
+  <div class="fp-overlay">
+    <div class="fp-title">Kibo Hut</div>
+    <div class="fp-sub">4 720 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 38: SZEKCIÓ ELVÁLASZTÓ
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-divider" id="slide-38">
+  <div class="eyebrow">Summit</div>
+  <div class="slide-heading" style="font-size:clamp(40px,6vw,72px);">A csúcséjszaka</div>
+  <div class="slide-body" style="max-width:640px;">Éjfél. 0°C alatt. Pole - Pole.</div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 39: OSZTOTT – VÍZSZINTES KÉP (sh-photo jobb oldal)
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-h" id="slide-39">
+  <div class="sh-text">
+    <div class="day-badge">
+      <div>
+          <div class="day-title">Csúcsmászás</div>
+          <div class="day-alt">Kibo → Uhuru Peak (éjjel–hajnal)</div>
+      </div>
+    </div>
+      <div class="slide-heading">Éjfél,<br><em>pole pole</em></div>
+      <div class="slide-body">
+        Indulás ~éjfélkor, ~5–7 óra felfelé.<br>
+        Sötétség, fejlámpa, 0°C alatt, szél.<br><br>
+		    <strong>Hans Meyer barlang</strong> (5 150 m) — az első "nagyobb" pihenő.<br>
+        <strong>Gillman's Point</strong> (5 681 m) — az első kráterperem.<br>
+        <strong>Uhuru Peak</strong> (5 895 m) — Afrika teteje.
+      </div>
+    <div class="stats-row">
+      <div>
+          <div class="stat-value">5 895 m</div>
+          <div class="stat-label">Uhuru Peak</div>
+      </div>
+      <div>
+          <div class="stat-value">0°C alatt</div>
+          <div class="stat-label">Hőmérséklet</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-photo">
+    <img src="039.jpg" alt="sötétben">
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 40: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-40">
+  <img src="040.jpg" alt="piheno">
+  <div class="fp-overlay">
+    <div class="fp-title">Hans Meyer barlang</div>
+    <div class="fp-sub">5 150 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 41: OSZTOTT – VÍZSZINTES KÉP (maraton fotó)
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-split-h" id="slide-41">
+  <div class="sh-text">
+    <div class="eyebrow">A peremen</div>
+    <div class="slide-heading">2 km<br><em> - 200m szint</em></div>
+    <div class="divider"></div>
+    <div class="slide-body">
+        Hajnali 6:00-tól. Napfelkelte Afrikán.<br>
+        A Kibo-kráter felett a jégmezők maradékai.
+    </div>
+    <div class="stats-row">
+      <div>
+        <div class="stat-value">Gillman's Point</div>
+        <div class="stat-label">5 681 m</div>
+      </div>
+      <div>
+        <div class="stat-value">Uhuru Peak</div>
+        <div class="stat-label">5 895 m</div>
+      </div>
+    </div>
+  </div>
+  <div class="sh-photo">
+    <img src="041.jpg" alt="perem">
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 42: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-42">
+  <img src="042.jpg" alt="Hold">
+  <div class="fp-overlay">
+    <div class="fp-title">Kráterperemen</div>
+    <div class="fp-sub">~5 700 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 43: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-43">
+  <img src="043.jpg" alt="Kilimandzsáró hava">
+      <div class="fp-infobox">
+    <div class="fp-infobox-title">Déli Jégmező</div>
+    <div class="fp-infobox-body">Függőleges fal - szublimáció.</div>
+    <div class="fp-infobox-body">A jég a tűző nap hatására nem vízzé válik, hanem közvetlenül gázzá (gőzzé) alakul.</div>
+    <div class="fp-infobox-title">Johannes Rebmann - 1848</div>
+    <div class="fp-infobox-body">Európai emberként elsőként pillantotta meg a Kilimandzsáró havas csúcsát.</div>
+    <div class="fp-infobox-body">Senki nem hitte el neki — azt hitték, napszúrást kapott és hallucinál.</div>
+    <div class="fp-infobox-title">Hans Meyer - 1889</div>
+    <div class="fp-infobox-body">Első megmászás</div>
+    <div class="fp-infobox-body">Rebmann-nak igaza volt.</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Kilimandzsáró-hava</div>
+    <div class="fp-sub">~5 700 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 44: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-44">
+  <img src="043b.jpg" alt="Kili+Meru">
+  <div class="fp-overlay">
+    <div class="fp-title">Kilimandzsáró-hava<br>Mount Meru (4566m)</div>
+    <div class="fp-sub">~5 700 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 45: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-45">
+  <img src="045.jpg" alt="Csúcsfoto">
+  <div class="fp-overlay">
+    <div class="fp-title">A csúcson</div>
+    <div class="fp-sub">5 895 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 46: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-46">
+  <img src="046.jpg" alt="Sorban állni Afrika tetején">
+  <div class="fp-overlay">
+    <div class="fp-title">Sorban állni Afrika tetején</div>
+    <div class="fp-sub">5 895 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 48: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-48">
+  <img src="048.jpg" alt="Törmeléklejtő">
+  <div class="fp-overlay">
+    <div class="fp-title">„A csúcson még csak félúton vagy"</div>
+    <div class="fp-sub">5 685–4 700 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 49: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-49">
+  <img src="049.jpg" alt="Kibo - congratulation">
+  <div class="fp-overlay">
+    <div class="fp-title">5. nap: Kibo → Uhuru → Kibo → Horombo</div>
+    <div class="fp-sub">4 700 – 3 700 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 50: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-50">
+  <img src="050.jpg" alt="Horombo - congratulation">
+  <div class="fp-overlay">
+    <div class="fp-title">6. nap: Horombo → Mandara Hut → Marangu Gate</div>
+    <div class="fp-sub">3 700 – 2 700 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 51: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-51">
+  <img src="051.jpg" alt="Mandara Hut - congratulation">
+  <div class="fp-overlay">
+    <div class="fp-title">6. nap: Horombo → Mandara Hut → Marangu Gate</div>
+    <div class="fp-sub">2 700 – 1 800 m</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 52: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-52">
+  <img src="052.jpg" alt="Oklevél">
+  <div class="fp-overlay">
+    <div class="fp-title">6. nap: Horombo → Mandara Hut → Marangu Gate</div>
+    <div class="fp-sub">2 700 – 1 800 m</div>
+  </div>
+</div>
+
+
+  <!-- ===== DIA: SAJÁT MÉRÉSI ADATOK ===== -->
+  <div class="slide slide-map" id="slide-meresek" style="padding:28px 40px 16px; justify-content:flex-start;">
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 60%, rgba(160,82,45,0.07) 0%, transparent 70%);pointer-events:none;"></div>
+    <div class="eyebrow" style="margin-bottom:6px;">Saját mérési adatok · SpO₂ és max pulzus · 2026 január · Kilimandzsáró</div>
+    <div class="slide-heading" style="font-size:clamp(18px,2.4vw,30px);margin-bottom:10px;">Amit a karkötő rögzített — <em>és amit mutat</em></div>
+    <svg viewBox="0 0 1200 460" style="width:100%;max-height:calc(100vh - 190px);" xmlns="http://www.w3.org/2000/svg">
+
+<rect x="85" y="334.3" width="1085" height="65.7" fill="rgba(74,124,89,0.18)"/>
+<rect x="85" y="263.1" width="1085" height="71.2" fill="rgba(123,175,212,0.18)"/>
+<rect x="85" y="208.3" width="1085" height="54.8" fill="rgba(201,168,76,0.18)"/>
+<rect x="85" y="82.4" width="1085" height="126.0" fill="rgba(160,82,45,0.20)"/>
+<rect x="85" y="55.0" width="1085" height="27.4" fill="rgba(226,75,74,0.20)"/>
+<text x="79" y="367.1" font-size="9" font-family="sans-serif" fill="rgba(74,124,89,0.6)" text-anchor="end" dominant-baseline="middle">Alacsony</text>
+<text x="79" y="298.7" font-size="9" font-family="sans-serif" fill="rgba(123,175,212,0.6)" text-anchor="end" dominant-baseline="middle">Közepes</text>
+<text x="79" y="235.7" font-size="9" font-family="sans-serif" fill="rgba(201,168,76,0.6)" text-anchor="end" dominant-baseline="middle">Magas</text>
+<text x="79" y="145.4" font-size="9" font-family="sans-serif" fill="rgba(201,168,76,0.8)" text-anchor="end" dominant-baseline="middle">Nagyon</text>
+<text x="79" y="157.4" font-size="9" font-family="sans-serif" fill="rgba(201,168,76,0.8)" text-anchor="end" dominant-baseline="middle">magas</text>
+<text x="79" y="68.7" font-size="9" font-family="sans-serif" fill="rgba(226,75,74,0.8)" text-anchor="end" dominant-baseline="middle">Extrém</text>
+<line x1="81" y1="400.0" x2="85" y2="400.0" stroke="rgba(245,240,232,0.3)" stroke-width="0.5"/>
+<text x="77" y="400.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.4)" text-anchor="end" dominant-baseline="middle">0</text>
+<line x1="81" y1="345.2" x2="85" y2="345.2" stroke="rgba(245,240,232,0.3)" stroke-width="0.5"/>
+<text x="77" y="345.2" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.4)" text-anchor="end" dominant-baseline="middle">1000</text>
+<line x1="81" y1="290.5" x2="85" y2="290.5" stroke="rgba(245,240,232,0.3)" stroke-width="0.5"/>
+<text x="77" y="290.5" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.4)" text-anchor="end" dominant-baseline="middle">2000</text>
+<line x1="81" y1="235.7" x2="85" y2="235.7" stroke="rgba(245,240,232,0.3)" stroke-width="0.5"/>
+<text x="77" y="235.7" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.4)" text-anchor="end" dominant-baseline="middle">3000</text>
+<line x1="81" y1="181.0" x2="85" y2="181.0" stroke="rgba(245,240,232,0.3)" stroke-width="0.5"/>
+<text x="77" y="181.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.4)" text-anchor="end" dominant-baseline="middle">4000</text>
+<line x1="81" y1="126.2" x2="85" y2="126.2" stroke="rgba(245,240,232,0.3)" stroke-width="0.5"/>
+<text x="77" y="126.2" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.4)" text-anchor="end" dominant-baseline="middle">5000</text>
+<line x1="81" y1="71.4" x2="85" y2="71.4" stroke="rgba(245,240,232,0.3)" stroke-width="0.5"/>
+<text x="77" y="71.4" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.4)" text-anchor="end" dominant-baseline="middle">6000</text>
+<line x1="85" y1="345.2" x2="1170" y2="345.2" stroke="rgba(245,240,232,0.06)" stroke-width="0.5"/>
+<line x1="85" y1="290.5" x2="1170" y2="290.5" stroke="rgba(245,240,232,0.06)" stroke-width="0.5"/>
+<line x1="85" y1="235.7" x2="1170" y2="235.7" stroke="rgba(245,240,232,0.06)" stroke-width="0.5"/>
+<line x1="85" y1="181.0" x2="1170" y2="181.0" stroke="rgba(245,240,232,0.06)" stroke-width="0.5"/>
+<line x1="85" y1="126.2" x2="1170" y2="126.2" stroke="rgba(245,240,232,0.06)" stroke-width="0.5"/>
+<line x1="85" y1="71.4" x2="1170" y2="71.4" stroke="rgba(245,240,232,0.06)" stroke-width="0.5"/>
+<path d="M 85.0,354.4 L 125.2,275.4 L 165.4,251.0 L 205.6,251.0 L 245.7,204.0 L 285.9,196.3 L 326.1,196.3 L 366.3,181.0 L 406.5,164.5 L 446.7,196.3 L 486.9,196.3 L 527.0,175.5 L 567.2,153.7 L 607.4,141.5 L 647.6,141.5 L 687.8,126.2 L 728.0,115.2 L 768.1,104.3 L 808.3,88.7 L 848.5,78.7 L 888.7,77.2 L 928.9,86.4 L 969.1,130.2 L 1009.3,164.5 L 1049.4,196.3 L 1089.6,196.3 L 1129.8,354.4 L 1170.0,354.4 L 1170.0,400 L 85.0,400 Z" fill="rgba(201,168,76,0.12)"/>
+<path d="M 85.0,354.4 L 125.2,275.4 L 165.4,251.0 L 205.6,251.0 L 245.7,204.0 L 285.9,196.3 L 326.1,196.3 L 366.3,181.0 L 406.5,164.5 L 446.7,196.3 L 486.9,196.3 L 527.0,175.5 L 567.2,153.7 L 607.4,141.5 L 647.6,141.5 L 687.8,126.2 L 728.0,115.2 L 768.1,104.3 L 808.3,88.7 L 848.5,78.7 L 888.7,77.2 L 928.9,86.4 L 969.1,130.2 L 1009.3,164.5 L 1049.4,196.3 L 1089.6,196.3 L 1129.8,354.4 L 1170.0,354.4" fill="none" stroke="#C9A84C" stroke-width="2"/>
+<text x="85.0" y="418.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">Indulás</text>
+<line x1="85.0" y1="400.0" x2="85.0" y2="405.0" stroke="rgba(245,240,232,0.2)" stroke-width="0.5"/>
+<text x="165.4" y="418.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">Mandara</text>
+<text x="165.4" y="430.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">2720m</text>
+<line x1="165.4" y1="400.0" x2="165.4" y2="405.0" stroke="rgba(245,240,232,0.2)" stroke-width="0.5"/>
+<text x="285.9" y="418.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">Horombo</text>
+<text x="285.9" y="430.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">3720m</text>
+<line x1="285.9" y1="400.0" x2="285.9" y2="405.0" stroke="rgba(245,240,232,0.2)" stroke-width="0.5"/>
+<text x="647.6" y="418.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">Kibo</text>
+<text x="647.6" y="430.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">4720m</text>
+<line x1="647.6" y1="400.0" x2="647.6" y2="405.0" stroke="rgba(245,240,232,0.2)" stroke-width="0.5"/>
+<text x="808.3" y="418.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">Gilman's</text>
+<text x="808.3" y="430.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">5685m</text>
+<line x1="808.3" y1="400.0" x2="808.3" y2="405.0" stroke="rgba(245,240,232,0.2)" stroke-width="0.5"/>
+<text x="888.7" y="418.0" font-size="9" font-family="sans-serif" fill="#E24B4A" text-anchor="middle">★ Uhuru</text>
+<text x="888.7" y="430.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">5895m</text>
+<line x1="888.7" y1="400.0" x2="888.7" y2="405.0" stroke="rgba(245,240,232,0.2)" stroke-width="0.5"/>
+<text x="1049.4" y="418.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">Horombo↓</text>
+<line x1="1049.4" y1="400.0" x2="1049.4" y2="405.0" stroke="rgba(245,240,232,0.2)" stroke-width="0.5"/>
+<text x="1170.0" y="418.0" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.45)" text-anchor="middle">Haza</text>
+<line x1="1170.0" y1="400.0" x2="1170.0" y2="405.0" stroke="rgba(245,240,232,0.2)" stroke-width="0.5"/>
+<circle cx="85.0" cy="354.4" r="7" fill="#4A9B6F" stroke="#0F0D0A" stroke-width="1.5"/>
+<text x="85.0" y="340.4" font-size="10" font-weight="600" font-family="sans-serif" fill="#7BC99A" text-anchor="middle">99%</text>
+<circle cx="205.6" cy="251.0" r="7" fill="#4A9B6F" stroke="#0F0D0A" stroke-width="1.5"/>
+<text x="205.6" y="237.0" font-size="10" font-weight="600" font-family="sans-serif" fill="#7BC99A" text-anchor="middle">96%</text>
+<circle cx="326.1" cy="196.3" r="7" fill="#E07820" stroke="#0F0D0A" stroke-width="1.5"/>
+<text x="326.1" y="182.3" font-size="10" font-weight="600" font-family="sans-serif" fill="#F09040" text-anchor="middle">89%</text>
+<circle cx="486.9" cy="196.3" r="7" fill="#E07820" stroke="#0F0D0A" stroke-width="1.5"/>
+<text x="486.9" y="182.3" font-size="10" font-weight="600" font-family="sans-serif" fill="#F09040" text-anchor="middle">86%</text>
+<circle cx="1089.6" cy="196.3" r="7" fill="#4A9B6F" stroke="#0F0D0A" stroke-width="1.5"/>
+<text x="1089.6" y="182.3" font-size="10" font-weight="600" font-family="sans-serif" fill="#7BC99A" text-anchor="middle">96%</text>
+<circle cx="1170.0" cy="354.4" r="7" fill="#4A9B6F" stroke="#0F0D0A" stroke-width="1.5"/>
+<text x="1170.0" y="340.4" font-size="10" font-weight="600" font-family="sans-serif" fill="#7BC99A" text-anchor="middle">96%</text>
+<circle cx="165.4" cy="251.0" r="7" fill="#4A9B6F" stroke="#0F0D0A" stroke-width="1.5" opacity="0.75"/>
+<text x="165.4" y="269.0" font-size="10" font-weight="600" font-family="sans-serif" fill="#7BC99A" text-anchor="middle">98%</text>
+<circle cx="285.9" cy="196.3" r="7" fill="#4A9B6F" stroke="#0F0D0A" stroke-width="1.5" opacity="0.75"/>
+<text x="285.9" y="214.3" font-size="10" font-weight="600" font-family="sans-serif" fill="#7BC99A" text-anchor="middle">98%</text>
+<circle cx="446.7" cy="196.3" r="7" fill="#E07820" stroke="#0F0D0A" stroke-width="1.5" opacity="0.75"/>
+<text x="446.7" y="214.3" font-size="10" font-weight="600" font-family="sans-serif" fill="#F09040" text-anchor="middle">87%</text>
+<circle cx="647.6" cy="141.5" r="7" fill="#E24B4A" stroke="#0F0D0A" stroke-width="1.5" opacity="0.75"/>
+<text x="647.6" y="159.5" font-size="10" font-weight="600" font-family="sans-serif" fill="#FF6B6B" text-anchor="middle">78%</text>
+<circle cx="1049.4" cy="196.3" r="7" fill="#E24B4A" stroke="#0F0D0A" stroke-width="1.5" opacity="0.75"/>
+<text x="1049.4" y="214.3" font-size="10" font-weight="600" font-family="sans-serif" fill="#FF6B6B" text-anchor="middle">84%</text>
+<rect x="121.2" y="293.4" width="8" height="8" rx="1" fill="#E07820" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,125.2,297.4)"/>
+<text x="125.2" y="313.4" font-size="8.5" font-family="sans-serif" fill="#E07820" text-anchor="middle" opacity="0.85">155</text>
+<rect x="241.7" y="222.0" width="8" height="8" rx="1" fill="#E07820" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,245.7,226.0)"/>
+<text x="245.7" y="242.0" font-size="8.5" font-family="sans-serif" fill="#E07820" text-anchor="middle" opacity="0.85">150</text>
+<rect x="402.5" y="182.5" width="8" height="8" rx="1" fill="#E07820" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,406.5,186.5)"/>
+<text x="406.5" y="202.5" font-size="8.5" font-family="sans-serif" fill="#E07820" text-anchor="middle" opacity="0.85">155</text>
+<rect x="563.2" y="171.7" width="8" height="8" rx="1" fill="#E07820" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,567.2,175.7)"/>
+<text x="567.2" y="191.7" font-size="8.5" font-family="sans-serif" fill="#E07820" text-anchor="middle" opacity="0.85">146</text>
+<rect x="683.8" y="144.2" width="8" height="8" rx="1" fill="#C9A84C" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,687.8,148.2)"/>
+<text x="687.8" y="164.2" font-size="8.5" font-family="sans-serif" fill="#C9A84C" text-anchor="middle" opacity="0.85">130</text>
+<rect x="724.0" y="133.2" width="8" height="8" rx="1" fill="#C9A84C" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,728.0,137.2)"/>
+<text x="728.0" y="153.2" font-size="8.5" font-family="sans-serif" fill="#C9A84C" text-anchor="middle" opacity="0.85">130</text>
+<rect x="764.1" y="122.3" width="8" height="8" rx="1" fill="#C9A84C" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,768.1,126.3)"/>
+<text x="768.1" y="142.3" font-size="8.5" font-family="sans-serif" fill="#C9A84C" text-anchor="middle" opacity="0.85">130</text>
+<rect x="804.3" y="106.7" width="8" height="8" rx="1" fill="#C9A84C" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,808.3,110.7)"/>
+<text x="808.3" y="126.7" font-size="8.5" font-family="sans-serif" fill="#C9A84C" text-anchor="middle" opacity="0.85">130</text>
+<rect x="844.5" y="96.7" width="8" height="8" rx="1" fill="#7BAFD4" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,848.5,100.7)"/>
+<text x="848.5" y="116.7" font-size="8.5" font-family="sans-serif" fill="#7BAFD4" text-anchor="middle" opacity="0.85">118</text>
+<rect x="884.7" y="95.2" width="8" height="8" rx="1" fill="#7BAFD4" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,888.7,99.2)"/>
+<text x="888.7" y="115.2" font-size="8.5" font-family="sans-serif" fill="#7BAFD4" text-anchor="middle" opacity="0.85">112</text>
+<rect x="924.9" y="104.4" width="8" height="8" rx="1" fill="#C9A84C" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,928.9,108.4)"/>
+<text x="928.9" y="124.4" font-size="8.5" font-family="sans-serif" fill="#C9A84C" text-anchor="middle" opacity="0.85">137</text>
+<rect x="965.1" y="148.2" width="8" height="8" rx="1" fill="#C9A84C" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,969.1,152.2)"/>
+<text x="969.1" y="168.2" font-size="8.5" font-family="sans-serif" fill="#C9A84C" text-anchor="middle" opacity="0.85">138</text>
+<rect x="1005.3" y="182.5" width="8" height="8" rx="1" fill="#E24B4A" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,1009.3,186.5)"/>
+<text x="1009.3" y="202.5" font-size="8.5" font-family="sans-serif" fill="#E24B4A" text-anchor="middle" opacity="0.85">160</text>
+<rect x="1166.0" y="372.4" width="8" height="8" rx="1" fill="#7BAFD4" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,1170.0,376.4)"/>
+<text x="1170.0" y="392.4" font-size="8.5" font-family="sans-serif" fill="#7BAFD4" text-anchor="middle" opacity="0.85">114</text>
+<polygon points="366.3,170.95238095238096 361.3,177.95238095238096 371.3,177.95238095238096" fill="#E07820" opacity="0.8"/>
+<polygon points="728.0,105.23809523809524 723.0,112.23809523809524 733.0,112.23809523809524" fill="#E07820" opacity="0.8"/>
+<polygon points="768.1,94.28571428571428 763.1,101.28571428571428 773.1,101.28571428571428" fill="#E07820" opacity="0.8"/>
+<polygon points="808.3,78.67857142857144 803.3,85.67857142857144 813.3,85.67857142857144" fill="#7BAFD4" opacity="0.8"/>
+<line x1="647.6" y1="149.5" x2="647.6" y2="189.5" stroke="#E24B4A" stroke-width="0.8" stroke-dasharray="2 2"/>
+<rect x="589.6" y="189.5" width="116" height="22" rx="3" fill="rgba(226,75,74,0.15)" stroke="rgba(226,75,74,0.4)" stroke-width="0.8"/>
+<text x="647.6" y="204.5" font-size="9" font-family="sans-serif" fill="#FF8080" text-anchor="middle">SpO₂ 78% · nincs alvás</text>
+<line x1="888.7" y1="69.2" x2="888.7" y2="45.2" stroke="#E24B4A" stroke-width="0.8"/>
+<text x="888.7" y="41.2" font-size="10" font-weight="700" font-family="sans-serif" fill="#E24B4A" text-anchor="middle">5 895 m</text>
+<circle cx="100" cy="68" r="5" fill="#4A9B6F" stroke="#0F0D0A" stroke-width="1"/>
+<text x="109" y="72" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.55)">SpO₂ ≥95%</text>
+<circle cx="205" cy="68" r="5" fill="#C9A84C" stroke="#0F0D0A" stroke-width="1"/>
+<text x="214" y="72" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.55)">SpO₂ 90-94%</text>
+<circle cx="310" cy="68" r="5" fill="#E07820" stroke="#0F0D0A" stroke-width="1"/>
+<text x="319" y="72" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.55)">SpO₂ 85-89%</text>
+<circle cx="415" cy="68" r="5" fill="#E24B4A" stroke="#0F0D0A" stroke-width="1"/>
+<text x="424" y="72" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.55)">SpO₂ <85%</text>
+<circle cx="520" cy="68" r="5" fill="rgba(226,75,74,0.6)" stroke="#0F0D0A" stroke-width="1" opacity="0.7"/>
+<text x="529" y="72" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.55)">SpO₂ este (°)</text>
+<rect x="621" y="64" width="8" height="8" rx="1" fill="#C9A84C" stroke="#0F0D0A" stroke-width="1" transform="rotate(45,625,68)"/>
+<text x="634" y="72" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.55)">BPM max ◆</text>
+<polygon points="730,63 725,73 735,73" fill="#E07820" opacity="0.8"/>
+<text x="739" y="72" font-size="9" font-family="sans-serif" fill="rgba(245,240,232,0.55)">Tünet ▲</text>
+<text x="30" y="227" font-size="10" font-family="sans-serif" fill="rgba(245,240,232,0.35)" text-anchor="middle" transform="rotate(-90,30,227)">Magasság (m)</text>
+<line x1="85" y1="55" x2="85" y2="400" stroke="rgba(245,240,232,0.2)" stroke-width="0.8"/>
+<line x1="85" y1="400" x2="1170" y2="400" stroke="rgba(245,240,232,0.2)" stroke-width="0.8"/>
+</svg>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+      <div style="font-size:10px;letter-spacing:2px;color:rgba(245,240,232,0.2);">N=1 · olcsó okoskarkötő · nem klinikai mérés · reggeli értékek: teli körök · esti értékek: átlátszó körök</div>
+      <div style="display:flex;gap:24px;font-size:10px;color:rgba(245,240,232,0.3);">
+        <span>◆ max BPM az adott szakaszon</span>
+        <span>● SpO₂ (%)</span>
+        <span>▲ tünet jelölő</span>
+      </div>
+    </div>
+  </div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 54: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-54">
+  <img src="054.jpg" alt="Szalamandra">
+  <div class="fp-overlay">
+    <div class="fp-title">Tervek - Felkészülés</div>
+    <div class="fp-sub">Heti 1 terepfélmaraton</div>
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 55: LEZÁRÓ – Kérdések / Köszönöm
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-title" id="slide-55">
+  <div class="title-eyebrow">Köszönöm a figyelmet</div>
+  <div class="title-main" style="font-size:clamp(36px,5.5vw,68px);">Kérdések,<br><em>gondolatok?</em></div>
+  <div class="divider divider-center"></div>
+
+  <div style="display:flex; align-items:center; justify-content:center; gap:60px; margin-top:16px; width:100%; max-width:900px; position:relative; z-index:2;">
+
+    <div style="text-align:left; flex:1; max-width:440px;">
+      <div style="font-family:'Playfair Display',serif; font-size:clamp(16px,2.2vw,24px); color:var(--snow); line-height:1.5; margin-bottom:16px;">
+        <em>PhD · statisztikus · 7 kontinens · világjáró</em>
+      </div>
+      <div style="font-size:clamp(13px,1.5vw,16px); color:rgba(245,240,232,0.6); line-height:1.9;">
+        <strong style="color:var(--snow);">Antarktisz</strong><br>
+        Spitzbergák · Grönland<br>
+        Kilimandzsáró · Kosciuszko<br>
+        és még sok más
+      </div>
+      <div style="margin-top:20px; display:flex; align-items:center; gap:10px;">
+        <div style="width:2px; height:32px; background:var(--gold); opacity:0.5;"></div>
+        <div>
+          <div style="font-size:clamp(15px,1.8vw,20px); font-weight:600; color:var(--gold); letter-spacing:1px;">
+            <a href="https://www.drpelyheliza.hu" target="_blank" style="color:inherit; text-decoration:none;">www.drpelyheliza.hu</a>
+          </div>
+          <div style="font-size:12px; color:rgba(245,240,232,0.35); letter-spacing:2px; margin-top:3px;">lizapelyhe.dr@mensa.hu</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex-shrink:0;">
+      <div style="background:var(--snow); padding:14px; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://www.drpelyheliza.hu&color=0F0D0A&bgcolor=F5F0E8&margin=0"
+             alt="QR kód – www.drpelyheliza.hu"
+             width="180" height="180"
+             style="display:block; border-radius:4px;">
+      </div>
+      <div style="font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(245,240,232,0.3);">Szkenneld be</div>
+    </div>
+
+  </div>
+
+  <div class="altitude-badge" style="margin-top:28px; position:relative; z-index:2;">
+    Asztmásként Afrika tetején · Kilimandzsáró 2026 · 5 895 m
+  </div>
+</div>
+
+
+</div><!-- /#slideshow -->
+
+<!-- ─────────────── NAVIGÁCIÓ ─────────────── -->
+<div id="nav">
+  <button id="btn-prev" onclick="changeSlide(-1)">←</button>
+  <span id="slide-counter">1 / 51</span>
+  <button id="btn-next" onclick="changeSlide(1)">→</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    document.getElementById('slide-counter').textContent = (current + 1) + ' / ' + slides.length;
+    document.getElementById('progress-bar').style.width = ((current + 1) / slides.length * 100) + '%';
+  }
+
+  function changeSlide(dir) { showSlide(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   changeSlide(-1);
+  });
+
+  // Initialize progress bar
+  document.getElementById('progress-bar').style.width = (1 / slides.length * 100) + '%';
+</script>
+</body>
+</html>
