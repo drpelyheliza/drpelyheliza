@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asztmásként Afrika tetején – Kilimandzsáró 5895m</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+  :root {
+    --ice-white: #F0F8FF;
+    --ice-blue: #E0FBFC;
+    --ocean-cyan: #48CAE4;
+    --deep-navy: #03045E;
+    --abyss-dark: #02030A;
+    --glacier-grey: #90E0EF;
+    --frost-glow: rgba(72,202,228,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--abyss-dark);
+    color: var(--ice-white);
+    font-family: 'Source Sans 3', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: default;
+  }
+
+  /* ─────────────── SLIDESHOW VÁZ ─────────────── */
+  #slideshow { width: 100vw; height: 100vh; position: relative; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.7s ease;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* ─────────────── NAVIGÁCIÓ ─────────────── */
+  #nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 200;
+    background: rgba(2,3,10,0.75);
+    backdrop-filter: blur(12px);
+    padding: 8px 20px;
+    border-radius: 40px;
+    border: 1px solid rgba(72,202,228,0.25);
+  }
+  #nav button {
+    background: none; border: none;
+    color: var(--ocean-cyan); font-size: 18px;
+    cursor: pointer; padding: 4px 10px;
+    opacity: 0.85; transition: opacity 0.2s;
+    font-family: inherit;
+  }
+  #nav button:hover { opacity: 0.5; }
+  #slide-counter {
+    font-family: 'Playfair Display', serif;
+    font-size: 12px;
+    color: rgba(240,248,255,0.45);
+    min-width: 72px;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+  #progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--deep-navy), var(--ocean-cyan));
+    transition: width 0.5s ease;
+    z-index: 200;
+  }
+
+  /* ═══════════════════════════════════════════════
+     SEGÉD OSZTÁLYOK – ezeket használd a dián belül
+     ═══════════════════════════════════════════════ */
+
+  .eyebrow {
+    font-size: 11px; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--ocean-cyan);
+    margin-bottom: 14px; font-weight: 600;
+  }
+  .slide-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4.5vw, 56px);
+    font-weight: 700; line-height: 1.1;
+    color: var(--ice-white); margin-bottom: 20px;
+  }
+  .slide-heading em { font-style: italic; color: var(--ocean-cyan); }
+  .slide-body {
+    font-size: clamp(15px, 1.8vw, 19px);
+    line-height: 1.85; color: rgba(240,248,255,0.75);
+    font-weight: 300;
+  }
+  .slide-body strong { color: var(--ice-white); font-weight: 600; }
+  .divider { width: 44px; height: 2px; background: var(--ocean-cyan); margin: 18px 0; }
+  .divider-center { margin: 18px auto; }
+  .stats-row { display: flex; gap: 40px; margin-top: 28px; }
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px; font-weight: 700; color: var(--ocean-cyan);
+  }
+  .stat-label {
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; color: rgba(240,248,255,0.4);
+    margin-top: 2px;
+  }
+  .bullet-list { list-style: none; width: 100%; max-width: 700px; }
+  .bullet-list li {
+    font-size: clamp(15px, 1.8vw, 19px); line-height: 1.6;
+    color: rgba(240,248,255,0.8); padding: 9px 0 9px 24px;
+    position: relative; border-bottom: 1px solid rgba(240,248,255,0.05);
+    font-weight: 300;
+  }
+  .bullet-list li::before {
+    content: ''; position: absolute; left: 0; top: 50%;
+    transform: translateY(-50%); width: 8px; height: 8px;
+    border: 1.5px solid var(--ocean-cyan); border-radius: 50%;
+  }
+  .bullet-list li strong { color: var(--ice-white); font-weight: 600; }
+  .day-badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: rgba(72,202,228,0.1);
+    border: 1px solid rgba(72,202,228,0.3);
+    padding: 8px 18px; border-radius: 3px; margin-bottom: 20px;
+  }
+  .day-badge .day-title {
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--ocean-cyan); font-weight: 600;
+  }
+  .day-badge .day-alt {
+    font-size: 12px; color: rgba(240,248,255,0.5); font-weight: 300;
+  }
+  .big-number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(80px, 14vw, 160px);
+    font-weight: 900; line-height: 0.85; color: var(--ocean-cyan); opacity: 0.9;
+  }
+  .big-number-label {
+    font-size: 12px; letter-spacing: 5px;
+    text-transform: uppercase; color: rgba(240,248,255,0.5); margin-top: 8px;
+  }
+
+  /* ═══════════════════════════════════════════════
+     1. SABLON: OSZTOTT DIA VÍZSZINTES KÉPPEL
+        (kép 55%, szöveg 45% – fekvő fotókhoz)
+     ═══════════════════════════════════════════════
+     Struktúra:
+     <div class="slide s-split-h">
+       <div class="sh-text"> … </div>
+       <div class="sh-photo">
+         <img src="kep.jpg" alt="">
+       </div>
+     </div>
+     ═══════════════════════════════════════════════ */
+  .s-split-h {
+    display: flex; flex-direction: row;
+    background: var(--abyss-dark);
+  }
+  .sh-text {
+    flex: 0 0 42%;
+    padding: 60px 50px 60px 70px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid rgba(72,202,228,0.1);
+  }
+  .sh-photo {
+    flex: 0 0 58%;
+    background: #010206;
+    overflow: hidden; position: relative;
+  }
+  .sh-photo img {
+    width: 100%; height: 100%;
+    object-fit: contain;    /* nem vágja le! */
+    object-position: center;
+  }
+
+  /* ═══════════════════════════════════════════════
+     2. SABLON: OSZTOTT DIA FÜGGŐLEGES KÉPPEL
+        (kép 38%, szöveg 62% – álló/portré fotókhoz)
+     ═══════════════════════════════════════════════
+     Struktúra:
+     <div class="slide s-split-v">
+       <div class="sv-text"> … </div>
+       <div class="sv-photo">
+         <img src="kep.jpg" alt="">
+       </div>
+     </div>
+     ═══════════════════════════════════════════════ */
+  .s-split-v {
+    display: flex; flex-direction: row;
+    background: var(--abyss-dark);
+  }
+  .sv-text {
+    flex: 0 0 60%;
+    padding: 60px 50px 60px 70px;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid rgba(72,202,228,0.1);
+  }
+  .sv-photo {
+    flex: 0 0 40%;
+    background: #010206;
+    overflow: hidden; position: relative;
+  }
+  .sv-photo img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  /* ═══════════════════════════════════════════════
+     3. SABLON: TELJES KÉPES DIA VÍZSZINTES KÉPPEL
+        Szöveg: bal alsó sarokba rendezett overlay
+     ═══════════════════════════════════════════════
+     Struktúra:
+     <div class="slide s-fullphoto">
+       <img src="kep.jpg" alt="">
+       <div class="fp-overlay">
+         <div class="fp-badge">Felirat</div>
+         <div class="fp-title">Főcím</div>
+         <div class="fp-sub">Alcím vagy szöveg</div>
+       </div>
+     </div>
+     ═══════════════════════════════════════════════ */
+  .s-fullphoto {
+    background: #010206;
+    overflow: hidden;
+    position: absolute;   /* felülírja a .slide position:absolute-ot, de inset:0 megmarad */
+    inset: 0;
+    display: block;
+    width: 100%; height: 100%;
+  }
+  .s-fullphoto > img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    object-position: center;
+    opacity: 0.88;
+  }
+  /* Gradient alján a szöveghez */
+  .fp-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(2,3,10,0.95) 0%,
+      rgba(2,3,10,0.6) 28%,
+      transparent 55%
+    );
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 70px 60px;
+  }
+  .fp-badge {
+    display: inline-block;
+    border: 1px solid rgba(224,251,252,0.6);
+    color: var(--glacier-grey);
+    font-size: 11px; letter-spacing: 4px;
+    text-transform: uppercase; padding: 5px 16px;
+    background: rgba(2,3,10,0.6);
+    backdrop-filter: blur(4px);
+    margin-bottom: 16px;
+    align-self: flex-start;
+  }
+  .fp-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(22px, 3.5vw, 44px);
+    color: var(--ocean-cyan); line-height: 1.3;
+    max-width: 700px; margin-bottom: 8px;
+  }
+  .fp-sub {
+    font-size: clamp(14px, 1.5vw, 17px);
+    color: rgba(240,248,255,0.45);
+    font-weight: 300; max-width: 600px;
+  }
+  /* Opcionális – jobb felső info-box a full-photo diákhoz */
+  .fp-infobox {
+    position: absolute; top: 36px; right: 60px;
+    background: rgba(2,3,10,0.75); backdrop-filter: blur(6px);
+    border-left: 2px solid rgba(224,251,252,0.6);
+    padding: 12px 16px; border-radius: 0 4px 4px 0;
+    max-width: 300px;
+  }
+  .fp-infobox-title {
+    font-size: 10px; font-weight: 600; color: var(--ice-white);
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px;
+  }
+  .fp-infobox-body {
+    font-size: 12px; color: rgba(240,248,255,0.8); line-height: 1.5;
+  }
+
+  /* ─────────────── SPECIÁLIS SLIDE STÍLUSOK (cím, idézet, stb.) ─────────────── */
+  .s-title {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 60px;
+    background: var(--abyss-dark); overflow: hidden;
+  }
+  .s-title::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(3,4,94,0.4) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 30% at 80% 20%, rgba(72,202,228,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .s-story {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 70px 80px;
+    background: var(--abyss-dark); overflow: hidden;
+  }
+  .s-map {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 32px; padding: 50px 60px;
+    background: var(--abyss-dark);
+  }
+  .s-divider {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 60px;
+    background: var(--deep-navy); overflow: hidden;
+  }
+  .s-divider::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(3,4,94,0.1) 0%, transparent 60%);
+  }
+  .s-quote {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center; padding: 80px;
+    background: var(--deep-navy); overflow: hidden;
+  }
+  .s-quote::before {
+    content: '"';
+    position: absolute; top: -40px; left: 40px;
+    font-family: 'Playfair Display', serif;
+    font-size: 300px; color: rgba(72,202,228,0.05);
+    line-height: 1; pointer-events: none;
+  }
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: clamp(22px, 3.5vw, 42px);
+    line-height: 1.4; color: var(--ice-white); max-width: 800px; position: relative;
+  }
+  .quote-author {
+    margin-top: 28px; font-size: 12px; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--glacier-grey); position: relative;
+  }
+  .title-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--ocean-cyan);
+    margin-bottom: 22px; position: relative;
+  }
+  .title-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 92px);
+    font-weight: 900; line-height: 0.95; position: relative; color: var(--ice-white);
+  }
+  .title-main em { font-style: italic; color: var(--ocean-cyan); }
+  .title-sub {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(18px, 2.5vw, 26px);
+    color: var(--glacier-grey); margin-top: 18px; position: relative;
+  }
+  .altitude-badge {
+    display: inline-block;
+    border: 1px solid var(--ocean-cyan); color: var(--ocean-cyan);
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    padding: 6px 20px; margin-top: 28px; position: relative;
+  }
+  .mountain-silhouette {
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 55%; opacity: 0.15;
+  }
+  .section-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 180px; font-weight: 900;
+    color: rgba(72,202,228,0.25); line-height: 1;
+    position: absolute; right: 60px; bottom: -20px;
+  }
+
+  /* Gleccser / Jéghegy sziluett grafika */
+  .glacier-silhouette {
+    position: absolute; bottom: 0; left: 0;
+    width: 100%; height: 45%; opacity: 0.18;
+  }
+
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div id="slideshow">
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 1: FŐCÍM
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-title active" id="slide-1">
+      <svg class="glacier-silhouette" viewBox="0 0 1024 400" preserveAspectRatio="xMidYMax meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="100,400 350,120 600,400" fill="rgba(224,251,252,0.6)"/>
+        <polygon points="450,400 700,50 950,400" fill="rgba(240,248,255,0.8)"/>
+        <polygon points="0,400 200,220 400,400" fill="rgba(3,4,94,0.9)"/>
+      </svg>
+      <div class="title-eyebrow">Előadás · Dr. Pelyhe Liza · 2026. 06. 16.</div>
+      <div class="title-main">A világ végén<br><em>Antarktisz</em></div>
+      <div class="altitude-badge">2024. március · 7. kontinens</div>
+    </div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 2: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-2">
+  <img src="001.jpg" alt="Antarctica a 7. kontinens">
+  <div class="fp-overlay">
+    <div class="fp-title">Antarctica a 7. kontinens</div>
+    <div class="fp-sub">Antarktisz a déli szélesség 60. fokától délre fekvő térség</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 3: TELJES KÉPES DIA
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-3">
+  <img src="002.jpg" alt="Útvonalak">
+  <div class="fp-infobox">
+    <div class="fp-infobox-title">Budapest · Párizs</div>
+    <div class="fp-infobox-body">2 óra 25 perc</div>
+    <div class="fp-infobox-title" style="margin-top:10px;">Párizs · Buenos Aires</div>
+    <div class="fp-infobox-body">13 óra 25 perc</div>
+    <div class="fp-infobox-title" style="margin-top:10px;">Buenos Aires · Ushuaia</div>
+    <div class="fp-infobox-body">3 óra 40 perc</div>
+  </div>
+  <div class="fp-overlay">
+    <div class="fp-title">Budapest · Ushuaia</div>
+    <div class="fp-sub">másfél nap "bezárva"</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 4: SZEKCIÓ ELVÁLASZTÓ
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-story" id="slide-4">
+      <div class="eyebrow">Tűzföld</div>
+      <div class="slide-heading">Ushuaia,<em> a világ legdélebbi városa</em></div>
+      <div class="divider divider-center"></div>
+  <div class="slide-body" style="max-width:640px; color: var(--glacier-grey);">
+    3 nap környék felfedezés
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 5: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-5">
+  <img src="005.jpg" alt="Kilátás a reptér felől Ushuaia-ban">
+  <div class="fp-overlay">
+    <div class="fp-title">Kilátás a reptér felől Ushuaia-ban</div>
+    <div class="fp-sub">"Nyugat felé nyúló öböl"</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 6: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-6">
+  <img src="006.jpg" alt="Érkezés Ushuaia-ba">
+  <div class="fp-overlay">
+    <div class="fp-title">Érkezés</div>
+    <div class="fp-sub">Reptere 5,6 km-re a városközponttól</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 7: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-7">
+  <img src="007.jpg" alt="Fotópont Ushuaia-ban">
+  <div class="fp-overlay">
+    <div class="fp-title">Fotópont</div>
+    <div class="fp-sub">Városalapítás 1884. október 12</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 8: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-8">
+  <img src="008b.jpg" alt="Sétány kilátással Ushuaia-ban">
+  <div class="fp-overlay">
+    <div class="fp-title">Sétány kilátással</div>
+    <div class="fp-sub">Északon a Martial-hegység, délen a Beagle-csatorna határolja</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 9: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-9">
+  <img src="010.jpg" alt="Ushuaia Tourist information helységében szerezhető emlék pecsétek">
+  <div class="fp-overlay">
+    <div class="fp-title">Emlék pecsétek</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 10: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-10">
+  <img src="011.jpg" alt="Gyümölcsök">
+  <div class="fp-overlay">
+    <div class="fp-title">Gyümölcspult</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 11: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-11">
+  <img src="011b.jpg" alt="Világvége vonat állomás tábla">
+  <div class="fp-overlay">
+    <div class="fp-title">Világvége vonat állomás</div>
+    <div class="fp-sub">Ushuaia-tól 10 km-re</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 12: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-12">
+  <img src="012.jpg" alt="Világvége vonat - Tren del fin del mundo">
+  <div class="fp-overlay">
+    <div class="fp-title">Tren del fin del mundo</div>
+    <div class="fp-sub">Világ legdélebbi vasútvonala</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 13: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-13">
+  <img src="013.jpg" alt="Világvége vonat - Tren del fin del mundo">
+  <div class="fp-overlay">
+    <div class="fp-title">Macarena-vízesés</div>
+    <div class="fp-sub">Világ legdélebbi vasútállomása</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 14: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-14">
+  <img src="017.jpg" alt="Lapataia-öböl (Bahía Lapataia)">
+  <div class="fp-overlay">
+    <div class="fp-title">Lapataia-öböl</div>
+    <div class="fp-sub">Bahía Lapataia</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 15: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-15">
+  <img src="018.jpg" alt="Lapataia-öböl_2">
+  <div class="fp-overlay">
+    <div class="fp-title">Lapataia-öböl (másik szemszög)</div>
+    <div class="fp-sub">Alaszkát Ushuaiával összekötő<br>kb. 30ezer km hosszú pánamerikai útvonal vége</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 16: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-16">
+  <img src="016.jpg" alt="Pánamerikai útvonal és La Ruta Nacional 3 vége tábla">
+  <div class="fp-overlay">
+    <div class="fp-title">Pánamerikai útvonal</div>
+    <div class="fp-sub">La Ruta Nacional 3 - Comandante Luis Piedrabuena útvonal</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 17: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-17">
+  <img src="014.jpg" alt="La Ruta Nacional 3">
+  <div class="fp-overlay">
+    <div class="fp-title">La Ruta Nacional 3</div>
+    <div class="fp-sub">Buenos Aires - Tűzföld - Antarktisz és a Déli-atlanti szigetek tartományai</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 18: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-18">
+  <img src="019.jpg" alt="Világvége Posta">
+  <div class="fp-overlay">
+    <div class="fp-title">Világvége Posta</div>
+    <div class="fp-sub">Unidad Postal del Fin del Mundo</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 19: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-19">
+  <img src="020.jpg" alt="Világvége Posta">
+  <div class="fp-overlay">
+    <div class="fp-title">Világvége Posta</div>
+    <div class="fp-sub">Világvége Posta belülről</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 20: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-20">
+  <img src="021.jpg" alt="Világvége Posta pecsétjei">
+  <div class="fp-overlay">
+    <div class="fp-title">Világvége Posta pecsétjei</div>
+    <div class="fp-sub">Megfelelő összegért cserébe</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 21: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-21">
+  <img src="021b.jpg" alt="Laguna Esmeralda felé a táj">
+  <div class="fp-overlay">
+    <div class="fp-title">Laguna Esmeralda felé</div>
+    <div class="fp-sub">Laguna Esmeralda egy gleccsertó Ushuaia-tól 18 km-re</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 22: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-22">
+  <img src="022.jpg" alt="Laguna Esmeralda">
+  <div class="fp-overlay">
+    <div class="fp-title">Laguna Esmeralda</div>
+    <div class="fp-sub">Oda-vissza 9 km erdőkön és lápokon át</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 23: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-23">
+  <img src="023.jpg" alt="Beagle-csatorna">
+  <div class="fp-overlay">
+    <div class="fp-title">Beagle-csatorna - 240km hosszú</div>
+    <div class="fp-sub">A csatorna, az északon fekvő Magellán-szorossal és a délen fekvő Drake-szorossal együtt, Dél-Amerika három hajózható átjárójának egyike,
+amelyek összekötik a Csendes- és az Atlanti-óceánt</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 24: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-24">
+  <img src="024.jpg" alt="Bridges-sziget">
+  <div class="fp-overlay">
+    <div class="fp-title">Bridges-szigetek</div>
+    <div class="fp-sub">3km Ushuaia-tól</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 25: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-25">
+  <img src="025.jpg" alt="Bridges-sziget">
+  <div class="fp-overlay">
+    <div class="fp-title">Bridges-szigetek - Ökoszisztéma</div>
+    <div class="fp-sub">Szubantarktiszi ökoszisztéma</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 26: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-26">
+  <img src="026.jpg" alt="Bridges-sziget">
+  <div class="fp-overlay">
+    <div class="fp-title">Les Eclaireurs "Világvégi" világítótorony</div>
+    <div class="fp-sub">Az utolsó jelentős nevezetesség, amelyet a Föld legdélebbi városából, Ushuaia-ból induló hajók látnak</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 27: SZEKCIÓ ELVÁLASZTÓ
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-story" id="slide-27">
+      <div class="eyebrow">Antarktisz - Antarctica</div>
+      <div class="slide-heading">Elhagytam a világvégét,<br><em>elhaladtam a világítótorony mellett</em></div>
+      <div class="divider divider-center"></div>
+  <div class="slide-body" style="max-width:640px; color: var(--glacier-grey);">
+    és elindultam az Antarktisztra/Antarctica-ra, a 7. kontinens felé
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 28: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-28">
+  <img src="028.jpg" alt="Magellan Explorer">
+  <div class="fp-overlay">
+    <div class="fp-title">Magellan Explorer</div>
+    <div class="fp-sub">80 utas + 60 személyzet · 5 fedélzet · 70-120cm vastag jégtakaró</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 29: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-29">
+  <img src="029.jpg" alt="kulcs">
+  <div class="fp-overlay">
+    <div class="fp-title">Kulcs-kártya</div>
+    <div class="fp-sub">Márc. 13</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 30: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-30">
+  <img src="030.jpg" alt="Belépés a szobába">
+  <div class="fp-overlay">
+    <div class="fp-title">Kabin ajtó</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 31: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-31">
+  <img src="031.jpg" alt="Kabin">
+  <div class="fp-overlay">
+    <div class="fp-title">Kabin</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 32: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-32">
+  <img src="032.jpg" alt="Világvégi világítótorony">
+  <div class="fp-overlay">
+    <div class="fp-title">"Világvégi" világítótorony</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 33: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-33">
+  <img src="033.png" alt="Drake Passage - odafele">
+  <div class="fp-overlay">
+    <div class="fp-title">Drake-átjáró - Márc 14</div>
+    <div class="fp-sub">Dél-Amerika déli csücske (Horn-fok) és Déli-Shetland-szigetek között húzódó vízfelület<br>Atlanti- és a Csendes-óceán közötti nyílt összeköttetés<br>Zord · "kék bogyó"</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 34: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-34">
+  <img src="034b.jpg" alt="Első jéghegy tábla">
+  <div class="fp-overlay">
+    <div class="fp-title">Első jéghegy!</div>
+    <div class="fp-sub">Márc 15.</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 35: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-35">
+  <img src="035.jpg" alt="Hol a hajó">
+  <div class="fp-overlay">
+    <div class="fp-title">Ott</div>
+    <div class="fp-sub">Márc. 15</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 36: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-36">
+  <img src="036.jpg" alt="Hol a hajó">
+  <div class="fp-overlay">
+    <div class="fp-title">Az első jéghegy</div>
+    <div class="fp-sub">Márc. 15</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 37: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-37">
+  <img src="037.jpg" alt="Márc15">
+  <div class="fp-overlay">
+    <div class="fp-title">Yankee Harbour landing</div>
+    <div class="fp-sub">Márc. 15</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 38: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-38">
+  <img src="038.jpg" alt="Márc15">
+  <div class="fp-overlay">
+    <div class="fp-title">Yankee Harbour</div>
+    <div class="fp-sub">Egy kis gleccserrel szegélyezett kikötő · teraszos strandterület</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 39: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-39">
+  <img src="039.jpg" alt="Kiszállás">
+  <div class="fp-overlay">
+    <div class="fp-title">Indulás</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 40: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-40">
+  <img src="040.jpg" alt="YH">
+  <div class="fp-overlay">
+    <div class="fp-title">Yankee Harbour</div>
+    <div class="fp-sub">Strand</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 41: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-41">
+  <img src="041.jpg" alt="YH-pingvinek">
+  <div class="fp-overlay">
+    <div class="fp-title">Strandolás</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 42: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-42">
+  <img src="042.jpg" alt="Gentoo pingvin">
+  <div class="fp-overlay">
+    <div class="fp-title">Gentoo penguin</div>
+    <div class="fp-sub">Szamárpingvin · fehér „fejhallgató” és narancssárga "rúzs"</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 43: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-43">
+  <img src="043.jpg" alt="YH-Chile">
+  <div class="fp-overlay">
+    <div class="fp-title">Chile</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 44: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-44">
+  <img src="044.jpg" alt="Márc16_de">
+  <div class="fp-overlay">
+    <div class="fp-title">Spert Island</div>
+    <div class="fp-sub">Meredek falak, bemélyedések, keskeny csatornák, öblök, alagutak</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 45: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-45">
+  <img src="045.jpg" alt="SI_1">
+  <div class="fp-overlay">
+    <div class="fp-title">Spert Island</div>
+    <div class="fp-sub">Medvefókák</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 46: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-46">
+  <img src="046.jpg" alt="SI_2">
+  <div class="fp-overlay">
+    <div class="fp-title">Spert Island</div>
+    <div class="fp-sub">1960 · Sir Thomas Spert · VIII. Henrik idejében a királyi hajók felügyelője, az Angliai Tengerészet alapítója</div>
+  </div>
+</div>
+
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 47: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-47">
+  <img src="047.jpg" alt="SI_3">
+  <div class="fp-overlay">
+    <div class="fp-title">Édes víz vs Sós víz</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 48: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-48">
+  <img src="049.jpg" alt="SI_4">
+  <div class="fp-overlay">
+    <div class="fp-title">100 millió évesnél több sziklák</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 49: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-49">
+  <img src="048.jpg" alt="SI_5">
+  <div class="fp-overlay">
+    <div class="fp-title">1901–1904</div>
+    <div class="fp-sub">Svéd antarktiszi expedíció</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 50: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-50">
+  <img src="050.png" alt="Bálna">
+  <div class="fp-overlay">
+    <div class="fp-title">Fin whale</div>
+    <div class="fp-sub">Közönséges barázdásbálna · emlősök osztályának · párosujjú patások rendje · a második legnagyobb, ma is élő állatfaj · 45 tonna</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 51: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-51">
+  <img src="051.jpg" alt="Márc_16_du">
+  <div class="fp-overlay">
+    <div class="fp-title">Palaver Point</div>
+    <div class="fp-sub">1960 szeptember · 1000 pár állszíjas pingvin</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 52: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-52">
+  <img src="054.png" alt="Állszíjas pingvin">
+  <div class="fp-overlay">
+    <div class="fp-title">Állszíjas pingvin</div>
+    <div class="fp-sub">Kantáros pingvin · 68 centiméter · testtömege 5–6 kg</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 53: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-53">
+  <img src="053.jpg" alt="csúcson">
+  <div class="fp-overlay">
+    <div class="fp-title">Hótalpas túra</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 54: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-54">
+  <img src="055.jpg" alt="Peterman Island">
+  <div class="fp-overlay">
+    <div class="fp-title">Peterman Island</div>
+    <div class="fp-sub">August Petermann, német földrajztudós · 1873-74</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 55: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-55">
+  <img src="055b.jpg" alt="Zodiac">
+  <div class="fp-overlay">
+    <div class="fp-title">Zodiac csónak</div>
+    <div class="fp-sub">10+2 fő</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 56: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-56">
+  <img src="056.jpg" alt="Halo">
+  <div class="fp-overlay">
+    <div class="fp-title">Halo jelenség</div>
+    <div class="fp-sub">8–12 km magasban képződő fátyol- és pehelyfelhőkben levő hatszögletű jégkristályok - a fénysugarak visszaverődése, megtörése</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 57: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-57">
+  <img src="057.jpg" alt="kunyhó">
+  <div class="fp-overlay">
+    <div class="fp-title">Elhagyatott argentin kunyhó</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 58: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-58">
+  <img src="058.jpg" alt="Port Circumcision">
+  <div class="fp-overlay">
+    <div class="fp-title">Port Circumcision</div>
+    <div class="fp-sub">Körülmetélés Napján fedezték fel</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 59: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-59">
+  <img src="059.jpg" alt="Adélie-pingvin">
+  <div class="fp-overlay">
+    <div class="fp-title">Adélie-pingvin</div>
+    <div class="fp-sub">46-71 centiméter · testtömege 3,6-6kg</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 60: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-60">
+  <img src="060.jpg" alt="ezmiez">
+  <div class="fp-overlay">
+    <div class="fp-title">Red Flag</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 61: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-61">
+  <img src="061.jpg" alt="Pléneau-öböl">
+  <div class="fp-overlay">
+    <div class="fp-title">Pléneau-öböl</div>
+    <div class="fp-sub">Elválasztja a Hovgaard-szigetet az Antarktiszi-félszigettől · jéghegytemető</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 62: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-62">
+  <img src="062.jpg" alt="Pléneau-öböl">
+  <div class="fp-overlay">
+    <div class="fp-title">Pléneau-öböl</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 63: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-63">
+  <img src="063.jpg" alt="Leopárdfóka">
+  <div class="fp-overlay">
+    <div class="fp-title">Leopárdfóka</div>
+    <div class="fp-sub">2-3,5m és 240-600kg</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 64: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-64">
+  <img src="064.jpg" alt="Bálnales">
+  <div class="fp-overlay">
+    <div class="fp-title">Bálnales</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 65: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-65">
+  <img src="065.jpg" alt="Humpback whale">
+  <div class="fp-overlay">
+    <div class="fp-title">Humpback whale</div>
+    <div class="fp-sub">Hosszúszárnyú bálna - Púpos bálna</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 66: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-66">
+  <img src="066.jpg" alt="Humpback whale_2">
+  <div class="fp-overlay">
+    <div class="fp-title">Humpback whale</div>
+    <div class="fp-sub">Hossz 13–17m · 30-50 tonna</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 67: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-67">
+  <img src="067.jpg" alt="Polar plunge">
+  <div class="fp-overlay">
+    <div class="fp-title">Polar plunge</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 68: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-68">
+  <img src="068.png" alt="Polar plunge_2">
+  <div class="fp-overlay">
+    <div class="fp-title">Polar plunge</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 69: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-69">
+  <img src="069.jpg" alt="Continental landing">
+  <div class="fp-overlay">
+    <div class="fp-title">Continental landing</div>
+    <div class="fp-sub">Márc 18.</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 70: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-70">
+  <img src="070.jpg" alt="Neko Harbour">
+  <div class="fp-overlay">
+    <div class="fp-title">Neko Harbour</div>
+    <div class="fp-sub">Neko nevű úszó bálnafeldolgozó hajó · 1897</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 71: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-71">
+  <img src="071.jpg" alt="leváló gleccser">
+  <div class="fp-overlay">
+    <div class="fp-title">Borjadzó gleccser</div>
+    <div class="fp-sub">Leváló gleccser</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 72: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-72">
+  <img src="072.jpg" alt="Liza - 7dik kontinens">
+  <div class="fp-overlay">
+    <div class="fp-title">7. kontinens</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 73: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-73">
+  <img src="073.jpg" alt="Pingvin - 7dik kontinens">
+  <div class="fp-overlay">
+    <div class="fp-title">7. kontinens pingvinnel</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 74: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-74">
+  <img src="074.jpg" alt="Déli elefántfóka">
+  <div class="fp-overlay">
+    <div class="fp-title">Déli elefántfóka</div>
+    <div class="fp-sub">Southern elephant seal · Nőstény: 2,6-3m és 350-900kg · Hím: 4,2-5,8m és 1,5-3,7 tonna</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 75: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-75">
+  <img src="075.jpg" alt="Szamárpingvin">
+  <div class="fp-overlay">
+    <div class="fp-title">Szamárpingvin</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 76: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-76">
+  <img src="076.jpg" alt="csendélet">
+  <div class="fp-overlay">
+    <div class="fp-title">Csendélet</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 77: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-77">
+  <img src="077.jpg" alt="Pingvinek">
+  <div class="fp-overlay">
+    <div class="fp-title">Szamárpingvinek</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 78: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-78">
+  <img src="078.jpg" alt="Fournier Bay">
+  <div class="fp-overlay">
+    <div class="fp-title">Fournier Bay</div>
+    <div class="fp-sub">8 tengeri mérföld hosszú és 3 tengeri mérföld széles öböl</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 79: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-79">
+  <img src="079.jpg" alt="Fournier Bay_2">
+  <div class="fp-overlay">
+    <div class="fp-title">Fournier Bay</div>
+    <div class="fp-sub">Antarktiszi krill otthona - Hosszúszárnyú bálna</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 80: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-80">
+  <img src="080.png" alt="HW">
+  <div class="fp-overlay">
+    <div class="fp-title">Hosszúszárnyú bálna</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 81: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-81">
+  <img src="081.png" alt="HW_2">
+  <div class="fp-overlay">
+    <div class="fp-title">Hosszúszárnyú bálna</div>
+    <div class="fp-sub">20 és 40 tonna</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 82: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-82">
+  <img src="082.jpg" alt="fóka">
+  <div class="fp-overlay">
+    <div class="fp-title">Leopárdfóka</div>
+    <div class="fp-sub">2-3,5m és 240-600kg</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 83: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-83">
+  <img src="083.jpg" alt="Deception Island">
+  <div class="fp-overlay">
+    <div class="fp-title">Deception Island</div>
+    <div class="fp-sub">Gyűrű alakú sziget · kb. 13 km átmérőjű · Port Foster kikötő</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 84: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-84">
+  <img src="084.jpg" alt="Deception Island kapu">
+  <div class="fp-overlay">
+    <div class="fp-title">Neptune’s Bellows</div>
+    <div class="fp-sub">Dél-Shetland-szigeteken található Port Foster bejárata</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 85: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-85">
+  <img src="085.jpg" alt="kaldera">
+  <div class="fp-overlay">
+    <div class="fp-title">Nyugtalan kaldera </div>
+    <div class="fp-sub">jelentős vulkáni kockázat · kb. 10 000 évvel ezelőtt alakult ki · nagyrészt állandó gleccserek (vulkáni hamuval)</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 86: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-86">
+  <img src="086.jpg" alt="Telefon Bay">
+  <div class="fp-overlay">
+    <div class="fp-title">Telefon Bay</div>
+    <div class="fp-sub">Megmentett bálnavadászhajó - itt javították · széles homokos part + enyhe emelkedő egy kráter peremhez</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 87: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-87">
+  <img src="087.jpg" alt="kráterperem">
+  <div class="fp-overlay">
+    <div class="fp-title">Telefon Bay</div>
+    <div class="fp-sub">Kráterperem</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 88: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-88">
+  <img src="088.jpg" alt="kráterperem">
+  <div class="fp-overlay">
+    <div class="fp-title">Telefon Bay</div>
+    <div class="fp-sub">Kilátás a kráterperemről</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 89: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-89">
+  <img src="089.jpg" alt="pingvin">
+  <div class="fp-overlay">
+    <div class="fp-title">wtf</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 90: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-90">
+  <img src="090.jpg" alt="pingvin_Liza">
+  <div class="fp-overlay">
+    <div class="fp-title">wtf?</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 91: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-91">
+  <img src="091.jpg" alt="Whalers Bay">
+  <div class="fp-overlay">
+    <div class="fp-title">Whalers Bay</div>
+    <div class="fp-sub">1900 · öbölben folytatott bálnavadászati tevékenységek</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 92: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-92">
+  <img src="092.jpg" alt="Whalers Bay">
+  <div class="fp-overlay">
+    <div class="fp-title">Whalers Bay</div>
+    <div class="fp-sub">Egy lapos, salakos partszakasszal rendelkezik - eléri a meredek kalderafalat</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 93: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-93">
+  <img src="093.jpg" alt="Whalers Bay">
+  <div class="fp-overlay">
+    <div class="fp-title">Kilátás</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 94: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-94">
+  <img src="094.jpg" alt="Whalers Bay_3">
+  <div class="fp-overlay">
+    <div class="fp-title">Felfelé</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 95: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-95">
+  <img src="095.jpg" alt="Whalers Bay_4">
+  <div class="fp-overlay">
+    <div class="fp-title">Még mindig felfele</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 96: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-96">
+  <img src="096.jpg" alt="150m">
+  <div class="fp-overlay">
+    <div class="fp-title">150m</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 97: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-97">
+  <img src="097.jpg" alt="Kilátás">
+  <div class="fp-overlay">
+    <div class="fp-title">Kilátás</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 98: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-98">
+  <img src="098.jpg" alt="márc20">
+  <div class="fp-overlay">
+    <div class="fp-title">Előadások és zabálás</div>
+    <div class="fp-sub">19:00tól 48 órán keresztül: Drake átjáró</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 99: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-99">
+  <img src="099.png" alt="kezdődik">
+  <div class="fp-overlay">
+    <div class="fp-title">Billen a horizont</div>
+    <div class="fp-sub">Szék döl, emberek dölnek, poharak törnek, kaja, pia borul, Liza nekivágódik az asztalnak, éjjeliszekrény eltáncol a sarokba, átrendeződik a szoba.<br>Az ágyban már csillagpózban sem tudsz megmaradni, gurulsz lefele</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 100: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-100">
+  <img src="100.jpg" alt="márc21">
+  <div class="fp-overlay">
+    <div class="fp-title">Márc 21</div>
+    <div class="fp-sub">Törlik a programokat</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 101: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-101">
+  <img src="101.png" alt="márc21_5dik emelet">
+  <div class="fp-overlay">
+    <div class="fp-title">Deck 5</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 102: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-102">
+  <img src="102.jpg" alt="márc21_5dik emelet_2">
+  <div class="fp-overlay">
+    <div class="fp-title">Deck 5</div>
+    <div class="fp-sub">Billen a horizont</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 103: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-103">
+  <img src="103.jpg" alt="márc21_5dik emelet3">
+  <div class="fp-overlay">
+    <div class="fp-title">Deck 5</div>
+    <div class="fp-sub">Jótállok</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 104: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-104">
+  <img src="104.jpg" alt="márc21_5dik emelet4">
+  <div class="fp-overlay">
+    <div class="fp-title">Cél a rosszullét elkerülése</div>
+    <div class="fp-sub"></div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 105: TELJES KÉPES DIA – VÍZSZINTES KÉP
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-fullphoto" id="slide-105">
+  <img src="105.jpg" alt="Márc 22.">
+  <div class="fp-overlay">
+    <div class="fp-title">Ushuaia</div>
+    <div class="fp-sub">Márc 22.</div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════
+     DIA 106: LEZÁRÓ – Kérdések / Köszönöm
+     ═════════════════════════════════════════════════════ -->
+<div class="slide s-title" id="slide-55">
+  <div class="title-eyebrow">Köszönöm a figyelmet</div>
+  <div class="title-main" style="font-size:clamp(36px,5.5vw,68px);">Kérdések,<br><em>gondolatok?</em></div>
+  <div class="divider divider-center"></div>
+
+  <div style="display:flex; align-items:center; justify-content:center; gap:60px; margin-top:16px; width:100%; max-width:900px; position:relative; z-index:2;">
+
+    <div style="text-align:left; flex:1; max-width:440px;">
+      <div style="font-family:'Playfair Display',serif; font-size:clamp(16px,2.2vw,24px); color:var(--ocean-cyan); line-height:1.5; margin-bottom:16px;">
+        <em>PhD · Statisztikus · 7 kontinens · Világjáró</em>
+      </div>
+      <div style="font-size:clamp(13px,1.5vw,16px); color:rgba(245,240,232,0.6); line-height:1.9;">
+        <strong style="color:var(--ocean-cyan);">Antarktisz</strong><br>
+        Ausztrália · Új-Zéland<br>
+        Tasmánia · Esőerdő hajókázás<br>
+        és még sok más
+      </div>
+      <div style="margin-top:20px; display:flex; align-items:center; gap:10px;">
+        <div style="width:2px; height:32px; background:var(--ice-white); opacity:0.5;"></div>
+        <div>
+          <div style="font-size:clamp(15px,1.8vw,20px); font-weight:600; color:var(--ice-white); letter-spacing:1px;">
+            <a href="https://www.drpelyheliza.hu" target="_blank" style="color:inherit; text-decoration:none;">www.drpelyheliza.hu</a>
+          </div>
+          <div style="font-size:12px; color:rgba(245,240,232,0.35); letter-spacing:2px; margin-top:3px;">lizapelyhe.dr@mensa.hu</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; align-items:center; gap:12px; flex-shrink:0;">
+      <div style="background:var(--ocean-cyan); padding:14px; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://www.drpelyheliza.hu&color=0F0D0A&bgcolor=F5F0E8&margin=0"
+             alt="QR kód – www.drpelyheliza.hu"
+             width="180" height="180"
+             style="display:block; border-radius:4px;">
+      </div>
+      <div style="font-size:11px; letter-spacing:3px; text-transform:uppercase; color:rgba(245,240,232,0.3);">Szkenneld be</div>
+    </div>
+
+  </div>
+
+  <div class="altitude-badge" style="margin-top:28px; position:relative; z-index:2;">
+    A világ végén · Antarktisz
+  </div>
+</div>
+
+
+</div><!-- /#slideshow -->
+
+<!-- ─────────────── NAVIGÁCIÓ ─────────────── -->
+<div id="nav">
+  <button id="btn-prev" onclick="changeSlide(-1)">←</button>
+  <span id="slide-counter">1 / 106</span>
+  <button id="btn-next" onclick="changeSlide(1)">→</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    document.getElementById('slide-counter').textContent = (current + 1) + ' / ' + slides.length;
+    document.getElementById('progress-bar').style.width = ((current + 1) / slides.length * 100) + '%';
+  }
+
+  function changeSlide(dir) { showSlide(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   changeSlide(-1);
+  });
+
+  // Initialize progress bar
+  document.getElementById('progress-bar').style.width = (1 / slides.length * 100) + '%';
+</script>
+</body>
+</html>
