@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Island Peak hegymászás: személyes történetek, kalandok, fotók és élmények.">
+  <meta name="keywords" content="Island Peak, Himalája, Nepál, Himalaya">
+  <meta name="author" content="Pelyhe Liza">
+  <meta property="og:title" content="Island Peak • Kalandok • Dr. Pelyhe Liza">
+  <meta property="og:description" content="Island Peak hegymászás: személyes történetek, kalandok, fotók és élmények.">
+  <meta property="og:image" content="https://drive.google.com/uc?id=10F8BEELivoSir_p_WmZP-nwuvZlJ7U7P">
+  <meta property="og:type" content="website">
+  <title>Island Peak • Kalandok • Dr. Pelyhe Liza</title>
+
+<link rel="up" href="kalandok.html">
+<link rel="prev" href="kalandok.html">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --primary: #0f4c75;
+  --accent: #3282b8;
+  --dark: #0a2540;
+  --light: #f8f9fa;
+  --gray: #6b7280;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Crimson Text', serif;
+  line-height: 1.7;
+  color: var(--dark);
+  background: var(--light);
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  height: 75vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f4c75 0%, #0a2540 100%);
+}
+
+.hero-bg-iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%) scale(1.1);
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+
+.hero-bg-iframe iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 900px;
+  padding: 0 30px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 900;
+  margin-bottom: 15px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.hero-date {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  z-index: 10;
+  padding: 25px 30px;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(10px);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.05rem;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+
+/* CONTENT */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 30px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.story-text {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  margin-bottom: 50px;
+  max-width: 800px;
+  text-align:justify;
+
+}
+
+/* IMAGE GRID */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 50px 0;
+}
+
+.image-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.image-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.image-frame {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.image-caption {
+  padding: 15px;
+  background: white;
+  font-size: 1rem;
+  color: var(--gray);
+  font-style: italic;
+  text-align: center;
+}
+
+/* FOOTER */
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 40px 30px;
+  text-align: center;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px;
+  }
+  
+  nav a {
+    font-size: 0.95rem;
+  }
+  
+  .hero-content {
+    padding-top: 80px;
+  }
+  
+  .image-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7ZN25955BY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7ZN25955BY');
+</script>
+
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <nav>
+    <a href="index.html">Főoldal</a>
+    <a href="kalandok.html">Kalandok</a>
+    <a href="szakmai.html">Szakmai oldal</a>
+  </nav>
+  
+  <div class="hero-bg-iframe">
+    <iframe src="https://drive.google.com/file/d/10F8BEELivoSir_p_WmZP-nwuvZlJ7U7P/preview" allow="autoplay"></iframe>
+  </div>
+  
+  <div class="hero-content">
+    <h1>Island Peak siker asztmásan</h1>
+    <p class="hero-date">2026</p>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="container">
+  
+  <!-- BAKU SECTION -->
+  <h2 class="section-title">Island Peak (6160m-6189m)</h2>
+  <p class="story-text">
+2025-ben egy sikertelen Everest Base Camp (5364m) túra után (4900m-ig jutottam) diagnosztizáltak asztmával. Még a diagnozis elött eldöntöttem, hogy ha már nem sikerült az 5364m akkor felmegyek a Kilimandzsáró csúcsára (5895m). A diagnózis sem tántorított el az ötlettöl. Felkerestem Dr. Neszmélyi Emilt (Kétszeres palackos Everest mászó, Felfedező Grand Slam résztvevő, aki nem mellesleg szakedző is), aki szintén asztmásan mászik hegyet, hogy segítsen felkészülni a Kilimandzsáróra. A felkészülés eredményeként 2026 januárjában fent álltam a Kilimandzsáró csúcsán.<br>
+Jött is az ötlet, hogy menni kéne 6000m fölé. Az Island Peak (Imja Tse) a kelet-nepáli Himalájában található 6160m magas csúcs. 265m-re magasabb, mint a Kilimandzsáró (5895m), ami nagyjábol annyi mintha Zugligetböl felgyalogolnánk a János-hegyre kevesebb mint fél adagnyi oxigénnel a jelenlegi helyzethez képest.<br><br>
+Kezdetét is vette a projekt előkészítése és 2026 októberére minden összeállt mire megérkeztem Luklába (2860m). Onnan Phakding (2622m), Namche Bazar (3440m), Pangboche (3950m), Dingboche (4410m) Chhukung (4730m) településeken való éjszakázásokkal, 2 akklimatizácios napot tartva, nyolcadik napra Lhakpa Sherpa hegyivezetőmmel karöltve el is érkeztünk az Island Peak Base Camp-be (5100m). A magasság különbségek csalókák, ugyanis az útvonal nem csak felfele vezet; esetenként egy fél Kékestetőnyi lefelemenetel is hozzátartozik egy majdnem Kékestetőnyi felmenetelhez.<br>
+Az út során a napos időben gyorsan haladtunk, mind a kezelt asztmámnak, mind pedig a felkészülésemnek köszönhetően.<br>
+Lhakpa Sherpa nyolcszor mászta meg a Mount Everestet, háromszor a Mt. Cho-Oyu-t, kétszer a Manaslu-t, kétszer a Lhotse-t, egyszer a Kanchanjunga-t, egyszer a Himlung-ot, 13-szor az Ama Dablam-ot, valamint többször az Island Peak-et, a Lobuche Peak-et és a Mera Peak-et.
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1zs0I-_LPVy8bU1V_Tt384g0pFw1LzPyd/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Island Peak (oklevél szerint 6160m, más források szerint 6189m)</div>
+    </div>
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1L1hxKzBLGALk1hPEEicWTzCxNnUEZtX-/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Elöttünk az Island Peak alaptáborának sátrai (5100m)</div>
+    </div>
+
+  </div>
+  
+
+   <p class="story-text">
+Ebédre értünk az alaptáborba. Megettem a zöldséges sült rizsemet, majd átnéztük a felszerelést mi az ami jön velem éjjel és mi az ami itt marad. Gyakoroltuk még egy kicsit az eszközhasználatot, majd bekuckóztam délutáni szunyára a napsütötte sátorban. 17:00 fele hallom a nevemet. "Liza! Vacsora." Gyomrom nagy részét az ebéd foglalta el, szóval nem sokat ettem. Utána lehetett pihenni este 11ig.<br>
+Vacsora után megnéztük a naplementét, majd elővettem a vastagabb hálózsákomat, beállítottam az órám 22:50re és újrakezdtem volna az alvást, ha nem ment volna ki az álom a szememböl. Igy egy több órás forgolódással töltöttem az időt 22:50ig.
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1Cnf6nMBqfZPMaNzIBHe_VIB6PWZk0T3u/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Teázás az étkezősátorban</div>
+    </div>
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/10AbJ5gpjZacbOcTS-OKSC5W6S8HajNU8/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Naplemente az Island Peak Base Camp-böl (5100m)</div>
+    </div>
+
+  </div>
+
+  
+
+   <p class="story-text">
+22:50kor ébresztett a telefonom, 23:00kor meg már az étkező sátorban ültem. Nem vàgytam a tükörtojásra két toasttal, inkább elmajszoltam egy kis kekszet meg egy Snickerst. Aztàn mégis megettem a tükörtojást néhány falatt toast kenyérrel. Felvettem a beülőmet, magamra akaszgattam a felszerelést és pontban 24:00kor elhagytuk az alaptábort.<br>
+Fejben felosztottam a magasságot és mindig az adott szakasz végére koncentráltam. Első szakasz vége a High Camp (5400m). Egy darabig szintben haladtunk, majd egy bal kanyarral elindultunk felfele a "semmibe", ahol pislákoltak a fejlámpák a fejem felett.<br><br>
+Próbáltam kontrollálni a légzésem, ami itt még jól sikerült, csak lassítani kellett a tempón. Folyamatosan megelőztek mások, de az egómat én nem csomagoltam el, szóval mindenkit illedelmesen előre engedtem. Lhakpa szólt, hogy elérkeztünk a High Camp-hez. Oké, következő cél a Crampon Point (kb. 5700m), azaz ahol fel kell venni a hágóvasat. A High Camp-től felfele már nemcsak gyalogolni kellett, hanem meredek sziklás terepen nagyokat lépni a sziklára, illetve esetenként mászni. Ekkor esett le a szervezetemnek, hogy én egyáltalán nem a Budai-hegyekben vagyok és elkezdtem szabálytalanul kapkodni a levegőt. Taktikàt váltottam: 3-5 minél kisebb lépés kontrollált levegővétellel, utána zihálhattam, ahogy a szervezetem akarta. A kontrollált légzéses lépésszám a magasság növekedésével csökkent, a zihálások időtartalma nőtt, a Crampon Point mint szakaszhatár meg nagyon nem akart közeledni. Világosodott mire felértünk a Crampon Point-hoz (kb 5700m). Én annyira a légzésemmel voltam elfoglalva, hogy ezt csak ott realizáltam; illetve azt is hogy elgémberedtek az ujjaim a hidegben a minusz 7fokot is bíró kesztyűben. Hegyivezetőm gyorsan rámadta a vastag kesztyüt, hogy ameddig ő kipakolja a felszerelést, addig én életet leheljek az ujjaimba. 
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1mpSf5aGN_x_voZnEBa6CUZS7PHO8KBev/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Visszanézve az alaptáborra éjfél után nem sokkal</div>
+    </div>
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1cldjU4D0N4fBgzz23_9qIL8MOdFMel8G/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">A Crampon Pont felé világítok a sötétben (photo by Lhakpa)</div>
+    </div>
+
+  </div>
+
+
+
+   <p class="story-text">
+A hágóvas felcsatolása után hegyivezetőm rövid pórázra fogott és átkeltünk egy szintben haladó gleccser szakaszon. Itt újra tudtam 5 kontrollált légzéses lépést is haladni. Örömöm nem tartott sokàig ugyanis felémtornyosult egy jég-hófal, amit fix kötélen meg kellett mászni. Ha ez 4000m-rel alacsonyabban áll előttem, akkor boldogan indultam volna felfele. Elmorzsoltam egy könnycseppet és megbeszéltem magammal, hogy 5 lépésenként pihi, különben kifulladok. 3 lépés lett belöle, majd 2. A következő hegy-gerincen egyensulyozós szakasz felüdülés volt számomra a két oldalt tátongó szakadékkal együtt is.<br>
+Azután elérkeztünk a meredek, jeges-havas-sziklás mászós szakaszokhoz. Ott már nem csak egy könnycseppet morzsoltam el, hanem nagyon sokat, mert tudtam, hogy minden egyes nagyobb erőkifejtéssel járó mozdulat legyen az egy felfele lépés vagy karból húzás gyors felületes légzésre és megállásra késztet.<br><br>
+Itt már nem is probálkoztam az 5 kontrollált légzéses lépéssel. Legyen maximum 3 lépés majd zihálás. Egyszer csak felérek a gerincre. Nem néztem időt. Lépésenként haladtam. Néha felnéztem milyen messze van még a gerinc. Nagyon messze volt és nagyon lassan közeledett.<br>
+Felérve a gerincre társam jobbra mutatott, hogy már csak azon a meredek hólépcsőn kell felsétálni a csúcsig. Ühüm, ezt most megbeszélem magammal. Olyan mint a maratonnak az utolsó kilométere - "soha nincs vége". Oké, legyen 10 kontrollált légzéses lépés. 3 majd 2 lett. Akkor ez így marad, ebből nem lesz Rocky Balboa kéz lendítés és ugrás. Az utolsó 5 lépést egyben tettem meg, aminek következtében nem csak a látványtol állt el a lélegzetem, hanem az erölködéstöl is.<br> 
+ 2026.10.28 reggel 8:30 tájékán értünk fel az Island Peak 6160m magas csúcsára.<br>
+Vízszintesbe is helyeztem magam egy kis időre, ami megeröltető futások után is segít a kontrollált légzés visszaállitásában.
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1qdDdsgepAQ2AnJmDH3RrTZ40N7v3ANIj/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Könnycseppmorzsolásaim helyszíne (photo by Lhakpa)</div>
+    </div>
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1iScndS7CGHOQH_VkHQaKKB9UPG0RniMw/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Island Peak (6160m) tetejéről a látvány</div>
+    </div>
+
+  </div>
+
+
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1pqf3pv5sQa2YOB5LoT8QfAOmKHUFGKrX/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Island Peak csúcsfoto (6160m)</div>
+    </div>
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/12S4lJwhmTV_P2yW2mf3xIeNY0pszj6pI/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Island Peak csúcsfoto másik szemszögből</div>
+    </div>
+
+  </div>
+
+
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1SVPMxawYliGCiXkDSz-hbF6G6j7U1-Mw/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Island Peak társas csúcsfotó (photo by Lhakpa)</div>
+    </div>
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1DEipFPmqHfWbF4Vnj3WEgWzvBUDUlqlf/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Hivatalos oklevél az Island Peak mászásról</div>
+    </div>
+
+  </div>
+
+
+   <p class="story-text">
+Mondanám, hogy minden jó, ha a vége jó, de innen vissza is kellett menni, nemcsak az alaptáborig (5100m), hanem Chhukung-ba (4730m). Oh, lefele majd könnyebb lesz, tudok majd 10 lépésenként haladni. Nem. Ugyanúgy 3 lépésenként haladtam a Crampon Point-ig (kb. 5700m), viszont màr tudtam figyelni a környezetre, a gleccserhasadékokra és szép világoskék színeikre.<br><br>
+A Crampon Pointnál levettük a hágóvasat, ettünk, ittunk valamennyit majd elindultunk a sziklás, köves ösvényen lefele, én 10 lépésenként meg-meg állva zihálni. 13:40 körül értünk a sátramhoz. Kértem 1óra alvás időt, fél óra pakolási időt mielött elindulunk még majdnem 400m szintet lefelé. Ebédet? Azt nem kértem, nem volt erőm rágni. Chhukungba (4730m) még sötétedés előtt leértünk. Asztmás sorstársaim közül volt, akinek nem sikerült feljutnia ugyanerre a csúcsra
+       <a href="https://www.mozgasvilag.hu/hegymaszas/hirek/az-island-peak-megevett-reggelire" 
+   target="_blank" 
+   rel="az-island-peak-megevett-reggelire">
+   [https://www.mozgasvilag.hu/hegymaszas/hirek/az-island-peak-megevett-reggelire].
+</a><br>
+"Na igen, mit keres egy asztmás ötezer felett?" teszi fel a költői kérdést az említett cikkben a szerző.<br>
+Asztmásként szerethetem a hegyeket ugyanúgy, mint egy nem asztmás. Szerethetek minél magasabbról lenézni a tájra. Szerethetek egyéni magassági csúcsokat megdönteni - nézni hol hogyan reagál a szervezetem és ha előjön valami szokatlan, akkor utánajárni hogy mi okozza. Nekem az asztmám is így derült ki.
+  </p>
+  
+  <div class="image-grid">
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1lSpfW7tpzRH6i_7TMzSxL6-HKJzT0dJ6/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Ereszkedés lefele az egyik jég-hófalon (photo by Lhakpa)</div>
+    </div>
+
+    <div class="image-card">
+      <div class="image-frame">
+        <iframe src="https://drive.google.com/file/d/1FgIhGUt9d_W4qFB4QeBz97JVM8tv71xE/preview" allow="autoplay"></iframe>
+      </div>
+      <div class="image-caption">Az Island Peak alaptáborát (5100m) elhagyva Chhukung (4730m) felé menet (photo by Lhakpa)</div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  © 2026 Dr. Pelyhe Liza • <a href="mailto:lizapelyhe.dr@mensa.hu">lizapelyhe.dr@mensa.hu</a>
+</footer>
+
+</body>
+</html>
